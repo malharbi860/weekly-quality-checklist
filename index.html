@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Weekly Quality Inspection</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Weekly QA/QC Inspection</h1>
+
+<h2>Civil Works</h2>
+
+<label>
+<input type="checkbox" onchange="updateScore()"> Finishes acceptable
+</label>
+
+<label>
+<input type="checkbox" onchange="updateScore()"> Work area clean
+</label>
+
+<h2>Electrical</h2>
+
+<label>
+<input type="checkbox" onchange="updateScore()"> Cable labeling correct
+</label>
+
+<label>
+<input type="checkbox" onchange="updateScore()"> Panel installed correctly
+</label>
+
+<h2>Mechanical</h2>
+
+<label>
+<input type="checkbox" onchange="updateScore()"> HVAC installation correct
+</label>
+
+<label>
+<input type="checkbox" onchange="updateScore()"> Pipe insulation correct
+</label>
+
+<h2>Compliance Score</h2>
+
+<p id="result">0%</p>
+
+<script src="script.js"></script>
+
+</body>
+</html>
