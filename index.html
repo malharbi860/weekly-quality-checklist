@@ -1,49 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-<title>Weekly Quality Inspection</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA/QC Inspection</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body { font-family: Arial; padding:20px; }
+h2 { margin-top:25px; }
+.section { border:1px solid #ddd; padding:15px; margin:10px 0; border-radius:8px; }
+button { padding:10px; margin-top:10px; cursor:pointer; }
+.lang { float:right; }
+img { width:80px; margin:5px; }
+</style>
 </head>
 
 <body>
 
-<h1>Weekly QA/QC Inspection</h1>
+<div class="lang">
+<select onchange="changeLang(this.value)">
+<option value="ar">العربية</option>
+<option value="en">English</option>
+</select>
+</div>
 
-<h2>Civil Works</h2>
+<h1 id="title">فحص الجودة الأسبوعي</h1>
 
-<label>
-<input type="checkbox" onchange="updateScore()"> Finishes acceptable
-</label>
+<label id="projectLabel">اسم المشروع</label>
+<input id="project">
 
-<label>
-<input type="checkbox" onchange="updateScore()"> Work area clean
-</label>
+<label id="inspectorLabel">اسم المفتش</label>
+<input id="inspector">
 
-<h2>Electrical</h2>
+<h2 id="civilTitle">الأعمال المدنية</h2>
 
-<label>
-<input type="checkbox" onchange="updateScore()"> Cable labeling correct
-</label>
+<div class="section">
+<label><input type="checkbox" onchange="updateScore()"> جودة التشطيبات</label><br>
+<label><input type="checkbox" onchange="updateScore()"> نظافة الموقع</label><br>
+<label><input type="checkbox" onchange="updateScore()"> مطابقة الرسومات</label>
+</div>
 
-<label>
-<input type="checkbox" onchange="updateScore()"> Panel installed correctly
-</label>
+<h2 id="electricalTitle">الأعمال الكهربائية</h2>
 
-<h2>Mechanical</h2>
+<div class="section">
+<label><input type="checkbox" onchange="updateScore()"> التمديدات سليمة</label><br>
+<label><input type="checkbox" onchange="updateScore()"> اللوحات مطابقة</label>
+</div>
 
-<label>
-<input type="checkbox" onchange="updateScore()"> HVAC installation correct
-</label>
+<h2 id="mechanicalTitle">الأعمال الميكانيكية</h2>
 
-<label>
-<input type="checkbox" onchange="updateScore()"> Pipe insulation correct
-</label>
+<div class="section">
+<label><input type="checkbox" onchange="updateScore()"> التكييف صحيح</label><br>
+<label><input type="checkbox" onchange="updateScore()"> العزل سليم</label>
+</div>
 
-<h2>Compliance Score</h2>
+<h2 id="scoreTitle">نسبة الجودة</h2>
+<p id="score">0%</p>
 
-<p id="result">0%</p>
+<h2 id="notesTitle">الملاحظات</h2>
+<textarea id="notes" style="width:100%;height:80px;"></textarea>
 
-<script src="script.js"></script>
+<h2 id="photoTitle">إضافة صور</h2>
+<input type="file" multiple onchange="previewImages(event)">
+<div id="images"></div>
+
+<br><br>
+<button onclick="generatePDF()">تصدير PDF</button>
+
+<script>
+
+function updateScore(){
+let checks = document.querySelectorAll("input[type=checkbox]");
+let checked = document.querySelectorAll("input[type=checkbox]:checked");
+let percent = Math.round((checked.length/checks.length)*100);
+document.getElementById("score").innerText = percent + "%";
+}
+
+function previewImages(event){
+let container = document.getElementById("images");
+container.innerHTML = "";
+for(let file of event.target.files){
+let img = document.createElement("img");
+img.src = URL.createObjectURL(file);
+container.appendChild(img);
+}
+}
+
+function generatePDF(){
+html2canvas(document.body).then(canvas => {
+const { jsPDF } = window.jspdf;
+let pdf = new jsPDF();
+pdf.addImage(canvas.toDataURL("image/png"), 'PNG', 0, 0, 210, 297);
+pdf.save("inspection.pdf");
+});
+}
+
+function changeLang(lang){
+if(lang === "en"){
+document.getElementById("title").innerText = "Weekly QA/QC Inspection";
+document.getElementById("civilTitle").innerText = "Civil Works";
+document.getElementById("electricalTitle").innerText = "Electrical";
+document.getElementById("mechanicalTitle").innerText = "Mechanical";
+document.getElementById("scoreTitle").innerText = "Compliance Score";
+document.getElementById("notesTitle").innerText = "Notes";
+document.getElementById("photoTitle").innerText = "Upload Images";
+document.getElementById("projectLabel").innerText = "Project Name";
+document.getElementById("inspectorLabel").innerText = "Inspector";
+}else{
+location.reload();
+}
+}
+
+</script>
 
 </body>
 </html>
