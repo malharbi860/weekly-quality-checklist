@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Existing Building Quality Assessment</title>
+  <title>Existing Building Quality Assessment + Gap Analysis</title>
 
   <style>
     * { box-sizing: border-box; }
@@ -18,6 +18,9 @@
       --accent: #0ea5e9;
       --border: #dbe4ee;
       --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --danger: #dc2626;
+      --warning: #d97706;
+      --success: #16a34a;
     }
 
     body {
@@ -37,7 +40,7 @@
 
     .header-inner,
     .container {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -110,6 +113,14 @@
       background: #1f2937;
     }
 
+    .danger-btn {
+      background: var(--danger);
+    }
+
+    .danger-btn:hover {
+      background: #b91c1c;
+    }
+
     .container {
       padding-bottom: 30px;
     }
@@ -173,7 +184,7 @@
 
     .checklist-item {
       display: grid;
-      grid-template-columns: 1fr 190px;
+      grid-template-columns: 1fr 210px;
       gap: 12px;
       align-items: center;
       padding: 12px 0;
@@ -286,6 +297,60 @@
       color: #0f172a;
       background: #e8f3ff;
       border: 1px solid #cfe4fb;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    .action-table th,
+    .action-table td {
+      border: 1px solid #e5edf5;
+      padding: 10px;
+      text-align: right;
+      vertical-align: top;
+      background: #fff;
+    }
+
+    .action-table th {
+      background: #f0f7ff;
+      font-weight: 700;
+    }
+
+    .action-table input,
+    .action-table select,
+    .action-table textarea {
+      width: 100%;
+      min-width: 120px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font: inherit;
+    }
+
+    .action-table textarea {
+      min-height: 70px;
+    }
+
+    .severity-high {
+      color: white;
+      background: var(--danger) !important;
+    }
+
+    .severity-medium {
+      color: white;
+      background: var(--warning) !important;
+    }
+
+    .severity-low {
+      color: white;
+      background: var(--success) !important;
     }
 
     @media (max-width: 1050px) {
@@ -439,6 +504,30 @@
     </div>
 
     <div class="card">
+      <h2 id="gapTitle"></h2>
+      <div class="table-wrap">
+        <table class="action-table" id="actionTable">
+          <thead>
+            <tr>
+              <th id="thItem"></th>
+              <th id="thGap"></th>
+              <th id="thSeverity"></th>
+              <th id="thAction"></th>
+              <th id="thOwner"></th>
+              <th id="thDueDate"></th>
+              <th id="thDelete"></th>
+            </tr>
+          </thead>
+          <tbody id="actionTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button type="button" onclick="addActionRow()" id="addActionBtn"></button>
+      </div>
+    </div>
+
+    <div class="card">
       <h2 id="satisfactionTitle"></h2>
       <div class="satisfaction-grid">
         <div class="field">
@@ -480,10 +569,10 @@
   <script>
     const translations = {
       ar: {
-        pageTitle: "تقييم جودة المباني القائمة",
-        pageSubtitle: "نموذج تقييم للمباني المستخدمة يشمل البيئة الداخلية والنظافة والسلامة ورضا الموظفين",
+        pageTitle: "تقييم جودة المباني القائمة + Gap Analysis",
+        pageSubtitle: "نموذج تقييم للمباني المستخدمة مع تحليل الفجوات والإجراءات التصحيحية",
         badge1: "مباني قائمة",
-        badge2: "تقييم استخدام فعلي",
+        badge2: "Gap Analysis",
         badge3: "تصدير PDF",
         pdfBtn: "تصدير PDF",
         buildingLabel: "اسم المبنى",
@@ -504,6 +593,20 @@
         mepTitle: "الأنظمة الكهربائية والميكانيكية",
         safetyTitle: "السلامة والأمن",
         facilityTitle: "المرافق والخدمات",
+        gapTitle: "تحليل الفجوات والإجراءات التصحيحية",
+        addActionBtn: "إضافة إجراء تصحيحي",
+        thItem: "البند",
+        thGap: "الفجوة / الملاحظة",
+        thSeverity: "الخطورة",
+        thAction: "الإجراء التصحيحي",
+        thOwner: "المسؤول",
+        thDueDate: "تاريخ الإغلاق",
+        thDelete: "حذف",
+        deleteBtn: "حذف",
+        severityPlaceholder: "اختر",
+        severityHigh: "عالية",
+        severityMedium: "متوسطة",
+        severityLow: "منخفضة",
         satisfactionTitle: "رضا الموظفين / المستخدمين",
         satisfactionTypeLabel: "نوع التقييم",
         satisfactionRateLabel: "درجة الرضا",
@@ -558,16 +661,14 @@
           "الضوضاء ضمن الحدود المقبولة",
           "راحة الموظفين في البيئة الداخلية جيدة"
         ],
-        pdfTitle: "تقرير تقييم جودة المباني القائمة",
-        pdfProjectInfo: "معلومات المبنى",
-        pdfScores: "ملخص التقييم",
+        pdfTitle: "تقرير تقييم جودة المباني القائمة وتحليل الفجوات",
+        pdfBuildingInfo: "معلومات المبنى",
+        pdfAssessmentSummary: "ملخص التقييم",
         pdfGeneralNotes: "الملاحظات العامة والتوصيات",
         pdfSatisfaction: "رضا الموظفين / المستخدمين",
+        pdfGap: "تحليل الفجوات والإجراءات التصحيحية",
         pdfPhotos: "الصور",
-        pdfPage: "الصفحة",
         pdfGenerated: "تاريخ الإنشاء",
-        pdfType: "نوع التقييم",
-        pdfRating: "درجة الرضا",
         pdfBuilding: "اسم المبنى",
         pdfSite: "الموقع / المجمع",
         pdfInspector: "اسم المفتش",
@@ -575,13 +676,16 @@
         pdfZone: "المنطقة / الدور / القسم",
         pdfOccupancy: "نوع الاستخدام / الجهة المستفيدة",
         pdfStatus: "الحالة",
-        pdfPhotoTitle: "صورة"
+        pdfPhotoTitle: "صورة",
+        pdfNoPhotos: "لا توجد صور مرفقة.",
+        pdfNoActions: "لا توجد إجراءات تصحيحية مدخلة.",
+        itemCol: "البند"
       },
       en: {
-        pageTitle: "Existing Building Quality Assessment",
-        pageSubtitle: "Assessment form for occupied buildings covering environment, cleanliness, safety, and user satisfaction",
+        pageTitle: "Existing Building Quality Assessment + Gap Analysis",
+        pageSubtitle: "Assessment form for occupied buildings with gap analysis and corrective actions",
         badge1: "Existing Buildings",
-        badge2: "Live Occupancy Review",
+        badge2: "Gap Analysis",
         badge3: "PDF Export",
         pdfBtn: "Export PDF",
         buildingLabel: "Building Name",
@@ -602,6 +706,20 @@
         mepTitle: "Electrical & Mechanical Systems",
         safetyTitle: "Safety & Security",
         facilityTitle: "Facilities & Services",
+        gapTitle: "Gap Analysis & Corrective Actions",
+        addActionBtn: "Add Corrective Action",
+        thItem: "Item",
+        thGap: "Gap / Observation",
+        thSeverity: "Severity",
+        thAction: "Corrective Action",
+        thOwner: "Owner",
+        thDueDate: "Due Date",
+        thDelete: "Delete",
+        deleteBtn: "Delete",
+        severityPlaceholder: "Select",
+        severityHigh: "High",
+        severityMedium: "Medium",
+        severityLow: "Low",
         satisfactionTitle: "Employee / User Satisfaction",
         satisfactionTypeLabel: "Evaluation Type",
         satisfactionRateLabel: "Satisfaction Rating",
@@ -656,16 +774,14 @@
           "Noise level is within acceptable limits",
           "Indoor comfort for employees is good"
         ],
-        pdfTitle: "Existing Building Quality Assessment Report",
-        pdfProjectInfo: "Building Information",
-        pdfScores: "Assessment Summary",
+        pdfTitle: "Existing Building Quality Assessment & Gap Analysis Report",
+        pdfBuildingInfo: "Building Information",
+        pdfAssessmentSummary: "Assessment Summary",
         pdfGeneralNotes: "General Notes & Recommendations",
         pdfSatisfaction: "Employee / User Satisfaction",
+        pdfGap: "Gap Analysis & Corrective Actions",
         pdfPhotos: "Photos",
-        pdfPage: "Page",
         pdfGenerated: "Generated",
-        pdfType: "Evaluation Type",
-        pdfRating: "Satisfaction Rating",
         pdfBuilding: "Building Name",
         pdfSite: "Site / Complex",
         pdfInspector: "Inspector Name",
@@ -673,7 +789,10 @@
         pdfZone: "Zone / Floor / Department",
         pdfOccupancy: "Occupancy Type / Beneficiary",
         pdfStatus: "Status",
-        pdfPhotoTitle: "Photo"
+        pdfPhotoTitle: "Photo",
+        pdfNoPhotos: "No attached photos.",
+        pdfNoActions: "No corrective actions entered.",
+        itemCol: "Item"
       }
     };
 
@@ -688,6 +807,8 @@
       safety: [],
       facility: []
     };
+
+    let actionRows = [];
 
     function escapeHtml(text) {
       return String(text ?? "")
@@ -800,6 +921,78 @@
       updateScores();
     }
 
+    function getSeverityOptions(lang) {
+      const t = translations[lang];
+      return `
+        <option value="">${t.severityPlaceholder}</option>
+        <option value="high">${t.severityHigh}</option>
+        <option value="medium">${t.severityMedium}</option>
+        <option value="low">${t.severityLow}</option>
+      `;
+    }
+
+    function severityClass(value) {
+      if (value === "high") return "severity-high";
+      if (value === "medium") return "severity-medium";
+      if (value === "low") return "severity-low";
+      return "";
+    }
+
+    function renderActionRows() {
+      const tbody = document.getElementById("actionTableBody");
+      tbody.innerHTML = "";
+
+      actionRows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td><input type="text" value="${escapeHtml(row.item)}" oninput="updateActionField(${index}, 'item', this.value)"></td>
+          <td><textarea oninput="updateActionField(${index}, 'gap', this.value)">${escapeHtml(row.gap)}</textarea></td>
+          <td>
+            <select onchange="updateActionField(${index}, 'severity', this.value); applySeverityClass(this);" class="${severityClass(row.severity)}">
+              ${getSeverityOptions(currentLang)}
+            </select>
+          </td>
+          <td><textarea oninput="updateActionField(${index}, 'action', this.value)">${escapeHtml(row.action)}</textarea></td>
+          <td><input type="text" value="${escapeHtml(row.owner)}" oninput="updateActionField(${index}, 'owner', this.value)"></td>
+          <td><input type="date" value="${escapeHtml(row.dueDate)}" oninput="updateActionField(${index}, 'dueDate', this.value)"></td>
+          <td><button type="button" class="danger-btn" onclick="deleteActionRow(${index})">${translations[currentLang].deleteBtn}</button></td>
+        `;
+
+        tbody.appendChild(tr);
+        const select = tr.querySelector("select");
+        select.value = row.severity;
+        applySeverityClass(select);
+      });
+    }
+
+    function applySeverityClass(select) {
+      select.classList.remove("severity-high", "severity-medium", "severity-low");
+      const cls = severityClass(select.value);
+      if (cls) select.classList.add(cls);
+    }
+
+    function addActionRow() {
+      actionRows.push({
+        item: "",
+        gap: "",
+        severity: "",
+        action: "",
+        owner: "",
+        dueDate: ""
+      });
+      renderActionRows();
+    }
+
+    function deleteActionRow(index) {
+      actionRows.splice(index, 1);
+      renderActionRows();
+    }
+
+    function updateActionField(index, field, value) {
+      actionRows[index][field] = value;
+    }
+
     function changeLanguage(lang) {
       currentLang = lang;
       const t = translations[lang];
@@ -833,6 +1026,15 @@
       setText("mepTitle", t.mepTitle);
       setText("safetyTitle", t.safetyTitle);
       setText("facilityTitle", t.facilityTitle);
+      setText("gapTitle", t.gapTitle);
+      setText("addActionBtn", t.addActionBtn);
+      setText("thItem", t.thItem);
+      setText("thGap", t.thGap);
+      setText("thSeverity", t.thSeverity);
+      setText("thAction", t.thAction);
+      setText("thOwner", t.thOwner);
+      setText("thDueDate", t.thDueDate);
+      setText("thDelete", t.thDelete);
       setText("satisfactionTitle", t.satisfactionTitle);
       setText("satisfactionTypeLabel", t.satisfactionTypeLabel);
       setText("satisfactionRateLabel", t.satisfactionRateLabel);
@@ -846,6 +1048,7 @@
       renderSatisfactionOptions();
       renderRating();
       renderAllChecklists();
+      renderActionRows();
     }
 
     function calculateSectionScore(sectionName) {
@@ -902,8 +1105,61 @@
           <table class="pdf-table">
             <thead>
               <tr>
-                <th>${lang === "ar" ? "البند" : "Item"}</th>
+                <th>${escapeHtml(t.itemCol)}</th>
                 <th>${escapeHtml(t.pdfStatus)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </section>
+      `;
+    }
+
+    function renderGapTable(lang) {
+      const t = translations[lang];
+      if (!actionRows.length) {
+        return `
+          <section class="pdf-page">
+            <div class="pdf-head">
+              <div class="pdf-title">${escapeHtml(t.pdfGap)}</div>
+            </div>
+            <div class="text-box">${escapeHtml(t.pdfNoActions)}</div>
+          </section>
+        `;
+      }
+
+      const rows = actionRows.map(row => `
+        <tr>
+          <td>${escapeHtml(row.item)}</td>
+          <td>${escapeHtml(row.gap)}</td>
+          <td>${escapeHtml(
+            row.severity === "high" ? t.severityHigh :
+            row.severity === "medium" ? t.severityMedium :
+            row.severity === "low" ? t.severityLow : "-"
+          )}</td>
+          <td>${escapeHtml(row.action)}</td>
+          <td>${escapeHtml(row.owner)}</td>
+          <td>${escapeHtml(row.dueDate)}</td>
+        </tr>
+      `).join("");
+
+      return `
+        <section class="pdf-page">
+          <div class="pdf-head">
+            <div class="pdf-title">${escapeHtml(t.pdfGap)}</div>
+          </div>
+
+          <table class="pdf-table">
+            <thead>
+              <tr>
+                <th>${escapeHtml(t.thItem)}</th>
+                <th>${escapeHtml(t.thGap)}</th>
+                <th>${escapeHtml(t.thSeverity)}</th>
+                <th>${escapeHtml(t.thAction)}</th>
+                <th>${escapeHtml(t.thOwner)}</th>
+                <th>${escapeHtml(t.thDueDate)}</th>
               </tr>
             </thead>
             <tbody>
@@ -1196,6 +1452,8 @@
   ${renderSectionTable(t.safetyTitle, t.safetyItems, state.safety, lang)}
   ${renderSectionTable(t.facilityTitle, t.facilityItems, state.facility, lang)}
 
+  ${renderGapTable(lang)}
+
   <section class="pdf-page">
     <div class="pdf-head">
       <div class="pdf-title">${escapeHtml(t.pdfSatisfaction)}</div>
@@ -1203,11 +1461,11 @@
 
     <div class="info-grid">
       <div class="info-card">
-        <div class="info-label">${escapeHtml(t.pdfType)}</div>
+        <div class="info-label">${escapeHtml(t.satisfactionTypeLabel)}</div>
         <div class="info-value">${escapeHtml(satisfactionType)}</div>
       </div>
       <div class="info-card">
-        <div class="info-label">${escapeHtml(t.pdfRating)}</div>
+        <div class="info-label">${escapeHtml(t.satisfactionRateLabel)}</div>
         <div class="info-value">${escapeHtml(satisfactionScore)}</div>
       </div>
     </div>
@@ -1230,7 +1488,7 @@
     <div class="pdf-head">
       <div class="pdf-title">${escapeHtml(t.pdfPhotos)}</div>
     </div>
-    <div class="text-box">${lang === "ar" ? "لا توجد صور مرفقة." : "No attached photos."}</div>
+    <div class="text-box">${escapeHtml(t.pdfNoPhotos)}</div>
   </section>
   `}
 
@@ -1269,6 +1527,7 @@
       document.getElementById("photosPreview").innerHTML = "";
       selectedRating = 0;
       document.getElementById("satisfactionScore").textContent = "0/5";
+      actionRows = [];
 
       sectionIds.forEach(id => {
         state[id] = new Array(translations[currentLang][id + "Items"].length).fill("");
@@ -1276,6 +1535,7 @@
 
       renderRating();
       renderAllChecklists();
+      renderActionRows();
     }
 
     sectionIds.forEach(id => {
@@ -1283,6 +1543,7 @@
     });
 
     changeLanguage("ar");
+    renderActionRows();
   </script>
 </body>
 </html>
