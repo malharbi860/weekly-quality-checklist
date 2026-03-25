@@ -1,254 +1,1221 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA/QC Inspection</title>
 
-<title>QA/QC Inspection</title>
+  <style>
+    * { box-sizing: border-box; }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    :root{
+      --bg: #f3f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #0f766e;
+      --primary-2: #115e59;
+      --accent: #0ea5e9;
+      --border: #dbe4ee;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
 
-<style>
-body{
-  font-family: Arial;
-  margin:0;
-  background:#f3f6fb;
-}
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
-h1{margin-bottom:5px}
-.card{
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  margin:10px 0;
-  box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-.summary{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-}
-.box{
-  background:white;
-  padding:10px;
-  text-align:center;
-  border-radius:10px;
-}
-select,input,textarea{
-  width:100%;
-  padding:10px;
-  margin-top:5px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-.checklist{
-  margin-top:10px;
-}
-.item{
-  display:flex;
-  justify-content:space-between;
-  margin:5px 0;
-}
-button{
-  padding:10px;
-  border:none;
-  background:#0f766e;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
-}
-.photos img{
-  width:200px;
-  height:200px;
-  object-fit:cover;
-  margin:5px;
-}
-</style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #eaf4ff 0%, #f3f7fb 140px, #f3f7fb 100%);
+      color: var(--text);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 24px 0;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner,
+    .container {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand h1 {
+      margin: 0 0 6px;
+      font-size: 34px;
+    }
+
+    .brand p {
+      margin: 0;
+      opacity: 0.95;
+      font-size: 15px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    select, input, textarea, button {
+      font: inherit;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      color: white;
+      background: var(--primary);
+      transition: 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover {
+      background: var(--primary-2);
+      transform: translateY(-1px);
+    }
+
+    .secondary {
+      background: #334155;
+    }
+
+    .secondary:hover {
+      background: #1f2937;
+    }
+
+    .container {
+      padding-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .card,
+    .summary-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 23px;
+      color: #0f172a;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .summary-box {
+      padding: 16px;
+      text-align: center;
+    }
+
+    .summary-box .label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-box .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .checklist-item {
+      display: grid;
+      grid-template-columns: 1fr 190px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #ecf1f6;
+    }
+
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-label {
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .status-ok {
+      border-color: rgba(22, 163, 74, 0.35) !important;
+      background: rgba(22, 163, 74, 0.06) !important;
+    }
+
+    .status-nok {
+      border-color: rgba(220, 38, 38, 0.35) !important;
+      background: rgba(220, 38, 38, 0.05) !important;
+    }
+
+    .status-na {
+      border-color: rgba(100, 116, 139, 0.35) !important;
+      background: rgba(100, 116, 139, 0.06) !important;
+    }
+
+    .photos-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .photos-preview img {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      background: white;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .satisfaction-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .rating-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rating-chip {
+      min-width: 48px;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: #0f172a;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 700;
+    }
+
+    .rating-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .badge-line {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .badge {
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+      background: #e8f3ff;
+      border: 1px solid #cfe4fb;
+    }
+
+    @media (max-width: 950px) {
+      .grid,
+      .summary,
+      .satisfaction-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checklist-item {
+        grid-template-columns: 1fr;
+      }
+
+      .brand h1 {
+        font-size: 28px;
+      }
+
+      .photos-preview img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container" id="report">
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="brand">
+          <h1 id="pageTitle"></h1>
+          <p id="pageSubtitle"></p>
+          <div class="badge-line">
+            <span class="badge" id="badge1"></span>
+            <span class="badge" id="badge2"></span>
+            <span class="badge" id="badge3"></span>
+          </div>
+        </div>
 
-<h1 id="title">فحص الجودة الأسبوعي</h1>
+        <div class="top-actions">
+          <select id="languageSelect" onchange="changeLanguage(this.value)">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+          </select>
+          <button onclick="generatePDF()" id="pdfBtn"></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div>
-<select onchange="changeLang(this.value)">
-<option value="ar">العربية</option>
-<option value="en">English</option>
-</select>
-</div>
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <div class="field">
+          <label id="projectLabel" for="projectName"></label>
+          <input id="projectName" type="text" />
+        </div>
+      </div>
 
-<div class="grid">
-<div class="card">
-<label id="projectLabel">اسم المشروع</label>
-<input id="project">
-</div>
+      <div class="card">
+        <div class="field">
+          <label id="inspectorLabel" for="inspectorName"></label>
+          <input id="inspectorName" type="text" />
+        </div>
+      </div>
 
-<div class="card">
-<label id="inspectorLabel">المفتش</label>
-<input id="inspector">
-</div>
-</div>
+      <div class="card">
+        <div class="field">
+          <label id="dateLabel" for="inspectionDate"></label>
+          <input id="inspectionDate" type="date" />
+        </div>
+      </div>
 
-<div class="summary">
-<div class="box">Total <div id="total">0%</div></div>
-<div class="box">Civil <div id="civilScore">0%</div></div>
-<div class="box">Arch <div id="archScore">0%</div></div>
-<div class="box">Elec <div id="elecScore">0%</div></div>
-<div class="box">Mech <div id="mechScore">0%</div></div>
-</div>
+      <div class="card">
+        <div class="field">
+          <label id="locationLabel" for="locationName"></label>
+          <input id="locationName" type="text" />
+        </div>
+      </div>
+    </div>
 
-<div class="card">
-<h2 id="civilTitle">مدني</h2>
-<div id="civil"></div>
-</div>
+    <div class="summary">
+      <div class="summary-box">
+        <div class="label" id="overallScoreLabel"></div>
+        <div class="value" id="overallScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="civilScoreLabel"></div>
+        <div class="value" id="civilScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="archScoreLabel"></div>
+        <div class="value" id="archScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="elecScoreLabel"></div>
+        <div class="value" id="elecScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="mechScoreLabel"></div>
+        <div class="value" id="mechScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="satisfactionScoreLabel"></div>
+        <div class="value" id="satisfactionScore">0/5</div>
+      </div>
+    </div>
 
-<div class="card">
-<h2 id="archTitle">معماري</h2>
-<div id="arch"></div>
-</div>
+    <div class="card">
+      <h2 id="civilTitle"></h2>
+      <div id="civilChecklist"></div>
+    </div>
 
-<div class="card">
-<h2 id="elecTitle">كهرباء</h2>
-<div id="elec"></div>
-</div>
+    <div class="card">
+      <h2 id="archTitle"></h2>
+      <div id="archChecklist"></div>
+    </div>
 
-<div class="card">
-<h2 id="mechTitle">ميكانيكا</h2>
-<div id="mech"></div>
-</div>
+    <div class="card">
+      <h2 id="elecTitle"></h2>
+      <div id="elecChecklist"></div>
+    </div>
 
-<div class="card">
-<h2 id="satTitle">رضا العميل / الموظفين</h2>
-<select id="satType">
-<option>رضا العميل</option>
-<option>رضا الموظفين</option>
-</select>
+    <div class="card">
+      <h2 id="mechTitle"></h2>
+      <div id="mechChecklist"></div>
+    </div>
 
-<select id="rating" onchange="updateRating()">
-<option value="">اختر</option>
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-</select>
+    <div class="card">
+      <h2 id="satisfactionTitle"></h2>
+      <div class="satisfaction-grid">
+        <div class="field">
+          <label id="satisfactionTypeLabel" for="satisfactionType"></label>
+          <select id="satisfactionType"></select>
+        </div>
 
-<textarea id="satNote"></textarea>
-</div>
+        <div class="field">
+          <label id="satisfactionRateLabel"></label>
+          <div class="rating-box" id="ratingBox"></div>
+          <div class="small-note" id="ratingHint"></div>
+        </div>
+      </div>
 
-<div class="card">
-<h2>الملاحظات</h2>
-<textarea id="notes"></textarea>
-</div>
+      <div class="field" style="margin-top:16px;">
+        <label id="satisfactionNotesLabel" for="satisfactionNotes"></label>
+        <textarea id="satisfactionNotes"></textarea>
+      </div>
+    </div>
 
-<div class="card">
-<h2>الصور</h2>
-<input type="file" multiple onchange="showImages(event)">
-<div id="images" class="photos"></div>
-</div>
+    <div class="card">
+      <h2 id="notesTitle"></h2>
+      <textarea id="notes"></textarea>
+    </div>
 
-<button onclick="generatePDF()">تصدير PDF</button>
+    <div class="card">
+      <h2 id="photosTitle"></h2>
+      <input type="file" id="photoInput" multiple accept="image/*" onchange="previewImages(event)" />
+      <div class="photos-preview" id="photosPreview"></div>
+      <div class="footer-note" id="photoHint"></div>
+    </div>
 
-</div>
+    <div class="actions">
+      <button onclick="generatePDF()" id="pdfBtnBottom"></button>
+      <button class="secondary" onclick="resetForm()" id="resetBtn"></button>
+    </div>
+  </div>
 
-<script>
+  <script>
+    const translations = {
+      ar: {
+        pageTitle: "فحص الجودة الأسبوعي QA/QC",
+        pageSubtitle: "نموذج تفتيش احترافي لتقييم جودة الأعمال والملاحظات ورضا العميل أو الموظفين",
+        badge1: "تقارير أسبوعية",
+        badge2: "تقييم الجودة",
+        badge3: "تصدير PDF",
+        pdfBtn: "تصدير PDF",
+        projectLabel: "اسم المشروع",
+        inspectorLabel: "اسم المفتش",
+        dateLabel: "التاريخ",
+        locationLabel: "الموقع / المنطقة",
+        overallScoreLabel: "النسبة العامة",
+        civilScoreLabel: "المدني",
+        archScoreLabel: "المعماري",
+        elecScoreLabel: "الكهربائي",
+        mechScoreLabel: "الميكانيكي",
+        satisfactionScoreLabel: "الرضا",
+        civilTitle: "الأعمال المدنية",
+        archTitle: "الأعمال المعمارية",
+        elecTitle: "الأعمال الكهربائية",
+        mechTitle: "الأعمال الميكانيكية",
+        satisfactionTitle: "رضا العميل / الموظفين المتواجدين",
+        satisfactionTypeLabel: "نوع التقييم",
+        satisfactionRateLabel: "درجة الرضا",
+        satisfactionNotesLabel: "ملاحظات الرضا",
+        ratingHint: "1 = ضعيف جدًا ، 5 = ممتاز",
+        notesTitle: "الملاحظات العامة",
+        photosTitle: "الصور",
+        photoHint: "يمكن إضافة أكثر من صورة للملاحظات أو حالة الموقع.",
+        resetBtn: "إعادة تعيين",
+        status_pending: "اختر الحالة",
+        status_ok: "مطابق",
+        status_nok: "غير مطابق",
+        status_na: "غير منطبق",
+        satisfactionOptions: ["رضا العميل", "رضا الموظفين المتواجدين"],
+        civilItems: [
+          "مطابقة الأعمال للمخططات والمواصفات",
+          "استقامة العناصر الخرسانية وعدم وجود تعشيش ظاهر",
+          "جودة اللياسة وخلوها من التشققات",
+          "مستوى نظافة منطقة العمل",
+          "حماية الأعمال المنفذة من التلف",
+          "معالجة العيوب السابقة وإغلاق الملاحظات"
+        ],
+        archItems: [
+          "استقامة التشطيبات النهائية",
+          "جودة الدهانات وتجانس اللون",
+          "تركيب الأرضيات بشكل صحيح وخلوها من الفراغات",
+          "محاذاة الأبواب والنوافذ",
+          "جودة السقف المستعار والتثبيت",
+          "إغلاق الفواصل ومعالجة الحواف"
+        ],
+        elecItems: [
+          "سلامة التمديدات الكهربائية",
+          "تركيب اللوحات الكهربائية بشكل مطابق",
+          "وضع الملصقات والترقيم للكابلات واللوحات",
+          "إغلاق الفتحات حول المواسير والكابلات",
+          "اختبار المفاتيح والمخارج الكهربائية",
+          "نظافة وتنظيم مسارات الكابلات"
+        ],
+        mechItems: [
+          "تركيب مجاري التكييف بشكل صحيح",
+          "سلامة العزل الحراري",
+          "جودة تمديدات السباكة وعدم وجود تسريب",
+          "تثبيت الحوامل والدعامات بشكل مناسب",
+          "وضوح اتجاهات الجريان والملصقات",
+          "نتائج اختبارات التشغيل والضغط"
+        ],
+        pdfTitle: "تقرير فحص الجودة الأسبوعي",
+        pdfProjectInfo: "معلومات المشروع",
+        pdfScores: "ملخص الدرجات",
+        pdfGeneralNotes: "الملاحظات العامة",
+        pdfSatisfaction: "رضا العميل / الموظفين",
+        pdfPhotos: "الصور",
+        pdfPage: "الصفحة",
+        pdfGenerated: "تاريخ الإنشاء",
+        pdfType: "نوع التقييم",
+        pdfRating: "درجة الرضا",
+        pdfProject: "اسم المشروع",
+        pdfInspector: "اسم المفتش",
+        pdfDate: "التاريخ",
+        pdfLocation: "الموقع / المنطقة",
+        pdfStatus: "الحالة",
+        pdfPhotoTitle: "صورة"
+      },
+      en: {
+        pageTitle: "Weekly QA/QC Inspection",
+        pageSubtitle: "Professional inspection form for work quality, observations, and client or staff satisfaction",
+        badge1: "Weekly Reports",
+        badge2: "Quality Review",
+        badge3: "PDF Export",
+        pdfBtn: "Export PDF",
+        projectLabel: "Project Name",
+        inspectorLabel: "Inspector Name",
+        dateLabel: "Date",
+        locationLabel: "Location / Zone",
+        overallScoreLabel: "Overall Score",
+        civilScoreLabel: "Civil",
+        archScoreLabel: "Architectural",
+        elecScoreLabel: "Electrical",
+        mechScoreLabel: "Mechanical",
+        satisfactionScoreLabel: "Satisfaction",
+        civilTitle: "Civil Works",
+        archTitle: "Architectural Works",
+        elecTitle: "Electrical Works",
+        mechTitle: "Mechanical Works",
+        satisfactionTitle: "Client / On-Site Staff Satisfaction",
+        satisfactionTypeLabel: "Evaluation Type",
+        satisfactionRateLabel: "Satisfaction Rating",
+        satisfactionNotesLabel: "Satisfaction Notes",
+        ratingHint: "1 = Very Poor, 5 = Excellent",
+        notesTitle: "General Notes",
+        photosTitle: "Photos",
+        photoHint: "You can upload multiple images for observations or site condition.",
+        resetBtn: "Reset",
+        status_pending: "Select status",
+        status_ok: "Compliant",
+        status_nok: "Non-Compliant",
+        status_na: "Not Applicable",
+        satisfactionOptions: ["Client Satisfaction", "On-Site Staff Satisfaction"],
+        civilItems: [
+          "Work matches drawings and specifications",
+          "Concrete elements are aligned with no visible honeycombing",
+          "Plaster quality is acceptable and crack-free",
+          "Work area cleanliness is maintained",
+          "Completed works are protected from damage",
+          "Previous defects are rectified and observations closed"
+        ],
+        archItems: [
+          "Final finishes are level and aligned",
+          "Paint quality and color consistency are acceptable",
+          "Flooring is installed correctly with no hollow spots",
+          "Doors and windows are properly aligned",
+          "False ceiling quality and fixing are acceptable",
+          "Joints and edges are properly sealed and treated"
+        ],
+        elecItems: [
+          "Electrical conduits and wiring are properly installed",
+          "Electrical panels are installed in compliance",
+          "Cable and panel labeling is clear and correct",
+          "Openings around conduits and cables are sealed",
+          "Switches and sockets are tested and functional",
+          "Cable routes are clean and organized"
+        ],
+        mechItems: [
+          "HVAC ducts are installed correctly",
+          "Thermal insulation is properly applied",
+          "Plumbing lines are installed with no leakage",
+          "Supports and hangers are properly fixed",
+          "Flow directions and labels are clearly marked",
+          "Pressure and commissioning test results are acceptable"
+        ],
+        pdfTitle: "Weekly QA/QC Inspection Report",
+        pdfProjectInfo: "Project Information",
+        pdfScores: "Score Summary",
+        pdfGeneralNotes: "General Notes",
+        pdfSatisfaction: "Client / Staff Satisfaction",
+        pdfPhotos: "Photos",
+        pdfPage: "Page",
+        pdfGenerated: "Generated",
+        pdfType: "Evaluation Type",
+        pdfRating: "Satisfaction Rating",
+        pdfProject: "Project Name",
+        pdfInspector: "Inspector Name",
+        pdfDate: "Date",
+        pdfLocation: "Location / Zone",
+        pdfStatus: "Status",
+        pdfPhotoTitle: "Photo"
+      }
+    };
 
-const data={
-ar:{
-civil:["مطابقة","نظافة","تشطيبات"],
-arch:["دهان","أرضيات","أبواب"],
-elec:["تمديد","لوحات","اختبار"],
-mech:["HVAC","سباكة","عزل"]
-},
-en:{
-civil:["Compliance","Clean","Finishing"],
-arch:["Paint","Floor","Doors"],
-elec:["Wiring","Panels","Test"],
-mech:["HVAC","Plumbing","Insulation"]
-}
-}
+    const sectionIds = ["civil", "arch", "elec", "mech"];
+    let currentLang = "ar";
+    let selectedRating = 0;
 
-let lang="ar";
+    const state = {
+      civil: [],
+      arch: [],
+      elec: [],
+      mech: []
+    };
 
-function render(){
-["civil","arch","elec","mech"].forEach(sec=>{
-let div=document.getElementById(sec);
-div.innerHTML="";
-data[lang][sec].forEach(item=>{
-div.innerHTML+=`
-<div class="item">
-<span>${item}</span>
-<select onchange="calc()">
-<option value="">-</option>
-<option value="ok">OK</option>
-<option value="no">NO</option>
-</select>
-</div>`;
-});
-});
-}
+    function escapeHtml(text) {
+      return String(text ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-function calc(){
-let selects=document.querySelectorAll("select");
-let ok=0,total=0;
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
 
-selects.forEach(s=>{
-if(s.value==="ok"||s.value==="no"){
-total++;
-if(s.value==="ok") ok++;
-}
-});
+    function getStatusLabel(value, lang = currentLang) {
+      const t = translations[lang];
+      if (value === "ok") return t.status_ok;
+      if (value === "nok") return t.status_nok;
+      if (value === "na") return t.status_na;
+      return t.status_pending;
+    }
 
-let percent=Math.round(ok/total*100)||0;
-document.getElementById("total").innerText=percent+"%";
-}
+    function getStatusClass(value) {
+      if (value === "ok") return "status-ok";
+      if (value === "nok") return "status-nok";
+      if (value === "na") return "status-na";
+      return "";
+    }
 
-function changeLang(l){
-lang=l;
-document.body.dir=l==="ar"?"rtl":"ltr";
-render();
-}
+    function createChecklist(sectionName, items) {
+      const container = document.getElementById(sectionName + "Checklist");
+      container.innerHTML = "";
 
-function updateRating(){
-document.getElementById("total").innerText=document.getElementById("rating").value+"/5";
-}
+      items.forEach((item, index) => {
+        if (!state[sectionName][index]) state[sectionName][index] = "";
 
-function showImages(e){
-let div=document.getElementById("images");
-div.innerHTML="";
-[...e.target.files].forEach(f=>{
-let img=document.createElement("img");
-img.src=URL.createObjectURL(f);
-div.appendChild(img);
-});
-}
+        const row = document.createElement("div");
+        row.className = "checklist-item";
 
-async function generatePDF(){
-const { jsPDF } = window.jspdf;
-const pdf = new jsPDF();
+        const label = document.createElement("div");
+        label.className = "item-label";
+        label.textContent = item;
 
-const canvas = await html2canvas(document.getElementById("report"),{scale:2});
-const img = canvas.toDataURL("image/png");
+        const select = document.createElement("select");
+        select.value = state[sectionName][index];
+        select.className = getStatusClass(select.value);
+        select.innerHTML = `
+          <option value="">${translations[currentLang].status_pending}</option>
+          <option value="ok">${translations[currentLang].status_ok}</option>
+          <option value="nok">${translations[currentLang].status_nok}</option>
+          <option value="na">${translations[currentLang].status_na}</option>
+        `;
+        select.value = state[sectionName][index];
 
-pdf.addImage(img,"PNG",0,0,210,297);
-pdf.save("report.pdf");
-}
+        select.addEventListener("change", function() {
+          state[sectionName][index] = this.value;
+          this.classList.remove("status-ok", "status-nok", "status-na");
+          const cls = getStatusClass(this.value);
+          if (cls) this.classList.add(cls);
+          updateScores();
+        });
 
-render();
+        row.appendChild(label);
+        row.appendChild(select);
+        container.appendChild(row);
+      });
+    }
 
-</script>
+    function renderSatisfactionOptions() {
+      const t = translations[currentLang];
+      const select = document.getElementById("satisfactionType");
+      const currentValue = select.value;
 
+      select.innerHTML = `<option value="">${t.status_pending}</option>`;
+      t.satisfactionOptions.forEach(option => {
+        const opt = document.createElement("option");
+        opt.value = option;
+        opt.textContent = option;
+        select.appendChild(opt);
+      });
+
+      if ([...select.options].some(opt => opt.value === currentValue)) {
+        select.value = currentValue;
+      }
+    }
+
+    function renderRating() {
+      const box = document.getElementById("ratingBox");
+      box.innerHTML = "";
+      for (let i = 1; i <= 5; i++) {
+        const chip = document.createElement("div");
+        chip.className = "rating-chip" + (selectedRating === i ? " active" : "");
+        chip.textContent = i;
+        chip.onclick = () => {
+          selectedRating = i;
+          renderRating();
+          document.getElementById("satisfactionScore").textContent = `${selectedRating}/5`;
+        };
+        box.appendChild(chip);
+      }
+    }
+
+    function renderAllChecklists() {
+      const t = translations[currentLang];
+      createChecklist("civil", t.civilItems);
+      createChecklist("arch", t.archItems);
+      createChecklist("elec", t.elecItems);
+      createChecklist("mech", t.mechItems);
+      updateScores();
+    }
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.getElementById("languageSelect").value = lang;
+
+      setText("pageTitle", t.pageTitle);
+      setText("pageSubtitle", t.pageSubtitle);
+      setText("badge1", t.badge1);
+      setText("badge2", t.badge2);
+      setText("badge3", t.badge3);
+      setText("pdfBtn", t.pdfBtn);
+      setText("pdfBtnBottom", t.pdfBtn);
+      setText("projectLabel", t.projectLabel);
+      setText("inspectorLabel", t.inspectorLabel);
+      setText("dateLabel", t.dateLabel);
+      setText("locationLabel", t.locationLabel);
+      setText("overallScoreLabel", t.overallScoreLabel);
+      setText("civilScoreLabel", t.civilScoreLabel);
+      setText("archScoreLabel", t.archScoreLabel);
+      setText("elecScoreLabel", t.elecScoreLabel);
+      setText("mechScoreLabel", t.mechScoreLabel);
+      setText("satisfactionScoreLabel", t.satisfactionScoreLabel);
+      setText("civilTitle", t.civilTitle);
+      setText("archTitle", t.archTitle);
+      setText("elecTitle", t.elecTitle);
+      setText("mechTitle", t.mechTitle);
+      setText("satisfactionTitle", t.satisfactionTitle);
+      setText("satisfactionTypeLabel", t.satisfactionTypeLabel);
+      setText("satisfactionRateLabel", t.satisfactionRateLabel);
+      setText("satisfactionNotesLabel", t.satisfactionNotesLabel);
+      setText("ratingHint", t.ratingHint);
+      setText("notesTitle", t.notesTitle);
+      setText("photosTitle", t.photosTitle);
+      setText("photoHint", t.photoHint);
+      setText("resetBtn", t.resetBtn);
+
+      renderSatisfactionOptions();
+      renderRating();
+      renderAllChecklists();
+    }
+
+    function calculateSectionScore(sectionName) {
+      const values = state[sectionName] || [];
+      const applicable = values.filter(v => v === "ok" || v === "nok");
+      const compliant = values.filter(v => v === "ok");
+
+      if (applicable.length === 0) return 0;
+      return Math.round((compliant.length / applicable.length) * 100);
+    }
+
+    function updateScores() {
+      const civil = calculateSectionScore("civil");
+      const arch = calculateSectionScore("arch");
+      const elec = calculateSectionScore("elec");
+      const mech = calculateSectionScore("mech");
+
+      document.getElementById("civilScore").textContent = civil + "%";
+      document.getElementById("archScore").textContent = arch + "%";
+      document.getElementById("elecScore").textContent = elec + "%";
+      document.getElementById("mechScore").textContent = mech + "%";
+
+      const overall = Math.round((civil + arch + elec + mech) / 4);
+      document.getElementById("overallScore").textContent = overall + "%";
+    }
+
+    function previewImages(event) {
+      const container = document.getElementById("photosPreview");
+      container.innerHTML = "";
+      Array.from(event.target.files).forEach(file => {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        container.appendChild(img);
+      });
+    }
+
+    function renderSectionTable(sectionTitle, items, values, lang) {
+      const t = translations[lang];
+      const rows = items.map((item, i) => `
+        <tr>
+          <td>${escapeHtml(item)}</td>
+          <td>${escapeHtml(getStatusLabel(values[i] || "", lang))}</td>
+        </tr>
+      `).join("");
+
+      return `
+        <section class="pdf-page">
+          <div class="pdf-head">
+            <div class="pdf-title">${escapeHtml(sectionTitle)}</div>
+          </div>
+
+          <table class="pdf-table">
+            <thead>
+              <tr>
+                <th>${lang === "ar" ? "البند" : "Item"}</th>
+                <th>${escapeHtml(t.pdfStatus)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </section>
+      `;
+    }
+
+    function generatePDF() {
+      const lang = currentLang;
+      const t = translations[lang];
+      const dir = lang === "ar" ? "rtl" : "ltr";
+      const today = new Date();
+      const reportNo = "QAQC-" + today.toISOString().slice(0, 10).replaceAll("-", "");
+      const generatedAt = today.toLocaleString();
+
+      const projectName = document.getElementById("projectName").value || "-";
+      const inspectorName = document.getElementById("inspectorName").value || "-";
+      const inspectionDate = document.getElementById("inspectionDate").value || "-";
+      const locationName = document.getElementById("locationName").value || "-";
+      const notes = document.getElementById("notes").value || "-";
+      const satisfactionType = document.getElementById("satisfactionType").value || "-";
+      const satisfactionNotes = document.getElementById("satisfactionNotes").value || "-";
+
+      const overallScore = document.getElementById("overallScore").textContent;
+      const civilScore = document.getElementById("civilScore").textContent;
+      const archScore = document.getElementById("archScore").textContent;
+      const elecScore = document.getElementById("elecScore").textContent;
+      const mechScore = document.getElementById("mechScore").textContent;
+      const satisfactionScore = document.getElementById("satisfactionScore").textContent;
+
+      const images = Array.from(document.querySelectorAll("#photosPreview img")).map((img, i) => `
+        <section class="pdf-page">
+          <div class="pdf-head">
+            <div class="pdf-title">${escapeHtml(t.pdfPhotoTitle)} ${i + 1}</div>
+          </div>
+          <div class="photo-page-wrap">
+            <img src="${img.src}" alt="photo-${i + 1}">
+          </div>
+        </section>
+      `).join("");
+
+      const html = `
+<!DOCTYPE html>
+<html lang="${lang}" dir="${dir}">
+<head>
+<meta charset="UTF-8">
+<title>${escapeHtml(t.pdfTitle)}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: Arial, sans-serif;
+    direction: ${dir};
+    color: #1f2937;
+    margin: 0;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pdf-page {
+    page-break-after: always;
+    min-height: 260mm;
+  }
+
+  .pdf-page:last-child {
+    page-break-after: auto;
+  }
+
+  .pdf-head {
+    border-bottom: 3px solid #0f766e;
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+
+  .pdf-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .subline {
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  .cover-box {
+    border: 1px solid #dbe4ee;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 18px;
+    background: #f8fbff;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .info-card {
+    border: 1px solid #dbe4ee;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #ffffff;
+  }
+
+  .info-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 6px;
+  }
+
+  .info-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    word-break: break-word;
+  }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .score-card {
+    border: 1px solid #dbe4ee;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    background: #ffffff;
+  }
+
+  .score-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+
+  .score-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .pdf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .pdf-table th,
+  .pdf-table td {
+    border: 1px solid #dbe4ee;
+    padding: 12px;
+    vertical-align: top;
+    text-align: ${lang === "ar" ? "right" : "left"};
+    font-size: 14px;
+  }
+
+  .pdf-table th {
+    background: #f0f7ff;
+    font-weight: 700;
+  }
+
+  .text-box {
+    border: 1px solid #dbe4ee;
+    border-radius: 12px;
+    padding: 14px;
+    background: #ffffff;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 90px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    color: #0f172a;
+  }
+
+  .spacer {
+    height: 16px;
+  }
+
+  .photo-page-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220mm;
+    border: 1px solid #dbe4ee;
+    border-radius: 12px;
+    padding: 10px;
+    background: #ffffff;
+  }
+
+  .photo-page-wrap img {
+    max-width: 100%;
+    max-height: 210mm;
+    object-fit: contain;
+    display: block;
+  }
+
+  .footer-lite {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+</style>
+</head>
+<body>
+
+  <section class="pdf-page">
+    <div class="pdf-head">
+      <div class="pdf-title">${escapeHtml(t.pdfTitle)}</div>
+      <div class="subline">${escapeHtml(t.pdfGenerated)}: ${escapeHtml(generatedAt)} | ${escapeHtml(reportNo)}</div>
+    </div>
+
+    <div class="cover-box">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfProject)}</div>
+          <div class="info-value">${escapeHtml(projectName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfInspector)}</div>
+          <div class="info-value">${escapeHtml(inspectorName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfDate)}</div>
+          <div class="info-value">${escapeHtml(inspectionDate)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfLocation)}</div>
+          <div class="info-value">${escapeHtml(locationName)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.overallScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(overallScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.civilScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(civilScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.archScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(archScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.elecScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(elecScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.mechScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(mechScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.satisfactionScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(satisfactionScore)}</div>
+      </div>
+    </div>
+  </section>
+
+  ${renderSectionTable(t.civilTitle, t.civilItems, state.civil, lang)}
+  ${renderSectionTable(t.archTitle, t.archItems, state.arch, lang)}
+  ${renderSectionTable(t.elecTitle, t.elecItems, state.elec, lang)}
+  ${renderSectionTable(t.mechTitle, t.mechItems, state.mech, lang)}
+
+  <section class="pdf-page">
+    <div class="pdf-head">
+      <div class="pdf-title">${escapeHtml(t.pdfSatisfaction)}</div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-label">${escapeHtml(t.pdfType)}</div>
+        <div class="info-value">${escapeHtml(satisfactionType)}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">${escapeHtml(t.pdfRating)}</div>
+        <div class="info-value">${escapeHtml(satisfactionScore)}</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="section-title">${escapeHtml(t.satisfactionNotesLabel)}</div>
+    <div class="text-box">${escapeHtml(satisfactionNotes)}</div>
+  </section>
+
+  <section class="pdf-page">
+    <div class="pdf-head">
+      <div class="pdf-title">${escapeHtml(t.pdfGeneralNotes)}</div>
+    </div>
+    <div class="text-box">${escapeHtml(notes)}</div>
+  </section>
+
+  ${images || `
+  <section class="pdf-page">
+    <div class="pdf-head">
+      <div class="pdf-title">${escapeHtml(t.pdfPhotos)}</div>
+    </div>
+    <div class="text-box">${lang === "ar" ? "لا توجد صور مرفقة." : "No attached photos."}</div>
+  </section>
+  `}
+
+</body>
+</html>`;
+
+      const printWindow = window.open("", "_blank");
+      if (!printWindow) {
+        alert(lang === "ar" ? "يرجى السماح بفتح النوافذ المنبثقة لطباعة التقرير." : "Please allow pop-ups to print the report.");
+        return;
+      }
+
+      printWindow.document.open();
+      printWindow.document.write(html);
+      printWindow.document.close();
+
+      printWindow.onload = () => {
+        setTimeout(() => {
+          printWindow.focus();
+          printWindow.print();
+        }, 500);
+      };
+    }
+
+    function resetForm() {
+      document.getElementById("projectName").value = "";
+      document.getElementById("inspectorName").value = "";
+      document.getElementById("inspectionDate").value = "";
+      document.getElementById("locationName").value = "";
+      document.getElementById("notes").value = "";
+      document.getElementById("satisfactionNotes").value = "";
+      document.getElementById("satisfactionType").value = "";
+      document.getElementById("photoInput").value = "";
+      document.getElementById("photosPreview").innerHTML = "";
+      selectedRating = 0;
+      document.getElementById("satisfactionScore").textContent = "0/5";
+
+      sectionIds.forEach(id => {
+        state[id] = new Array(translations[currentLang][id + "Items"].length).fill("");
+      });
+
+      renderRating();
+      renderAllChecklists();
+    }
+
+    sectionIds.forEach(id => {
+      state[id] = new Array(translations[currentLang][id + "Items"].length).fill("");
+    });
+
+    changeLanguage("ar");
+  </script>
 </body>
 </html>
