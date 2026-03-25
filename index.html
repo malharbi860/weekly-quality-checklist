@@ -1,120 +1,553 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA/QC Inspection</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA/QC Inspection</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<style>
-body { font-family: Arial; padding:20px; }
-h2 { margin-top:25px; }
-.section { border:1px solid #ddd; padding:15px; margin:10px 0; border-radius:8px; }
-button { padding:10px; margin-top:10px; cursor:pointer; }
-.lang { float:right; }
-img { width:80px; margin:5px; }
-</style>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .title {
+      margin: 0;
+      font-size: 36px;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    select, input, textarea, button {
+      font: inherit;
+    }
+    select, input, textarea {
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: white;
+      width: 100%;
+    }
+    button {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.95;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      margin-bottom: 18px;
+    }
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 24px;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .summary-box {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .summary-box .label {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .summary-box .value {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .checklist-item {
+      display: grid;
+      grid-template-columns: 1fr 160px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
+    .item-label {
+      font-weight: 500;
+    }
+    .status-select {
+      width: 100%;
+    }
+    .notes-area {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .photos-preview {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .photos-preview img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      background: white;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .secondary {
+      background: #374151;
+    }
+    .footer-note {
+      margin-top: 10px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .grid, .summary {
+        grid-template-columns: 1fr;
+      }
+      .checklist-item {
+        grid-template-columns: 1fr;
+      }
+      .title {
+        font-size: 28px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container" id="reportArea">
+    <div class="topbar">
+      <h1 class="title" id="pageTitle"></h1>
 
-<div class="lang">
-<select onchange="changeLang(this.value)">
-<option value="ar">العربية</option>
-<option value="en">English</option>
-</select>
-</div>
+      <div class="controls">
+        <select id="languageSelect" onchange="changeLanguage(this.value)">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+        </select>
+        <button onclick="generatePDF()" id="pdfBtn"></button>
+      </div>
+    </div>
 
-<h1 id="title">فحص الجودة الأسبوعي</h1>
+    <div class="grid">
+      <div class="card">
+        <div class="field">
+          <label id="projectLabel" for="projectName"></label>
+          <input id="projectName" type="text" />
+        </div>
+      </div>
 
-<label id="projectLabel">اسم المشروع</label>
-<input id="project">
+      <div class="card">
+        <div class="field">
+          <label id="inspectorLabel" for="inspectorName"></label>
+          <input id="inspectorName" type="text" />
+        </div>
+      </div>
 
-<label id="inspectorLabel">اسم المفتش</label>
-<input id="inspector">
+      <div class="card">
+        <div class="field">
+          <label id="dateLabel" for="inspectionDate"></label>
+          <input id="inspectionDate" type="date" />
+        </div>
+      </div>
 
-<h2 id="civilTitle">الأعمال المدنية</h2>
+      <div class="card">
+        <div class="field">
+          <label id="locationLabel" for="locationName"></label>
+          <input id="locationName" type="text" />
+        </div>
+      </div>
+    </div>
 
-<div class="section">
-<label><input type="checkbox" onchange="updateScore()"> جودة التشطيبات</label><br>
-<label><input type="checkbox" onchange="updateScore()"> نظافة الموقع</label><br>
-<label><input type="checkbox" onchange="updateScore()"> مطابقة الرسومات</label>
-</div>
+    <div class="summary">
+      <div class="summary-box">
+        <div class="label" id="overallScoreLabel"></div>
+        <div class="value" id="overallScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="civilScoreLabel"></div>
+        <div class="value" id="civilScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="archScoreLabel"></div>
+        <div class="value" id="archScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="elecScoreLabel"></div>
+        <div class="value" id="elecScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="mechScoreLabel"></div>
+        <div class="value" id="mechScore">0%</div>
+      </div>
+    </div>
 
-<h2 id="electricalTitle">الأعمال الكهربائية</h2>
+    <div class="card">
+      <h2 id="civilTitle"></h2>
+      <div id="civilChecklist"></div>
+    </div>
 
-<div class="section">
-<label><input type="checkbox" onchange="updateScore()"> التمديدات سليمة</label><br>
-<label><input type="checkbox" onchange="updateScore()"> اللوحات مطابقة</label>
-</div>
+    <div class="card">
+      <h2 id="archTitle"></h2>
+      <div id="archChecklist"></div>
+    </div>
 
-<h2 id="mechanicalTitle">الأعمال الميكانيكية</h2>
+    <div class="card">
+      <h2 id="elecTitle"></h2>
+      <div id="elecChecklist"></div>
+    </div>
 
-<div class="section">
-<label><input type="checkbox" onchange="updateScore()"> التكييف صحيح</label><br>
-<label><input type="checkbox" onchange="updateScore()"> العزل سليم</label>
-</div>
+    <div class="card">
+      <h2 id="mechTitle"></h2>
+      <div id="mechChecklist"></div>
+    </div>
 
-<h2 id="scoreTitle">نسبة الجودة</h2>
-<p id="score">0%</p>
+    <div class="card">
+      <h2 id="notesTitle"></h2>
+      <textarea id="notes" class="notes-area"></textarea>
+    </div>
 
-<h2 id="notesTitle">الملاحظات</h2>
-<textarea id="notes" style="width:100%;height:80px;"></textarea>
+    <div class="card">
+      <h2 id="photosTitle"></h2>
+      <input type="file" id="photoInput" multiple accept="image/*" onchange="previewImages(event)" />
+      <div class="photos-preview" id="photosPreview"></div>
+      <div class="footer-note" id="photoHint"></div>
+    </div>
 
-<h2 id="photoTitle">إضافة صور</h2>
-<input type="file" multiple onchange="previewImages(event)">
-<div id="images"></div>
+    <div class="actions">
+      <button onclick="generatePDF()" id="pdfBtnBottom"></button>
+      <button class="secondary" onclick="resetForm()" id="resetBtn"></button>
+    </div>
+  </div>
 
-<br><br>
-<button onclick="generatePDF()">تصدير PDF</button>
+  <script>
+    const translations = {
+      ar: {
+        pageTitle: "فحص الجودة الأسبوعي QA/QC",
+        pdfBtn: "تصدير PDF",
+        projectLabel: "اسم المشروع",
+        inspectorLabel: "اسم المفتش",
+        dateLabel: "التاريخ",
+        locationLabel: "الموقع / المنطقة",
+        overallScoreLabel: "النسبة العامة",
+        civilScoreLabel: "المدني",
+        archScoreLabel: "المعماري",
+        elecScoreLabel: "الكهربائي",
+        mechScoreLabel: "الميكانيكي",
+        civilTitle: "الأعمال المدنية",
+        archTitle: "الأعمال المعمارية",
+        elecTitle: "الأعمال الكهربائية",
+        mechTitle: "الأعمال الميكانيكية",
+        notesTitle: "الملاحظات",
+        photosTitle: "الصور",
+        photoHint: "يمكن إضافة أكثر من صورة للملاحظات أو حالة الموقع.",
+        resetBtn: "إعادة تعيين",
+        status_pending: "اختر الحالة",
+        status_ok: "مطابق",
+        status_nok: "غير مطابق",
+        status_na: "غير منطبق",
+        civilItems: [
+          "مطابقة الأعمال للمخططات والمواصفات",
+          "استقامة العناصر الخرسانية وعدم وجود تعشيش ظاهر",
+          "جودة اللياسة وخلوها من التشققات",
+          "مستوى نظافة منطقة العمل",
+          "حماية الأعمال المنفذة من التلف",
+          "معالجة العيوب السابقة وإغلاق الملاحظات"
+        ],
+        archItems: [
+          "استقامة التشطيبات النهائية",
+          "جودة الدهانات وتجانس اللون",
+          "تركيب الأرضيات بشكل صحيح وخلوها من الفراغات",
+          "محاذاة الأبواب والنوافذ",
+          "جودة السقف المستعار والتثبيت",
+          "إغلاق الفواصل ومعالجة الحواف"
+        ],
+        elecItems: [
+          "سلامة التمديدات الكهربائية",
+          "تركيب اللوحات الكهربائية بشكل مطابق",
+          "وضع الملصقات والترقيم للكابلات واللوحات",
+          "إغلاق الفتحات حول المواسير والكابلات",
+          "اختبار المفاتيح والمخارج الكهربائية",
+          "نظافة وتنظيم مسارات الكابلات"
+        ],
+        mechItems: [
+          "تركيب مجاري التكييف بشكل صحيح",
+          "سلامة العزل الحراري",
+          "جودة تمديدات السباكة وعدم وجود تسريب",
+          "تثبيت الحوامل والدعامات بشكل مناسب",
+          "وضوح اتجاهات الجريان والملصقات",
+          "نتائج اختبارات التشغيل والضغط"
+        ]
+      },
+      en: {
+        pageTitle: "Weekly QA/QC Inspection",
+        pdfBtn: "Export PDF",
+        projectLabel: "Project Name",
+        inspectorLabel: "Inspector Name",
+        dateLabel: "Date",
+        locationLabel: "Location / Zone",
+        overallScoreLabel: "Overall Score",
+        civilScoreLabel: "Civil",
+        archScoreLabel: "Architectural",
+        elecScoreLabel: "Electrical",
+        mechScoreLabel: "Mechanical",
+        civilTitle: "Civil Works",
+        archTitle: "Architectural Works",
+        elecTitle: "Electrical Works",
+        mechTitle: "Mechanical Works",
+        notesTitle: "Notes",
+        photosTitle: "Photos",
+        photoHint: "You can upload multiple images for observations or site condition.",
+        resetBtn: "Reset",
+        status_pending: "Select status",
+        status_ok: "Compliant",
+        status_nok: "Non-Compliant",
+        status_na: "Not Applicable",
+        civilItems: [
+          "Work matches drawings and specifications",
+          "Concrete elements are aligned with no visible honeycombing",
+          "Plaster quality is acceptable and crack-free",
+          "Work area cleanliness is maintained",
+          "Completed works are protected from damage",
+          "Previous defects are rectified and observations closed"
+        ],
+        archItems: [
+          "Final finishes are level and aligned",
+          "Paint quality and color consistency are acceptable",
+          "Flooring is installed correctly with no hollow spots",
+          "Doors and windows are properly aligned",
+          "False ceiling quality and fixing are acceptable",
+          "Joints and edges are properly sealed and treated"
+        ],
+        elecItems: [
+          "Electrical conduits and wiring are properly installed",
+          "Electrical panels are installed in compliance",
+          "Cable and panel labeling is clear and correct",
+          "Openings around conduits and cables are sealed",
+          "Switches and sockets are tested and functional",
+          "Cable routes are clean and organized"
+        ],
+        mechItems: [
+          "HVAC ducts are installed correctly",
+          "Thermal insulation is properly applied",
+          "Plumbing lines are installed with no leakage",
+          "Supports and hangers are properly fixed",
+          "Flow directions and labels are clearly marked",
+          "Pressure and commissioning test results are acceptable"
+        ]
+      }
+    };
 
-<script>
+    const sectionMap = {
+      civil: "civilItems",
+      arch: "archItems",
+      elec: "elecItems",
+      mech: "mechItems"
+    };
 
-function updateScore(){
-let checks = document.querySelectorAll("input[type=checkbox]");
-let checked = document.querySelectorAll("input[type=checkbox]:checked");
-let percent = Math.round((checked.length/checks.length)*100);
-document.getElementById("score").innerText = percent + "%";
-}
+    let currentLang = "ar";
 
-function previewImages(event){
-let container = document.getElementById("images");
-container.innerHTML = "";
-for(let file of event.target.files){
-let img = document.createElement("img");
-img.src = URL.createObjectURL(file);
-container.appendChild(img);
-}
-}
+    function createChecklist(sectionId, items) {
+      const container = document.getElementById(sectionId);
+      container.innerHTML = "";
 
-function generatePDF(){
-html2canvas(document.body).then(canvas => {
-const { jsPDF } = window.jspdf;
-let pdf = new jsPDF();
-pdf.addImage(canvas.toDataURL("image/png"), 'PNG', 0, 0, 210, 297);
-pdf.save("inspection.pdf");
-});
-}
+      items.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "checklist-item";
 
-function changeLang(lang){
-if(lang === "en"){
-document.getElementById("title").innerText = "Weekly QA/QC Inspection";
-document.getElementById("civilTitle").innerText = "Civil Works";
-document.getElementById("electricalTitle").innerText = "Electrical";
-document.getElementById("mechanicalTitle").innerText = "Mechanical";
-document.getElementById("scoreTitle").innerText = "Compliance Score";
-document.getElementById("notesTitle").innerText = "Notes";
-document.getElementById("photoTitle").innerText = "Upload Images";
-document.getElementById("projectLabel").innerText = "Project Name";
-document.getElementById("inspectorLabel").innerText = "Inspector";
-}else{
-location.reload();
-}
-}
+        const label = document.createElement("div");
+        label.className = "item-label";
+        label.textContent = item;
 
-</script>
+        const select = document.createElement("select");
+        select.className = "status-select";
+        select.dataset.section = sectionId;
+        select.dataset.index = index;
+        select.innerHTML = `
+          <option value="">${translations[currentLang].status_pending}</option>
+          <option value="ok">${translations[currentLang].status_ok}</option>
+          <option value="nok">${translations[currentLang].status_nok}</option>
+          <option value="na">${translations[currentLang].status_na}</option>
+        `;
+        select.addEventListener("change", updateScores);
 
+        row.appendChild(label);
+        row.appendChild(select);
+        container.appendChild(row);
+      });
+    }
+
+    function renderAllChecklists() {
+      createChecklist("civilChecklist", translations[currentLang].civilItems);
+      createChecklist("archChecklist", translations[currentLang].archItems);
+      createChecklist("elecChecklist", translations[currentLang].elecItems);
+      createChecklist("mechChecklist", translations[currentLang].mechItems);
+      updateScores();
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+      const t = translations[lang];
+      setText("pageTitle", t.pageTitle);
+      setText("pdfBtn", t.pdfBtn);
+      setText("pdfBtnBottom", t.pdfBtn);
+      setText("projectLabel", t.projectLabel);
+      setText("inspectorLabel", t.inspectorLabel);
+      setText("dateLabel", t.dateLabel);
+      setText("locationLabel", t.locationLabel);
+      setText("overallScoreLabel", t.overallScoreLabel);
+      setText("civilScoreLabel", t.civilScoreLabel);
+      setText("archScoreLabel", t.archScoreLabel);
+      setText("elecScoreLabel", t.elecScoreLabel);
+      setText("mechScoreLabel", t.mechScoreLabel);
+      setText("civilTitle", t.civilTitle);
+      setText("archTitle", t.archTitle);
+      setText("elecTitle", t.elecTitle);
+      setText("mechTitle", t.mechTitle);
+      setText("notesTitle", t.notesTitle);
+      setText("photosTitle", t.photosTitle);
+      setText("photoHint", t.photoHint);
+      setText("resetBtn", t.resetBtn);
+
+      renderAllChecklists();
+    }
+
+    function calculateSectionScore(sectionId) {
+      const selects = Array.from(document.querySelectorAll(`select[data-section="${sectionId}"]`));
+      const applicable = selects.filter(s => s.value === "ok" || s.value === "nok");
+      const compliant = selects.filter(s => s.value === "ok");
+
+      if (applicable.length === 0) return 0;
+      return Math.round((compliant.length / applicable.length) * 100);
+    }
+
+    function updateScores() {
+      const civil = calculateSectionScore("civilChecklist");
+      const arch = calculateSectionScore("archChecklist");
+      const elec = calculateSectionScore("elecChecklist");
+      const mech = calculateSectionScore("mechChecklist");
+
+      document.getElementById("civilScore").textContent = civil + "%";
+      document.getElementById("archScore").textContent = arch + "%";
+      document.getElementById("elecScore").textContent = elec + "%";
+      document.getElementById("mechScore").textContent = mech + "%";
+
+      const overall = Math.round((civil + arch + elec + mech) / 4);
+      document.getElementById("overallScore").textContent = overall + "%";
+    }
+
+    function previewImages(event) {
+      const container = document.getElementById("photosPreview");
+      container.innerHTML = "";
+      Array.from(event.target.files).forEach(file => {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        container.appendChild(img);
+      });
+    }
+
+    async function generatePDF() {
+      const reportArea = document.getElementById("reportArea");
+      const canvas = await html2canvas(reportArea, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("weekly-qaqc-inspection.pdf");
+    }
+
+    function resetForm() {
+      document.getElementById("projectName").value = "";
+      document.getElementById("inspectorName").value = "";
+      document.getElementById("inspectionDate").value = "";
+      document.getElementById("locationName").value = "";
+      document.getElementById("notes").value = "";
+      document.getElementById("photoInput").value = "";
+      document.getElementById("photosPreview").innerHTML = "";
+      renderAllChecklists();
+    }
+
+    changeLanguage("ar");
+  </script>
 </body>
 </html>
