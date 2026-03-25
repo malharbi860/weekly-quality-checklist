@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QA/QC Inspection</title>
+  <title>Existing Building Quality Assessment</title>
 
   <style>
     * { box-sizing: border-box; }
@@ -37,7 +37,7 @@
 
     .header-inner,
     .container {
-      max-width: 1150px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -123,7 +123,7 @@
 
     .summary {
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 20px;
     }
@@ -166,7 +166,7 @@
     }
 
     .summary-box .value {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 700;
       color: #0f172a;
     }
@@ -288,7 +288,7 @@
       border: 1px solid #cfe4fb;
     }
 
-    @media (max-width: 950px) {
+    @media (max-width: 1050px) {
       .grid,
       .summary,
       .satisfaction-grid {
@@ -341,8 +341,15 @@
     <div class="grid">
       <div class="card">
         <div class="field">
-          <label id="projectLabel" for="projectName"></label>
-          <input id="projectName" type="text" />
+          <label id="buildingLabel" for="buildingName"></label>
+          <input id="buildingName" type="text" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label id="siteLabel" for="siteName"></label>
+          <input id="siteName" type="text" />
         </div>
       </div>
 
@@ -362,8 +369,15 @@
 
       <div class="card">
         <div class="field">
-          <label id="locationLabel" for="locationName"></label>
-          <input id="locationName" type="text" />
+          <label id="zoneLabel" for="zoneName"></label>
+          <input id="zoneName" type="text" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label id="occupancyLabel" for="occupancyType"></label>
+          <input id="occupancyType" type="text" />
         </div>
       </div>
     </div>
@@ -374,20 +388,24 @@
         <div class="value" id="overallScore">0%</div>
       </div>
       <div class="summary-box">
-        <div class="label" id="civilScoreLabel"></div>
-        <div class="value" id="civilScore">0%</div>
+        <div class="label" id="cleanScoreLabel"></div>
+        <div class="value" id="cleanScore">0%</div>
       </div>
       <div class="summary-box">
-        <div class="label" id="archScoreLabel"></div>
-        <div class="value" id="archScore">0%</div>
+        <div class="label" id="finishScoreLabel"></div>
+        <div class="value" id="finishScore">0%</div>
       </div>
       <div class="summary-box">
-        <div class="label" id="elecScoreLabel"></div>
-        <div class="value" id="elecScore">0%</div>
+        <div class="label" id="mepScoreLabel"></div>
+        <div class="value" id="mepScore">0%</div>
       </div>
       <div class="summary-box">
-        <div class="label" id="mechScoreLabel"></div>
-        <div class="value" id="mechScore">0%</div>
+        <div class="label" id="safetyScoreLabel"></div>
+        <div class="value" id="safetyScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="facilityScoreLabel"></div>
+        <div class="value" id="facilityScore">0%</div>
       </div>
       <div class="summary-box">
         <div class="label" id="satisfactionScoreLabel"></div>
@@ -396,23 +414,28 @@
     </div>
 
     <div class="card">
-      <h2 id="civilTitle"></h2>
-      <div id="civilChecklist"></div>
+      <h2 id="cleanTitle"></h2>
+      <div id="cleanChecklist"></div>
     </div>
 
     <div class="card">
-      <h2 id="archTitle"></h2>
-      <div id="archChecklist"></div>
+      <h2 id="finishTitle"></h2>
+      <div id="finishChecklist"></div>
     </div>
 
     <div class="card">
-      <h2 id="elecTitle"></h2>
-      <div id="elecChecklist"></div>
+      <h2 id="mepTitle"></h2>
+      <div id="mepChecklist"></div>
     </div>
 
     <div class="card">
-      <h2 id="mechTitle"></h2>
-      <div id="mechChecklist"></div>
+      <h2 id="safetyTitle"></h2>
+      <div id="safetyChecklist"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="facilityTitle"></h2>
+      <div id="facilityChecklist"></div>
     </div>
 
     <div class="card">
@@ -457,184 +480,213 @@
   <script>
     const translations = {
       ar: {
-        pageTitle: "فحص الجودة الأسبوعي QA/QC",
-        pageSubtitle: "نموذج تفتيش احترافي لتقييم جودة الأعمال والملاحظات ورضا العميل أو الموظفين",
-        badge1: "تقارير أسبوعية",
-        badge2: "تقييم الجودة",
+        pageTitle: "تقييم جودة المباني القائمة",
+        pageSubtitle: "نموذج تقييم للمباني المستخدمة يشمل البيئة الداخلية والنظافة والسلامة ورضا الموظفين",
+        badge1: "مباني قائمة",
+        badge2: "تقييم استخدام فعلي",
         badge3: "تصدير PDF",
         pdfBtn: "تصدير PDF",
-        projectLabel: "اسم المشروع",
+        buildingLabel: "اسم المبنى",
+        siteLabel: "اسم الموقع / المجمع",
         inspectorLabel: "اسم المفتش",
         dateLabel: "التاريخ",
-        locationLabel: "الموقع / المنطقة",
+        zoneLabel: "المنطقة / الدور / القسم",
+        occupancyLabel: "نوع الاستخدام / الجهة المستفيدة",
         overallScoreLabel: "النسبة العامة",
-        civilScoreLabel: "المدني",
-        archScoreLabel: "المعماري",
-        elecScoreLabel: "الكهربائي",
-        mechScoreLabel: "الميكانيكي",
+        cleanScoreLabel: "النظافة",
+        finishScoreLabel: "التشطيبات",
+        mepScoreLabel: "الأنظمة",
+        safetyScoreLabel: "السلامة",
+        facilityScoreLabel: "المرافق",
         satisfactionScoreLabel: "الرضا",
-        civilTitle: "الأعمال المدنية",
-        archTitle: "الأعمال المعمارية",
-        elecTitle: "الأعمال الكهربائية",
-        mechTitle: "الأعمال الميكانيكية",
-        satisfactionTitle: "رضا العميل / الموظفين المتواجدين",
+        cleanTitle: "النظافة والمظهر العام",
+        finishTitle: "التشطيبات والحالة العامة",
+        mepTitle: "الأنظمة الكهربائية والميكانيكية",
+        safetyTitle: "السلامة والأمن",
+        facilityTitle: "المرافق والخدمات",
+        satisfactionTitle: "رضا الموظفين / المستخدمين",
         satisfactionTypeLabel: "نوع التقييم",
         satisfactionRateLabel: "درجة الرضا",
         satisfactionNotesLabel: "ملاحظات الرضا",
         ratingHint: "1 = ضعيف جدًا ، 5 = ممتاز",
-        notesTitle: "الملاحظات العامة",
+        notesTitle: "الملاحظات العامة والتوصيات",
         photosTitle: "الصور",
-        photoHint: "يمكن إضافة أكثر من صورة للملاحظات أو حالة الموقع.",
+        photoHint: "أضف صورًا توضح الحالة العامة أو الملاحظات أو الأعطال الظاهرة.",
         resetBtn: "إعادة تعيين",
         status_pending: "اختر الحالة",
-        status_ok: "مطابق",
-        status_nok: "غير مطابق",
+        status_ok: "جيد / مطابق",
+        status_nok: "يحتاج معالجة",
         status_na: "غير منطبق",
-        satisfactionOptions: ["رضا العميل", "رضا الموظفين المتواجدين"],
-        civilItems: [
-          "مطابقة الأعمال للمخططات والمواصفات",
-          "استقامة العناصر الخرسانية وعدم وجود تعشيش ظاهر",
-          "جودة اللياسة وخلوها من التشققات",
-          "مستوى نظافة منطقة العمل",
-          "حماية الأعمال المنفذة من التلف",
-          "معالجة العيوب السابقة وإغلاق الملاحظات"
+        satisfactionOptions: ["رضا الموظفين", "رضا المستخدمين", "رضا الزوار"],
+        cleanItems: [
+          "نظافة المداخل والممرات",
+          "نظافة المكاتب أو الفراغات الداخلية",
+          "خلو الأرضيات من الأوساخ أو الانسكابات",
+          "نظافة الزجاج والواجهات الداخلية",
+          "خلو الموقع من الروائح غير المرغوبة",
+          "المظهر العام للمبنى مقبول"
         ],
-        archItems: [
-          "استقامة التشطيبات النهائية",
-          "جودة الدهانات وتجانس اللون",
-          "تركيب الأرضيات بشكل صحيح وخلوها من الفراغات",
-          "محاذاة الأبواب والنوافذ",
-          "جودة السقف المستعار والتثبيت",
-          "إغلاق الفواصل ومعالجة الحواف"
+        finishItems: [
+          "حالة الدهانات والجدران جيدة",
+          "الأرضيات بحالة جيدة وخالية من التلف",
+          "الأبواب والنوافذ تعمل بشكل جيد",
+          "الأسقف المستعارة بحالة جيدة",
+          "عدم وجود تشققات أو تلفيات ظاهرة",
+          "مظهر التشطيبات مناسب للاستخدام اليومي"
         ],
-        elecItems: [
-          "سلامة التمديدات الكهربائية",
-          "تركيب اللوحات الكهربائية بشكل مطابق",
-          "وضع الملصقات والترقيم للكابلات واللوحات",
-          "إغلاق الفتحات حول المواسير والكابلات",
-          "اختبار المفاتيح والمخارج الكهربائية",
-          "نظافة وتنظيم مسارات الكابلات"
+        mepItems: [
+          "الإنارة الداخلية تعمل بشكل جيد",
+          "المقابس والمفاتيح بحالة جيدة",
+          "التكييف والتبريد يعملان بكفاءة",
+          "عدم وجود تسربات مياه ظاهرة",
+          "أنظمة السباكة تعمل بشكل سليم",
+          "عدم وجود أصوات أو أعطال ظاهرة في الأنظمة"
         ],
-        mechItems: [
-          "تركيب مجاري التكييف بشكل صحيح",
-          "سلامة العزل الحراري",
-          "جودة تمديدات السباكة وعدم وجود تسريب",
-          "تثبيت الحوامل والدعامات بشكل مناسب",
-          "وضوح اتجاهات الجريان والملصقات",
-          "نتائج اختبارات التشغيل والضغط"
+        safetyItems: [
+          "مخارج الطوارئ واضحة وسهلة الوصول",
+          "طفايات الحريق متوفرة وواضحة",
+          "لوحات السلامة والإرشاد متوفرة",
+          "الممرات خالية من العوائق",
+          "مستوى السلامة العام مقبول",
+          "وجود ملاحظات تتطلب تدخل عاجل"
         ],
-        pdfTitle: "تقرير فحص الجودة الأسبوعي",
-        pdfProjectInfo: "معلومات المشروع",
-        pdfScores: "ملخص الدرجات",
-        pdfGeneralNotes: "الملاحظات العامة",
-        pdfSatisfaction: "رضا العميل / الموظفين",
+        facilityItems: [
+          "دورات المياه نظيفة وصالحة للاستخدام",
+          "توفر مواد النظافة والاستهلاك",
+          "الأثاث بحالة مناسبة",
+          "سهولة الوصول إلى الخدمات الأساسية",
+          "الضوضاء ضمن الحدود المقبولة",
+          "راحة الموظفين في البيئة الداخلية جيدة"
+        ],
+        pdfTitle: "تقرير تقييم جودة المباني القائمة",
+        pdfProjectInfo: "معلومات المبنى",
+        pdfScores: "ملخص التقييم",
+        pdfGeneralNotes: "الملاحظات العامة والتوصيات",
+        pdfSatisfaction: "رضا الموظفين / المستخدمين",
         pdfPhotos: "الصور",
         pdfPage: "الصفحة",
         pdfGenerated: "تاريخ الإنشاء",
         pdfType: "نوع التقييم",
         pdfRating: "درجة الرضا",
-        pdfProject: "اسم المشروع",
+        pdfBuilding: "اسم المبنى",
+        pdfSite: "الموقع / المجمع",
         pdfInspector: "اسم المفتش",
         pdfDate: "التاريخ",
-        pdfLocation: "الموقع / المنطقة",
+        pdfZone: "المنطقة / الدور / القسم",
+        pdfOccupancy: "نوع الاستخدام / الجهة المستفيدة",
         pdfStatus: "الحالة",
         pdfPhotoTitle: "صورة"
       },
       en: {
-        pageTitle: "Weekly QA/QC Inspection",
-        pageSubtitle: "Professional inspection form for work quality, observations, and client or staff satisfaction",
-        badge1: "Weekly Reports",
-        badge2: "Quality Review",
+        pageTitle: "Existing Building Quality Assessment",
+        pageSubtitle: "Assessment form for occupied buildings covering environment, cleanliness, safety, and user satisfaction",
+        badge1: "Existing Buildings",
+        badge2: "Live Occupancy Review",
         badge3: "PDF Export",
         pdfBtn: "Export PDF",
-        projectLabel: "Project Name",
+        buildingLabel: "Building Name",
+        siteLabel: "Site / Complex Name",
         inspectorLabel: "Inspector Name",
         dateLabel: "Date",
-        locationLabel: "Location / Zone",
+        zoneLabel: "Zone / Floor / Department",
+        occupancyLabel: "Occupancy Type / Beneficiary",
         overallScoreLabel: "Overall Score",
-        civilScoreLabel: "Civil",
-        archScoreLabel: "Architectural",
-        elecScoreLabel: "Electrical",
-        mechScoreLabel: "Mechanical",
+        cleanScoreLabel: "Cleanliness",
+        finishScoreLabel: "Finishes",
+        mepScoreLabel: "Systems",
+        safetyScoreLabel: "Safety",
+        facilityScoreLabel: "Facilities",
         satisfactionScoreLabel: "Satisfaction",
-        civilTitle: "Civil Works",
-        archTitle: "Architectural Works",
-        elecTitle: "Electrical Works",
-        mechTitle: "Mechanical Works",
-        satisfactionTitle: "Client / On-Site Staff Satisfaction",
+        cleanTitle: "Cleanliness & General Appearance",
+        finishTitle: "Finishes & General Condition",
+        mepTitle: "Electrical & Mechanical Systems",
+        safetyTitle: "Safety & Security",
+        facilityTitle: "Facilities & Services",
+        satisfactionTitle: "Employee / User Satisfaction",
         satisfactionTypeLabel: "Evaluation Type",
         satisfactionRateLabel: "Satisfaction Rating",
         satisfactionNotesLabel: "Satisfaction Notes",
         ratingHint: "1 = Very Poor, 5 = Excellent",
-        notesTitle: "General Notes",
+        notesTitle: "General Notes & Recommendations",
         photosTitle: "Photos",
-        photoHint: "You can upload multiple images for observations or site condition.",
+        photoHint: "Add photos showing general condition, observations, or visible defects.",
         resetBtn: "Reset",
         status_pending: "Select status",
-        status_ok: "Compliant",
-        status_nok: "Non-Compliant",
+        status_ok: "Good / Acceptable",
+        status_nok: "Needs Action",
         status_na: "Not Applicable",
-        satisfactionOptions: ["Client Satisfaction", "On-Site Staff Satisfaction"],
-        civilItems: [
-          "Work matches drawings and specifications",
-          "Concrete elements are aligned with no visible honeycombing",
-          "Plaster quality is acceptable and crack-free",
-          "Work area cleanliness is maintained",
-          "Completed works are protected from damage",
-          "Previous defects are rectified and observations closed"
+        satisfactionOptions: ["Employee Satisfaction", "User Satisfaction", "Visitor Satisfaction"],
+        cleanItems: [
+          "Entrances and corridors are clean",
+          "Offices or internal spaces are clean",
+          "Floors are free from dirt or spills",
+          "Glass and interior facades are clean",
+          "No unpleasant odors are present",
+          "Overall appearance of the building is acceptable"
         ],
-        archItems: [
-          "Final finishes are level and aligned",
-          "Paint quality and color consistency are acceptable",
-          "Flooring is installed correctly with no hollow spots",
-          "Doors and windows are properly aligned",
-          "False ceiling quality and fixing are acceptable",
-          "Joints and edges are properly sealed and treated"
+        finishItems: [
+          "Paint and wall condition is good",
+          "Floor finishes are in good condition",
+          "Doors and windows operate properly",
+          "Suspended ceilings are in good condition",
+          "No visible cracks or damage",
+          "Finishes are suitable for daily use"
         ],
-        elecItems: [
-          "Electrical conduits and wiring are properly installed",
-          "Electrical panels are installed in compliance",
-          "Cable and panel labeling is clear and correct",
-          "Openings around conduits and cables are sealed",
-          "Switches and sockets are tested and functional",
-          "Cable routes are clean and organized"
+        mepItems: [
+          "Internal lighting works properly",
+          "Sockets and switches are in good condition",
+          "Air conditioning operates efficiently",
+          "No visible water leakage",
+          "Plumbing systems function properly",
+          "No visible system faults or unusual noise"
         ],
-        mechItems: [
-          "HVAC ducts are installed correctly",
-          "Thermal insulation is properly applied",
-          "Plumbing lines are installed with no leakage",
-          "Supports and hangers are properly fixed",
-          "Flow directions and labels are clearly marked",
-          "Pressure and commissioning test results are acceptable"
+        safetyItems: [
+          "Emergency exits are clear and accessible",
+          "Fire extinguishers are available and visible",
+          "Safety and directional signs are available",
+          "Corridors are free from obstructions",
+          "General safety level is acceptable",
+          "There are urgent safety issues requiring action"
         ],
-        pdfTitle: "Weekly QA/QC Inspection Report",
-        pdfProjectInfo: "Project Information",
-        pdfScores: "Score Summary",
-        pdfGeneralNotes: "General Notes",
-        pdfSatisfaction: "Client / Staff Satisfaction",
+        facilityItems: [
+          "Restrooms are clean and usable",
+          "Cleaning and consumable supplies are available",
+          "Furniture is in acceptable condition",
+          "Access to essential services is easy",
+          "Noise level is within acceptable limits",
+          "Indoor comfort for employees is good"
+        ],
+        pdfTitle: "Existing Building Quality Assessment Report",
+        pdfProjectInfo: "Building Information",
+        pdfScores: "Assessment Summary",
+        pdfGeneralNotes: "General Notes & Recommendations",
+        pdfSatisfaction: "Employee / User Satisfaction",
         pdfPhotos: "Photos",
         pdfPage: "Page",
         pdfGenerated: "Generated",
         pdfType: "Evaluation Type",
         pdfRating: "Satisfaction Rating",
-        pdfProject: "Project Name",
+        pdfBuilding: "Building Name",
+        pdfSite: "Site / Complex",
         pdfInspector: "Inspector Name",
         pdfDate: "Date",
-        pdfLocation: "Location / Zone",
+        pdfZone: "Zone / Floor / Department",
+        pdfOccupancy: "Occupancy Type / Beneficiary",
         pdfStatus: "Status",
         pdfPhotoTitle: "Photo"
       }
     };
 
-    const sectionIds = ["civil", "arch", "elec", "mech"];
+    const sectionIds = ["clean", "finish", "mep", "safety", "facility"];
     let currentLang = "ar";
     let selectedRating = 0;
 
     const state = {
-      civil: [],
-      arch: [],
-      elec: [],
-      mech: []
+      clean: [],
+      finish: [],
+      mep: [],
+      safety: [],
+      facility: []
     };
 
     function escapeHtml(text) {
@@ -740,10 +792,11 @@
 
     function renderAllChecklists() {
       const t = translations[currentLang];
-      createChecklist("civil", t.civilItems);
-      createChecklist("arch", t.archItems);
-      createChecklist("elec", t.elecItems);
-      createChecklist("mech", t.mechItems);
+      createChecklist("clean", t.cleanItems);
+      createChecklist("finish", t.finishItems);
+      createChecklist("mep", t.mepItems);
+      createChecklist("safety", t.safetyItems);
+      createChecklist("facility", t.facilityItems);
       updateScores();
     }
 
@@ -762,20 +815,24 @@
       setText("badge3", t.badge3);
       setText("pdfBtn", t.pdfBtn);
       setText("pdfBtnBottom", t.pdfBtn);
-      setText("projectLabel", t.projectLabel);
+      setText("buildingLabel", t.buildingLabel);
+      setText("siteLabel", t.siteLabel);
       setText("inspectorLabel", t.inspectorLabel);
       setText("dateLabel", t.dateLabel);
-      setText("locationLabel", t.locationLabel);
+      setText("zoneLabel", t.zoneLabel);
+      setText("occupancyLabel", t.occupancyLabel);
       setText("overallScoreLabel", t.overallScoreLabel);
-      setText("civilScoreLabel", t.civilScoreLabel);
-      setText("archScoreLabel", t.archScoreLabel);
-      setText("elecScoreLabel", t.elecScoreLabel);
-      setText("mechScoreLabel", t.mechScoreLabel);
+      setText("cleanScoreLabel", t.cleanScoreLabel);
+      setText("finishScoreLabel", t.finishScoreLabel);
+      setText("mepScoreLabel", t.mepScoreLabel);
+      setText("safetyScoreLabel", t.safetyScoreLabel);
+      setText("facilityScoreLabel", t.facilityScoreLabel);
       setText("satisfactionScoreLabel", t.satisfactionScoreLabel);
-      setText("civilTitle", t.civilTitle);
-      setText("archTitle", t.archTitle);
-      setText("elecTitle", t.elecTitle);
-      setText("mechTitle", t.mechTitle);
+      setText("cleanTitle", t.cleanTitle);
+      setText("finishTitle", t.finishTitle);
+      setText("mepTitle", t.mepTitle);
+      setText("safetyTitle", t.safetyTitle);
+      setText("facilityTitle", t.facilityTitle);
       setText("satisfactionTitle", t.satisfactionTitle);
       setText("satisfactionTypeLabel", t.satisfactionTypeLabel);
       setText("satisfactionRateLabel", t.satisfactionRateLabel);
@@ -801,17 +858,19 @@
     }
 
     function updateScores() {
-      const civil = calculateSectionScore("civil");
-      const arch = calculateSectionScore("arch");
-      const elec = calculateSectionScore("elec");
-      const mech = calculateSectionScore("mech");
+      const clean = calculateSectionScore("clean");
+      const finish = calculateSectionScore("finish");
+      const mep = calculateSectionScore("mep");
+      const safety = calculateSectionScore("safety");
+      const facility = calculateSectionScore("facility");
 
-      document.getElementById("civilScore").textContent = civil + "%";
-      document.getElementById("archScore").textContent = arch + "%";
-      document.getElementById("elecScore").textContent = elec + "%";
-      document.getElementById("mechScore").textContent = mech + "%";
+      document.getElementById("cleanScore").textContent = clean + "%";
+      document.getElementById("finishScore").textContent = finish + "%";
+      document.getElementById("mepScore").textContent = mep + "%";
+      document.getElementById("safetyScore").textContent = safety + "%";
+      document.getElementById("facilityScore").textContent = facility + "%";
 
-      const overall = Math.round((civil + arch + elec + mech) / 4);
+      const overall = Math.round((clean + finish + mep + safety + facility) / 5);
       document.getElementById("overallScore").textContent = overall + "%";
     }
 
@@ -860,22 +919,25 @@
       const t = translations[lang];
       const dir = lang === "ar" ? "rtl" : "ltr";
       const today = new Date();
-      const reportNo = "QAQC-" + today.toISOString().slice(0, 10).replaceAll("-", "");
+      const reportNo = "BQA-" + today.toISOString().slice(0, 10).replaceAll("-", "");
       const generatedAt = today.toLocaleString();
 
-      const projectName = document.getElementById("projectName").value || "-";
+      const buildingName = document.getElementById("buildingName").value || "-";
+      const siteName = document.getElementById("siteName").value || "-";
       const inspectorName = document.getElementById("inspectorName").value || "-";
       const inspectionDate = document.getElementById("inspectionDate").value || "-";
-      const locationName = document.getElementById("locationName").value || "-";
+      const zoneName = document.getElementById("zoneName").value || "-";
+      const occupancyType = document.getElementById("occupancyType").value || "-";
       const notes = document.getElementById("notes").value || "-";
       const satisfactionType = document.getElementById("satisfactionType").value || "-";
       const satisfactionNotes = document.getElementById("satisfactionNotes").value || "-";
 
       const overallScore = document.getElementById("overallScore").textContent;
-      const civilScore = document.getElementById("civilScore").textContent;
-      const archScore = document.getElementById("archScore").textContent;
-      const elecScore = document.getElementById("elecScore").textContent;
-      const mechScore = document.getElementById("mechScore").textContent;
+      const cleanScore = document.getElementById("cleanScore").textContent;
+      const finishScore = document.getElementById("finishScore").textContent;
+      const mepScore = document.getElementById("mepScore").textContent;
+      const safetyScore = document.getElementById("safetyScore").textContent;
+      const facilityScore = document.getElementById("facilityScore").textContent;
       const satisfactionScore = document.getElementById("satisfactionScore").textContent;
 
       const images = Array.from(document.querySelectorAll("#photosPreview img")).map((img, i) => `
@@ -1061,12 +1123,6 @@
     object-fit: contain;
     display: block;
   }
-
-  .footer-lite {
-    margin-top: 20px;
-    font-size: 12px;
-    color: #6b7280;
-  }
 </style>
 </head>
 <body>
@@ -1080,8 +1136,12 @@
     <div class="cover-box">
       <div class="info-grid">
         <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfProject)}</div>
-          <div class="info-value">${escapeHtml(projectName)}</div>
+          <div class="info-label">${escapeHtml(t.pdfBuilding)}</div>
+          <div class="info-value">${escapeHtml(buildingName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfSite)}</div>
+          <div class="info-value">${escapeHtml(siteName)}</div>
         </div>
         <div class="info-card">
           <div class="info-label">${escapeHtml(t.pdfInspector)}</div>
@@ -1092,8 +1152,12 @@
           <div class="info-value">${escapeHtml(inspectionDate)}</div>
         </div>
         <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfLocation)}</div>
-          <div class="info-value">${escapeHtml(locationName)}</div>
+          <div class="info-label">${escapeHtml(t.pdfZone)}</div>
+          <div class="info-value">${escapeHtml(zoneName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfOccupancy)}</div>
+          <div class="info-value">${escapeHtml(occupancyType)}</div>
         </div>
       </div>
     </div>
@@ -1104,32 +1168,33 @@
         <div class="score-value">${escapeHtml(overallScore)}</div>
       </div>
       <div class="score-card">
-        <div class="score-label">${escapeHtml(t.civilScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(civilScore)}</div>
+        <div class="score-label">${escapeHtml(t.cleanScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(cleanScore)}</div>
       </div>
       <div class="score-card">
-        <div class="score-label">${escapeHtml(t.archScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(archScore)}</div>
+        <div class="score-label">${escapeHtml(t.finishScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(finishScore)}</div>
       </div>
       <div class="score-card">
-        <div class="score-label">${escapeHtml(t.elecScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(elecScore)}</div>
+        <div class="score-label">${escapeHtml(t.mepScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(mepScore)}</div>
       </div>
       <div class="score-card">
-        <div class="score-label">${escapeHtml(t.mechScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(mechScore)}</div>
+        <div class="score-label">${escapeHtml(t.safetyScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(safetyScore)}</div>
       </div>
       <div class="score-card">
-        <div class="score-label">${escapeHtml(t.satisfactionScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(satisfactionScore)}</div>
+        <div class="score-label">${escapeHtml(t.facilityScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(facilityScore)}</div>
       </div>
     </div>
   </section>
 
-  ${renderSectionTable(t.civilTitle, t.civilItems, state.civil, lang)}
-  ${renderSectionTable(t.archTitle, t.archItems, state.arch, lang)}
-  ${renderSectionTable(t.elecTitle, t.elecItems, state.elec, lang)}
-  ${renderSectionTable(t.mechTitle, t.mechItems, state.mech, lang)}
+  ${renderSectionTable(t.cleanTitle, t.cleanItems, state.clean, lang)}
+  ${renderSectionTable(t.finishTitle, t.finishItems, state.finish, lang)}
+  ${renderSectionTable(t.mepTitle, t.mepItems, state.mep, lang)}
+  ${renderSectionTable(t.safetyTitle, t.safetyItems, state.safety, lang)}
+  ${renderSectionTable(t.facilityTitle, t.facilityItems, state.facility, lang)}
 
   <section class="pdf-page">
     <div class="pdf-head">
@@ -1191,10 +1256,12 @@
     }
 
     function resetForm() {
-      document.getElementById("projectName").value = "";
+      document.getElementById("buildingName").value = "";
+      document.getElementById("siteName").value = "";
       document.getElementById("inspectorName").value = "";
       document.getElementById("inspectionDate").value = "";
-      document.getElementById("locationName").value = "";
+      document.getElementById("zoneName").value = "";
+      document.getElementById("occupancyType").value = "";
       document.getElementById("notes").value = "";
       document.getElementById("satisfactionNotes").value = "";
       document.getElementById("satisfactionType").value = "";
