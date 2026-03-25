@@ -10,178 +10,335 @@
 
   <style>
     * { box-sizing: border-box; }
+
+    :root{
+      --bg: #f3f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #0f766e;
+      --primary-2: #115e59;
+      --accent: #0ea5e9;
+      --border: #dbe4ee;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --ok: #16a34a;
+      --warn: #dc2626;
+      --na: #64748b;
+    }
+
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f6f8;
-      color: #1f2937;
+      background:
+        linear-gradient(180deg, #eaf4ff 0%, #f3f7fb 140px, #f3f7fb 100%);
+      color: var(--text);
     }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 24px 0;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner,
     .container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 0 20px;
     }
-    .topbar {
+
+    .header-top {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 20px;
     }
-    .title {
+
+    .brand h1 {
+      margin: 0 0 6px;
+      font-size: 34px;
+    }
+
+    .brand p {
       margin: 0;
-      font-size: 36px;
+      opacity: 0.95;
+      font-size: 15px;
     }
-    .controls {
+
+    .top-actions {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       flex-wrap: wrap;
     }
+
     select, input, textarea, button {
       font: inherit;
     }
+
     select, input, textarea {
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      background: white;
       width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      color: var(--text);
     }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
     button {
-      background: #0f766e;
-      color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 10px;
+      border-radius: 12px;
+      padding: 12px 18px;
       cursor: pointer;
+      color: white;
+      background: var(--primary);
+      transition: 0.2s ease;
+      box-shadow: var(--shadow);
     }
+
     button:hover {
-      opacity: 0.95;
+      background: var(--primary-2);
+      transform: translateY(-1px);
     }
+
+    .secondary {
+      background: #334155;
+    }
+
+    .secondary:hover {
+      background: #1f2937;
+    }
+
+    .container {
+      padding-bottom: 30px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
       margin-bottom: 20px;
     }
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      margin-bottom: 18px;
-    }
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 14px;
-      font-size: 24px;
-    }
-    .field label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 700;
-    }
+
     .summary {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 14px;
       margin-bottom: 20px;
     }
+
+    .card,
     .summary-box {
-      background: white;
-      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 23px;
+      color: #0f172a;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .summary-box {
       padding: 16px;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
+
     .summary-box .label {
-      font-size: 14px;
-      color: #6b7280;
+      font-size: 13px;
+      color: var(--muted);
       margin-bottom: 8px;
     }
+
     .summary-box .value {
       font-size: 28px;
       font-weight: 700;
+      color: #0f172a;
     }
+
     .checklist-item {
       display: grid;
-      grid-template-columns: 1fr 160px;
+      grid-template-columns: 1fr 190px;
       gap: 12px;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 0;
+      border-bottom: 1px solid #ecf1f6;
     }
+
     .checklist-item:last-child {
       border-bottom: none;
     }
+
     .item-label {
-      font-weight: 500;
+      font-weight: 600;
+      line-height: 1.5;
     }
-    .status-select {
-      width: 100%;
+
+    .status-ok {
+      border-color: rgba(22, 163, 74, 0.35);
+      background: rgba(22, 163, 74, 0.06);
     }
-    .notes-area {
-      min-height: 120px;
-      resize: vertical;
+
+    .status-nok {
+      border-color: rgba(220, 38, 38, 0.35);
+      background: rgba(220, 38, 38, 0.05);
     }
+
+    .status-na {
+      border-color: rgba(100, 116, 139, 0.35);
+      background: rgba(100, 116, 139, 0.06);
+    }
+
     .photos-preview {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 14px;
     }
+
     .photos-preview img {
       width: 120px;
       height: 120px;
       object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
       background: white;
     }
+
     .actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-top: 20px;
+      margin-top: 18px;
     }
-    .secondary {
-      background: #374151;
-    }
+
     .footer-note {
       margin-top: 10px;
-      color: #6b7280;
+      color: var(--muted);
       font-size: 14px;
     }
 
-    @media (max-width: 900px) {
-      .grid, .summary {
+    .satisfaction-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .rating-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rating-chip {
+      min-width: 48px;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: #0f172a;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 700;
+    }
+
+    .rating-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .badge-line {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .badge {
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+      background: #e8f3ff;
+      border: 1px solid #cfe4fb;
+    }
+
+    @media (max-width: 950px) {
+      .grid,
+      .summary,
+      .satisfaction-grid {
         grid-template-columns: 1fr;
       }
+
       .checklist-item {
         grid-template-columns: 1fr;
       }
-      .title {
+
+      .brand h1 {
         font-size: 28px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="reportArea">
-    <div class="topbar">
-      <h1 class="title" id="pageTitle"></h1>
 
-      <div class="controls">
-        <select id="languageSelect" onchange="changeLanguage(this.value)">
-          <option value="ar">العربية</option>
-          <option value="en">English</option>
-        </select>
-        <button onclick="generatePDF()" id="pdfBtn"></button>
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="brand">
+          <h1 id="pageTitle"></h1>
+          <p id="pageSubtitle"></p>
+          <div class="badge-line">
+            <span class="badge" id="badge1"></span>
+            <span class="badge" id="badge2"></span>
+            <span class="badge" id="badge3"></span>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <select id="languageSelect" onchange="changeLanguage(this.value)">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+          </select>
+          <button onclick="generatePDF()" id="pdfBtn"></button>
+        </div>
       </div>
     </div>
+  </div>
 
+  <div class="container" id="reportArea">
     <div class="grid">
       <div class="card">
         <div class="field">
@@ -233,6 +390,10 @@
         <div class="label" id="mechScoreLabel"></div>
         <div class="value" id="mechScore">0%</div>
       </div>
+      <div class="summary-box">
+        <div class="label" id="satisfactionScoreLabel"></div>
+        <div class="value" id="satisfactionScore">0/5</div>
+      </div>
     </div>
 
     <div class="card">
@@ -256,8 +417,31 @@
     </div>
 
     <div class="card">
+      <h2 id="satisfactionTitle"></h2>
+      <div class="satisfaction-grid">
+        <div class="field">
+          <label id="satisfactionTypeLabel" for="satisfactionType"></label>
+          <select id="satisfactionType">
+            <option value=""></option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label id="satisfactionRateLabel"></label>
+          <div class="rating-box" id="ratingBox"></div>
+          <div class="small-note" id="ratingHint"></div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:16px;">
+        <label id="satisfactionNotesLabel" for="satisfactionNotes"></label>
+        <textarea id="satisfactionNotes"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
       <h2 id="notesTitle"></h2>
-      <textarea id="notes" class="notes-area"></textarea>
+      <textarea id="notes"></textarea>
     </div>
 
     <div class="card">
@@ -277,6 +461,10 @@
     const translations = {
       ar: {
         pageTitle: "فحص الجودة الأسبوعي QA/QC",
+        pageSubtitle: "نموذج تفتيش احترافي لتقييم جودة الأعمال والملاحظات ورضا العميل أو الموظفين",
+        badge1: "تقارير أسبوعية",
+        badge2: "تقييم الجودة",
+        badge3: "تصدير PDF",
         pdfBtn: "تصدير PDF",
         projectLabel: "اسم المشروع",
         inspectorLabel: "اسم المفتش",
@@ -287,11 +475,17 @@
         archScoreLabel: "المعماري",
         elecScoreLabel: "الكهربائي",
         mechScoreLabel: "الميكانيكي",
+        satisfactionScoreLabel: "الرضا",
         civilTitle: "الأعمال المدنية",
         archTitle: "الأعمال المعمارية",
         elecTitle: "الأعمال الكهربائية",
         mechTitle: "الأعمال الميكانيكية",
-        notesTitle: "الملاحظات",
+        satisfactionTitle: "رضا العميل / الموظفين المتواجدين",
+        satisfactionTypeLabel: "نوع التقييم",
+        satisfactionRateLabel: "درجة الرضا",
+        satisfactionNotesLabel: "ملاحظات الرضا",
+        ratingHint: "1 = ضعيف جدًا ، 5 = ممتاز",
+        notesTitle: "الملاحظات العامة",
         photosTitle: "الصور",
         photoHint: "يمكن إضافة أكثر من صورة للملاحظات أو حالة الموقع.",
         resetBtn: "إعادة تعيين",
@@ -299,6 +493,7 @@
         status_ok: "مطابق",
         status_nok: "غير مطابق",
         status_na: "غير منطبق",
+        satisfactionOptions: ["رضا العميل", "رضا الموظفين المتواجدين"],
         civilItems: [
           "مطابقة الأعمال للمخططات والمواصفات",
           "استقامة العناصر الخرسانية وعدم وجود تعشيش ظاهر",
@@ -334,6 +529,10 @@
       },
       en: {
         pageTitle: "Weekly QA/QC Inspection",
+        pageSubtitle: "Professional inspection form for work quality, observations, and client or staff satisfaction",
+        badge1: "Weekly Reports",
+        badge2: "Quality Review",
+        badge3: "PDF Export",
         pdfBtn: "Export PDF",
         projectLabel: "Project Name",
         inspectorLabel: "Inspector Name",
@@ -344,11 +543,17 @@
         archScoreLabel: "Architectural",
         elecScoreLabel: "Electrical",
         mechScoreLabel: "Mechanical",
+        satisfactionScoreLabel: "Satisfaction",
         civilTitle: "Civil Works",
         archTitle: "Architectural Works",
         elecTitle: "Electrical Works",
         mechTitle: "Mechanical Works",
-        notesTitle: "Notes",
+        satisfactionTitle: "Client / On-Site Staff Satisfaction",
+        satisfactionTypeLabel: "Evaluation Type",
+        satisfactionRateLabel: "Satisfaction Rating",
+        satisfactionNotesLabel: "Satisfaction Notes",
+        ratingHint: "1 = Very Poor, 5 = Excellent",
+        notesTitle: "General Notes",
         photosTitle: "Photos",
         photoHint: "You can upload multiple images for observations or site condition.",
         resetBtn: "Reset",
@@ -356,6 +561,7 @@
         status_ok: "Compliant",
         status_nok: "Non-Compliant",
         status_na: "Not Applicable",
+        satisfactionOptions: ["Client Satisfaction", "On-Site Staff Satisfaction"],
         civilItems: [
           "Work matches drawings and specifications",
           "Concrete elements are aligned with no visible honeycombing",
@@ -391,20 +597,18 @@
       }
     };
 
-    const sectionMap = {
-      civil: "civilItems",
-      arch: "archItems",
-      elec: "elecItems",
-      mech: "mechItems"
-    };
-
     let currentLang = "ar";
+    let selectedRating = 0;
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
 
     function createChecklist(sectionId, items) {
       const container = document.getElementById(sectionId);
       container.innerHTML = "";
 
-      items.forEach((item, index) => {
+      items.forEach((item) => {
         const row = document.createElement("div");
         row.className = "checklist-item";
 
@@ -413,16 +617,20 @@
         label.textContent = item;
 
         const select = document.createElement("select");
-        select.className = "status-select";
         select.dataset.section = sectionId;
-        select.dataset.index = index;
         select.innerHTML = `
           <option value="">${translations[currentLang].status_pending}</option>
           <option value="ok">${translations[currentLang].status_ok}</option>
           <option value="nok">${translations[currentLang].status_nok}</option>
           <option value="na">${translations[currentLang].status_na}</option>
         `;
-        select.addEventListener("change", updateScores);
+        select.addEventListener("change", function() {
+          select.classList.remove("status-ok", "status-nok", "status-na");
+          if (this.value === "ok") select.classList.add("status-ok");
+          if (this.value === "nok") select.classList.add("status-nok");
+          if (this.value === "na") select.classList.add("status-na");
+          updateScores();
+        });
 
         row.appendChild(label);
         row.appendChild(select);
@@ -430,26 +638,56 @@
       });
     }
 
-    function renderAllChecklists() {
-      createChecklist("civilChecklist", translations[currentLang].civilItems);
-      createChecklist("archChecklist", translations[currentLang].archItems);
-      createChecklist("elecChecklist", translations[currentLang].elecItems);
-      createChecklist("mechChecklist", translations[currentLang].mechItems);
-      updateScores();
+    function renderSatisfactionOptions() {
+      const t = translations[currentLang];
+      const select = document.getElementById("satisfactionType");
+      select.innerHTML = `<option value="">${t.status_pending}</option>`;
+      t.satisfactionOptions.forEach(option => {
+        const opt = document.createElement("option");
+        opt.value = option;
+        opt.textContent = option;
+        select.appendChild(opt);
+      });
     }
 
-    function setText(id, value) {
-      document.getElementById(id).textContent = value;
+    function renderRating() {
+      const box = document.getElementById("ratingBox");
+      box.innerHTML = "";
+      for (let i = 1; i <= 5; i++) {
+        const chip = document.createElement("div");
+        chip.className = "rating-chip" + (selectedRating === i ? " active" : "");
+        chip.textContent = i;
+        chip.onclick = () => {
+          selectedRating = i;
+          renderRating();
+          document.getElementById("satisfactionScore").textContent = `${selectedRating}/5`;
+        };
+        box.appendChild(chip);
+      }
+    }
+
+    function renderAllChecklists() {
+      const t = translations[currentLang];
+      createChecklist("civilChecklist", t.civilItems);
+      createChecklist("archChecklist", t.archItems);
+      createChecklist("elecChecklist", t.elecItems);
+      createChecklist("mechChecklist", t.mechItems);
+      updateScores();
     }
 
     function changeLanguage(lang) {
       currentLang = lang;
+      const t = translations[lang];
 
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.getElementById("languageSelect").value = lang;
 
-      const t = translations[lang];
       setText("pageTitle", t.pageTitle);
+      setText("pageSubtitle", t.pageSubtitle);
+      setText("badge1", t.badge1);
+      setText("badge2", t.badge2);
+      setText("badge3", t.badge3);
       setText("pdfBtn", t.pdfBtn);
       setText("pdfBtnBottom", t.pdfBtn);
       setText("projectLabel", t.projectLabel);
@@ -461,15 +699,23 @@
       setText("archScoreLabel", t.archScoreLabel);
       setText("elecScoreLabel", t.elecScoreLabel);
       setText("mechScoreLabel", t.mechScoreLabel);
+      setText("satisfactionScoreLabel", t.satisfactionScoreLabel);
       setText("civilTitle", t.civilTitle);
       setText("archTitle", t.archTitle);
       setText("elecTitle", t.elecTitle);
       setText("mechTitle", t.mechTitle);
+      setText("satisfactionTitle", t.satisfactionTitle);
+      setText("satisfactionTypeLabel", t.satisfactionTypeLabel);
+      setText("satisfactionRateLabel", t.satisfactionRateLabel);
+      setText("satisfactionNotesLabel", t.satisfactionNotesLabel);
+      setText("ratingHint", t.ratingHint);
       setText("notesTitle", t.notesTitle);
       setText("photosTitle", t.photosTitle);
       setText("photoHint", t.photoHint);
       setText("resetBtn", t.resetBtn);
 
+      renderSatisfactionOptions();
+      renderRating();
       renderAllChecklists();
     }
 
@@ -477,7 +723,6 @@
       const selects = Array.from(document.querySelectorAll(`select[data-section="${sectionId}"]`));
       const applicable = selects.filter(s => s.value === "ok" || s.value === "nok");
       const compliant = selects.filter(s => s.value === "ok");
-
       if (applicable.length === 0) return 0;
       return Math.round((compliant.length / applicable.length) * 100);
     }
@@ -509,7 +754,7 @@
 
     async function generatePDF() {
       const reportArea = document.getElementById("reportArea");
-      const canvas = await html2canvas(reportArea, { scale: 2 });
+      const canvas = await html2canvas(reportArea, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL("image/png");
 
       const { jsPDF } = window.jspdf;
@@ -542,8 +787,13 @@
       document.getElementById("inspectionDate").value = "";
       document.getElementById("locationName").value = "";
       document.getElementById("notes").value = "";
+      document.getElementById("satisfactionNotes").value = "";
+      document.getElementById("satisfactionType").value = "";
       document.getElementById("photoInput").value = "";
       document.getElementById("photosPreview").innerHTML = "";
+      selectedRating = 0;
+      document.getElementById("satisfactionScore").textContent = "0/5";
+      renderRating();
       renderAllChecklists();
     }
 
