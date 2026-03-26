@@ -10,6 +10,7 @@
 
     :root{
       --bg: #f3f7fb;
+      --bg-top: #eaf4ff;
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
@@ -21,18 +22,41 @@
       --danger: #dc2626;
       --warning: #d97706;
       --success: #16a34a;
+      --header-text: #ffffff;
+      --table-head: #f0f7ff;
+      --badge-bg: #e8f3ff;
+      --badge-border: #cfe4fb;
+      --chip-bg: #f8fafc;
+    }
+
+    body.dark-mode{
+      --bg: #0f172a;
+      --bg-top: #0b1220;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #0f766e;
+      --primary-2: #0b5d57;
+      --accent: #0284c7;
+      --border: #334155;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --header-text: #ffffff;
+      --table-head: rgba(14, 165, 233, 0.12);
+      --badge-bg: rgba(14, 165, 233, 0.14);
+      --badge-border: rgba(14, 165, 233, 0.24);
+      --chip-bg: #1e293b;
     }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #eaf4ff 0%, #f3f7fb 140px, #f3f7fb 100%);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 140px, var(--bg) 100%);
       color: var(--text);
     }
 
     .header {
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
+      color: var(--header-text);
       padding: 24px 0;
       margin-bottom: 22px;
       box-shadow: var(--shadow);
@@ -80,7 +104,7 @@
       padding: 12px 14px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      background: white;
+      background: var(--card);
       color: var(--text);
     }
 
@@ -155,14 +179,14 @@
     .card h2 {
       margin: 0 0 16px;
       font-size: 23px;
-      color: #0f172a;
+      color: var(--text);
     }
 
     .field label {
       display: block;
       margin-bottom: 7px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text);
     }
 
     .summary-box {
@@ -179,7 +203,7 @@
     .summary-box .value {
       font-size: 24px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text);
     }
 
     .checklist-item {
@@ -188,7 +212,7 @@
       gap: 12px;
       align-items: center;
       padding: 12px 0;
-      border-bottom: 1px solid #ecf1f6;
+      border-bottom: 1px solid var(--border);
     }
 
     .checklist-item:last-child {
@@ -198,6 +222,7 @@
     .item-label {
       font-weight: 600;
       line-height: 1.5;
+      color: var(--text);
     }
 
     .status-ok {
@@ -229,7 +254,7 @@
       border-radius: 14px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      background: white;
+      background: var(--card);
     }
 
     .actions {
@@ -263,8 +288,8 @@
       padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: #f8fafc;
-      color: #0f172a;
+      background: var(--chip-bg);
+      color: var(--text);
       cursor: pointer;
       user-select: none;
       font-weight: 700;
@@ -294,9 +319,9 @@
       border-radius: 999px;
       font-size: 13px;
       font-weight: 700;
-      color: #0f172a;
-      background: #e8f3ff;
-      border: 1px solid #cfe4fb;
+      color: var(--text);
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
     }
 
     .table-wrap {
@@ -311,15 +336,16 @@
 
     .action-table th,
     .action-table td {
-      border: 1px solid #e5edf5;
+      border: 1px solid var(--border);
       padding: 10px;
       text-align: right;
       vertical-align: top;
-      background: #fff;
+      background: var(--card);
+      color: var(--text);
     }
 
     .action-table th {
-      background: #f0f7ff;
+      background: var(--table-head);
       font-weight: 700;
     }
 
@@ -330,8 +356,10 @@
       min-width: 120px;
       padding: 8px 10px;
       border-radius: 8px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border);
       font: inherit;
+      background: var(--card);
+      color: var(--text);
     }
 
     .action-table textarea {
@@ -339,17 +367,17 @@
     }
 
     .severity-high {
-      color: white;
+      color: white !important;
       background: var(--danger) !important;
     }
 
     .severity-medium {
-      color: white;
+      color: white !important;
       background: var(--warning) !important;
     }
 
     .severity-low {
-      color: white;
+      color: white !important;
       background: var(--success) !important;
     }
 
@@ -392,6 +420,7 @@
         </div>
 
         <div class="top-actions">
+          <button type="button" onclick="toggleTheme()" id="themeToggleBtn">🌙 Dark Mode</button>
           <select id="languageSelect" onchange="changeLanguage(this.value)">
             <option value="ar">العربية</option>
             <option value="en">English</option>
@@ -575,6 +604,8 @@
         badge2: "Gap Analysis",
         badge3: "تصدير PDF",
         pdfBtn: "تصدير PDF",
+        themeLight: "☀️ الوضع الفاتح",
+        themeDark: "🌙 الوضع الداكن",
         buildingLabel: "اسم المبنى",
         siteLabel: "اسم الموقع / المجمع",
         inspectorLabel: "اسم المفتش",
@@ -688,6 +719,8 @@
         badge2: "Gap Analysis",
         badge3: "PDF Export",
         pdfBtn: "Export PDF",
+        themeLight: "☀️ Light Mode",
+        themeDark: "🌙 Dark Mode",
         buildingLabel: "Building Name",
         siteLabel: "Site / Complex Name",
         inspectorLabel: "Inspector Name",
@@ -799,6 +832,7 @@
     const sectionIds = ["clean", "finish", "mep", "safety", "facility"];
     let currentLang = "ar";
     let selectedRating = 0;
+    let isDarkMode = false;
 
     const state = {
       clean: [],
@@ -836,6 +870,19 @@
       if (value === "nok") return "status-nok";
       if (value === "na") return "status-na";
       return "";
+    }
+
+    function updateThemeButton() {
+      const t = translations[currentLang];
+      const btn = document.getElementById("themeToggleBtn");
+      btn.textContent = isDarkMode ? t.themeLight : t.themeDark;
+    }
+
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle("dark-mode", isDarkMode);
+      localStorage.setItem("buildingTheme", isDarkMode ? "dark" : "light");
+      updateThemeButton();
     }
 
     function createChecklist(sectionName, items) {
@@ -1049,6 +1096,7 @@
       renderRating();
       renderAllChecklists();
       renderActionRows();
+      updateThemeButton();
     }
 
     function calculateSectionScore(sectionName) {
@@ -1542,8 +1590,15 @@
       state[id] = new Array(translations[currentLang][id + "Items"].length).fill("");
     });
 
+    const savedTheme = localStorage.getItem("buildingTheme");
+    if (savedTheme === "dark") {
+      isDarkMode = true;
+      document.body.classList.add("dark-mode");
+    }
+
     changeLanguage("ar");
     renderActionRows();
+    updateThemeButton();
   </script>
 </body>
 </html>
