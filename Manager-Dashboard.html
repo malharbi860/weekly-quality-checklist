@@ -9,18 +9,20 @@
     * { box-sizing: border-box; }
 
     :root{
-      --bg: #f3f7fb;
+      --bg: #f5f7fb;
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
-      --primary: #0f766e;
-      --accent: #0ea5e9;
-      --border: #dbe4ee;
+      --border: #e5e7eb;
+      --sidebar: #0f172a;
+      --sidebar-soft: #111827;
+      --accent: #f97316;
+      --accent-2: #0ea5e9;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
       --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      --excellent: #16a34a;
-      --vgood: #0ea5e9;
-      --good: #d97706;
-      --poor: #dc2626;
+      --radius: 18px;
     }
 
     body {
@@ -30,34 +32,135 @@
       color: var(--text);
     }
 
-    .header {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+    .app {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-soft) 100%);
       color: white;
-      padding: 20px 0;
-      margin-bottom: 18px;
-      box-shadow: var(--shadow);
+      padding: 20px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
     }
 
-    .header-inner,
-    .container {
-      max-width: 1250px;
-      margin: 0 auto;
-      padding: 0 20px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .header h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), #fb923c);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 8px 18px rgba(249, 115, 22, 0.25);
     }
 
-    .header p {
+    .brand-text h1 {
       margin: 0;
-      opacity: 0.95;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .nav-group {
+      margin-bottom: 20px;
+    }
+
+    .nav-title {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+      padding-inline: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-item.active {
+      background: rgba(249, 115, 22, 0.16);
+      border-color: rgba(249, 115, 22, 0.28);
+    }
+
+    .nav-item .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 18px;
+      left: 16px;
+      right: 16px;
+    }
+
+    .lang-select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font: inherit;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .page-title h2 {
+      margin: 0 0 4px;
+      font-size: 28px;
+    }
+
+    .page-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
     }
 
     .filters {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -65,66 +168,84 @@
     input, select {
       width: 100%;
       padding: 11px 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid var(--border);
       background: white;
       color: var(--text);
       font: inherit;
+      box-shadow: var(--shadow);
     }
 
-    .summary {
+    .kpis {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 18px;
     }
 
-    .card {
+    .kpi {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: var(--radius);
+      padding: 16px;
       box-shadow: var(--shadow);
-      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi::after {
+      content: "";
+      position: absolute;
+      inset-inline-end: -20px;
+      top: -20px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(14, 165, 233, 0.08);
     }
 
     .kpi-label {
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
     }
 
     .kpi-value {
       font-size: 30px;
       font-weight: 700;
+      position: relative;
+      z-index: 1;
     }
 
     .charts {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.2fr 0.8fr;
       gap: 16px;
       margin-bottom: 18px;
     }
 
-    .chart-wrap {
+    .panel {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
+      border-radius: var(--radius);
       padding: 18px;
+      box-shadow: var(--shadow);
     }
 
-    .chart-title {
+    .panel-title {
       font-size: 18px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    .table-card {
+    .table-panel {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
+      border-radius: var(--radius);
       padding: 18px;
+      box-shadow: var(--shadow);
       overflow-x: auto;
     }
 
@@ -146,8 +267,6 @@
       background: #f8fbff;
       font-weight: 700;
       color: var(--text);
-      position: sticky;
-      top: 0;
     }
 
     .badge {
@@ -157,125 +276,296 @@
       color: white;
       font-size: 12px;
       font-weight: 700;
-      min-width: 74px;
+      min-width: 78px;
       text-align: center;
     }
 
-    .excellent { background: var(--excellent); }
-    .vgood { background: var(--vgood); }
-    .good { background: var(--good); }
-    .poor { background: var(--poor); }
+    .excellent { background: var(--success); }
+    .vgood { background: var(--accent-2); }
+    .good { background: var(--warning); }
+    .poor { background: var(--danger); }
 
     .muted {
       color: var(--muted);
     }
 
-    @media (max-width: 1000px) {
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .status-box {
+      border-radius: 14px;
+      padding: 14px;
+      color: white;
+      font-weight: 700;
+    }
+
+    .status-box small {
+      display: block;
+      opacity: 0.9;
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .status-box.excellent { background: var(--success); }
+    .status-box.vgood { background: var(--accent-2); }
+    .status-box.good { background: var(--warning); }
+    .status-box.poor { background: var(--danger); }
+
+    @media (max-width: 1100px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .sidebar-footer {
+        position: static;
+        margin-top: 12px;
+      }
+
       .filters,
-      .summary,
-      .charts {
+      .kpis,
+      .charts,
+      .status-grid {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="header-inner">
-      <h1>Manager Dashboard</h1>
-      <p>لوحة متابعة مختصرة لعدد التقارير، المواقع، متوسط التقييم، وتصنيف المواقع</p>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="filters">
-      <input type="text" id="searchInput" placeholder="بحث باسم الموقع أو المبنى أو المفتش">
-      <select id="regionFilter">
-        <option value="">كل المناطق</option>
-      </select>
-      <select id="classificationFilter">
-        <option value="">كل التصنيفات</option>
-        <option value="ممتاز">ممتاز</option>
-        <option value="جيد جدًا">جيد جدًا</option>
-        <option value="جيد">جيد</option>
-        <option value="ضعيف">ضعيف</option>
-      </select>
-      <select id="sortFilter">
-        <option value="latest">الأحدث</option>
-        <option value="score_desc">الأعلى تقييمًا</option>
-        <option value="score_asc">الأقل تقييمًا</option>
-        <option value="name">اسم الموقع</option>
-      </select>
-    </div>
-
-    <div class="summary">
-      <div class="card">
-        <div class="kpi-label">عدد التقارير</div>
-        <div class="kpi-value" id="reportsCount">0</div>
-      </div>
-      <div class="card">
-        <div class="kpi-label">عدد المواقع</div>
-        <div class="kpi-value" id="sitesCount">0</div>
-      </div>
-      <div class="card">
-        <div class="kpi-label">متوسط التقييم</div>
-        <div class="kpi-value" id="avgScore">0%</div>
-      </div>
-      <div class="card">
-        <div class="kpi-label">المواقع الممتازة</div>
-        <div class="kpi-value" id="excellentCount">0</div>
-      </div>
-    </div>
-
-    <div class="charts">
-      <div class="chart-wrap">
-        <div class="chart-title">متوسط تقييم المواقع</div>
-        <canvas id="siteChart"></canvas>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">QA</div>
+        <div class="brand-text">
+          <h1 id="brandTitle">لوحة الإدارة</h1>
+          <p id="brandSub">Gap Analysis & QA/QC</p>
+        </div>
       </div>
 
-      <div class="chart-wrap">
-        <div class="chart-title">توزيع التصنيفات</div>
-        <canvas id="classificationChart"></canvas>
+      <div class="nav-group">
+        <div class="nav-title" id="navMain">القائمة الرئيسية</div>
+        <a class="nav-item active" href="#">
+          <span class="dot"></span>
+          <span id="navDashboard">لوحة التحكم</span>
+        </a>
+        <a class="nav-item" href="./index.html">
+          <span class="dot"></span>
+          <span id="navReport">نموذج التقرير</span>
+        </a>
       </div>
-    </div>
 
-    <div class="table-card">
-      <div class="chart-title">ملخص المواقع</div>
-      <table>
-        <thead>
-          <tr>
-            <th>الموقع</th>
-            <th>المبنى</th>
-            <th>المنطقة</th>
-            <th>عدد التقارير</th>
-            <th>آخر تقييم</th>
-            <th>المتوسط</th>
-            <th>التصنيف</th>
-            <th>آخر تاريخ</th>
-          </tr>
-        </thead>
-        <tbody id="sitesTableBody"></tbody>
-      </table>
-    </div>
+      <div class="sidebar-footer">
+        <select id="languageSelect" class="lang-select" onchange="changeLanguage(this.value)">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div class="page-title">
+          <h2 id="pageTitle">لوحة متابعة الإدارة</h2>
+          <p id="pageSubtitle">عرض مختصر لعدد التقارير والمواقع ومتوسط التقييم والتصنيف العام</p>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input type="text" id="searchInput" />
+        <select id="regionFilter">
+          <option value="">كل المناطق</option>
+        </select>
+        <select id="classificationFilter">
+          <option value="">كل التصنيفات</option>
+          <option value="ممتاز">ممتاز</option>
+          <option value="جيد جدًا">جيد جدًا</option>
+          <option value="جيد">جيد</option>
+          <option value="ضعيف">ضعيف</option>
+        </select>
+        <select id="sortFilter">
+          <option value="latest">الأحدث</option>
+          <option value="score_desc">الأعلى تقييمًا</option>
+          <option value="score_asc">الأقل تقييمًا</option>
+          <option value="name">اسم الموقع</option>
+        </select>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label" id="kpiReportsLabel">عدد التقارير</div>
+          <div class="kpi-value" id="reportsCount">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label" id="kpiSitesLabel">عدد المواقع</div>
+          <div class="kpi-value" id="sitesCount">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label" id="kpiAvgLabel">متوسط التقييم</div>
+          <div class="kpi-value" id="avgScore">0%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label" id="kpiExcellentLabel">المواقع الممتازة</div>
+          <div class="kpi-value" id="excellentCount">0</div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="panel">
+          <div class="panel-title" id="siteChartTitle">متوسط تقييم المواقع</div>
+          <canvas id="siteChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title" id="classificationChartTitle">توزيع التصنيفات</div>
+          <canvas id="classificationChart"></canvas>
+
+          <div class="status-grid">
+            <div class="status-box excellent">
+              <small id="excellentLabel">ممتاز</small>
+              <div id="excellentBoxCount">0</div>
+            </div>
+            <div class="status-box vgood">
+              <small id="vgoodLabel">جيد جدًا</small>
+              <div id="vgoodBoxCount">0</div>
+            </div>
+            <div class="status-box good">
+              <small id="goodLabel">جيد</small>
+              <div id="goodBoxCount">0</div>
+            </div>
+            <div class="status-box poor">
+              <small id="poorLabel">ضعيف</small>
+              <div id="poorBoxCount">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-panel">
+        <div class="panel-title" id="tableTitle">ملخص المواقع</div>
+        <table>
+          <thead>
+            <tr>
+              <th id="thSite">الموقع</th>
+              <th id="thBuilding">المبنى</th>
+              <th id="thRegion">المنطقة</th>
+              <th id="thCount">عدد التقارير</th>
+              <th id="thLatest">آخر تقييم</th>
+              <th id="thAverage">المتوسط</th>
+              <th id="thClass">التصنيف</th>
+              <th id="thDate">آخر تاريخ</th>
+            </tr>
+          </thead>
+          <tbody id="sitesTableBody"></tbody>
+        </table>
+      </div>
+    </main>
   </div>
 
   <script>
+    const translations = {
+      ar: {
+        brandTitle: "لوحة الإدارة",
+        brandSub: "Gap Analysis & QA/QC",
+        navMain: "القائمة الرئيسية",
+        navDashboard: "لوحة التحكم",
+        navReport: "نموذج التقرير",
+        pageTitle: "لوحة متابعة الإدارة",
+        pageSubtitle: "عرض مختصر لعدد التقارير والمواقع ومتوسط التقييم والتصنيف العام",
+        searchPlaceholder: "بحث باسم الموقع أو المبنى أو المفتش",
+        allRegions: "كل المناطق",
+        allClasses: "كل التصنيفات",
+        excellent: "ممتاز",
+        vgood: "جيد جدًا",
+        good: "جيد",
+        poor: "ضعيف",
+        latest: "الأحدث",
+        scoreDesc: "الأعلى تقييمًا",
+        scoreAsc: "الأقل تقييمًا",
+        sortName: "اسم الموقع",
+        kpiReportsLabel: "عدد التقارير",
+        kpiSitesLabel: "عدد المواقع",
+        kpiAvgLabel: "متوسط التقييم",
+        kpiExcellentLabel: "المواقع الممتازة",
+        siteChartTitle: "متوسط تقييم المواقع",
+        classificationChartTitle: "توزيع التصنيفات",
+        tableTitle: "ملخص المواقع",
+        thSite: "الموقع",
+        thBuilding: "المبنى",
+        thRegion: "المنطقة",
+        thCount: "عدد التقارير",
+        thLatest: "آخر تقييم",
+        thAverage: "المتوسط",
+        thClass: "التصنيف",
+        thDate: "آخر تاريخ",
+        noData: "لا توجد بيانات مطابقة."
+      },
+      en: {
+        brandTitle: "Manager Dashboard",
+        brandSub: "Gap Analysis & QA/QC",
+        navMain: "Main Menu",
+        navDashboard: "Dashboard",
+        navReport: "Report Form",
+        pageTitle: "Management Dashboard",
+        pageSubtitle: "Quick view of reports, sites, average score, and overall classification",
+        searchPlaceholder: "Search by site, building, or inspector",
+        allRegions: "All Regions",
+        allClasses: "All Classifications",
+        excellent: "Excellent",
+        vgood: "Very Good",
+        good: "Good",
+        poor: "Poor",
+        latest: "Latest",
+        scoreDesc: "Highest Score",
+        scoreAsc: "Lowest Score",
+        sortName: "Site Name",
+        kpiReportsLabel: "Total Reports",
+        kpiSitesLabel: "Total Sites",
+        kpiAvgLabel: "Average Score",
+        kpiExcellentLabel: "Excellent Sites",
+        siteChartTitle: "Average Site Scores",
+        classificationChartTitle: "Classification Distribution",
+        tableTitle: "Sites Summary",
+        thSite: "Site",
+        thBuilding: "Building",
+        thRegion: "Region",
+        thCount: "Reports",
+        thLatest: "Latest Score",
+        thAverage: "Average",
+        thClass: "Classification",
+        thDate: "Latest Date",
+        noData: "No matching data."
+      }
+    };
+
+    let currentLang = "ar";
     let rawReports = [];
     let aggregatedSites = [];
     let siteChart;
     let classificationChart;
 
     function getClassification(score) {
-      if (score >= 90) return "ممتاز";
-      if (score >= 80) return "جيد جدًا";
-      if (score >= 70) return "جيد";
-      return "ضعيف";
+      if (score >= 90) return currentLang === "ar" ? "ممتاز" : "Excellent";
+      if (score >= 80) return currentLang === "ar" ? "جيد جدًا" : "Very Good";
+      if (score >= 70) return currentLang === "ar" ? "جيد" : "Good";
+      return currentLang === "ar" ? "ضعيف" : "Poor";
     }
 
     function getClassificationClass(label) {
-      if (label === "ممتاز") return "excellent";
-      if (label === "جيد جدًا") return "vgood";
-      if (label === "جيد") return "good";
+      const arExcellent = currentLang === "ar" ? "ممتاز" : "Excellent";
+      const arVgood = currentLang === "ar" ? "جيد جدًا" : "Very Good";
+      const arGood = currentLang === "ar" ? "جيد" : "Good";
+      if (label === arExcellent) return "excellent";
+      if (label === arVgood) return "vgood";
+      if (label === arGood) return "good";
       return "poor";
     }
 
@@ -293,12 +583,14 @@
       } catch (error) {
         console.error("Failed to load reports.json", error);
         document.getElementById("sitesTableBody").innerHTML =
-          '<tr><td colspan="8" class="muted">تعذر قراءة ملف reports.json</td></tr>';
+          `<tr><td colspan="8" class="muted">${translations[currentLang].noData}</td></tr>`;
       }
     }
 
     function populateRegionFilter(reports) {
       const filter = document.getElementById("regionFilter");
+      const currentValue = filter.value;
+      filter.innerHTML = `<option value="">${translations[currentLang].allRegions}</option>`;
       const regions = [...new Set(reports.map(r => r.region).filter(Boolean))];
       regions.sort().forEach(region => {
         const option = document.createElement("option");
@@ -306,6 +598,7 @@
         option.textContent = region;
         filter.appendChild(option);
       });
+      filter.value = currentValue;
     }
 
     function aggregateReports(reports) {
@@ -358,7 +651,8 @@
         : 0;
       document.getElementById("avgScore").textContent = `${avgScore}%`;
 
-      const excellentCount = sites.filter(s => s.classification === "ممتاز").length;
+      const excellentLabel = currentLang === "ar" ? "ممتاز" : "Excellent";
+      const excellentCount = sites.filter(s => s.classification === excellentLabel).length;
       document.getElementById("excellentCount").textContent = excellentCount;
     }
 
@@ -367,7 +661,7 @@
       tbody.innerHTML = "";
 
       if (!sites.length) {
-        tbody.innerHTML = '<tr><td colspan="8" class="muted">لا توجد بيانات مطابقة.</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="8" class="muted">${translations[currentLang].noData}</td></tr>`;
         return;
       }
 
@@ -391,12 +685,22 @@
       const labels = sites.map(s => s.siteName.length > 18 ? s.siteName.slice(0, 18) + "..." : s.siteName);
       const avgScores = sites.map(s => s.averageScore);
 
+      const excellentLabel = currentLang === "ar" ? "ممتاز" : "Excellent";
+      const vgoodLabel = currentLang === "ar" ? "جيد جدًا" : "Very Good";
+      const goodLabel = currentLang === "ar" ? "جيد" : "Good";
+      const poorLabel = currentLang === "ar" ? "ضعيف" : "Poor";
+
       const classCounts = {
-        "ممتاز": sites.filter(s => s.classification === "ممتاز").length,
-        "جيد جدًا": sites.filter(s => s.classification === "جيد جدًا").length,
-        "جيد": sites.filter(s => s.classification === "جيد").length,
-        "ضعيف": sites.filter(s => s.classification === "ضعيف").length
+        [excellentLabel]: sites.filter(s => s.classification === excellentLabel).length,
+        [vgoodLabel]: sites.filter(s => s.classification === vgoodLabel).length,
+        [goodLabel]: sites.filter(s => s.classification === goodLabel).length,
+        [poorLabel]: sites.filter(s => s.classification === poorLabel).length
       };
+
+      document.getElementById("excellentBoxCount").textContent = classCounts[excellentLabel];
+      document.getElementById("vgoodBoxCount").textContent = classCounts[vgoodLabel];
+      document.getElementById("goodBoxCount").textContent = classCounts[goodLabel];
+      document.getElementById("poorBoxCount").textContent = classCounts[poorLabel];
 
       if (siteChart) siteChart.destroy();
       if (classificationChart) classificationChart.destroy();
@@ -406,7 +710,7 @@
         data: {
           labels,
           datasets: [{
-            label: "متوسط التقييم",
+            label: currentLang === "ar" ? "متوسط التقييم" : "Average Score",
             data: avgScores,
             borderWidth: 1
           }]
@@ -472,7 +776,7 @@
       } else if (sort === "score_asc") {
         aggregatedSites.sort((a, b) => a.averageScore - b.averageScore);
       } else if (sort === "name") {
-        aggregatedSites.sort((a, b) => a.siteName.localeCompare(b.siteName, "ar"));
+        aggregatedSites.sort((a, b) => a.siteName.localeCompare(b.siteName, currentLang === "ar" ? "ar" : "en"));
       }
 
       updateKPIs(aggregatedSites, filteredReports);
@@ -487,6 +791,76 @@
       document.getElementById("sortFilter").addEventListener("change", applyFilters);
     }
 
+    function changeLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.getElementById("languageSelect").value = lang;
+
+      const t = translations[lang];
+
+      setText("brandTitle", t.brandTitle);
+      setText("brandSub", t.brandSub);
+      setText("navMain", t.navMain);
+      setText("navDashboard", t.navDashboard);
+      setText("navReport", t.navReport);
+      setText("pageTitle", t.pageTitle);
+      setText("pageSubtitle", t.pageSubtitle);
+      document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+
+      const regionFilter = document.getElementById("regionFilter");
+      const selectedRegion = regionFilter.value;
+      populateRegionFilter(rawReports);
+      regionFilter.value = selectedRegion;
+
+      const classFilter = document.getElementById("classificationFilter");
+      const selectedClass = classFilter.value;
+      classFilter.innerHTML = `
+        <option value="">${t.allClasses}</option>
+        <option value="${t.excellent}">${t.excellent}</option>
+        <option value="${t.vgood}">${t.vgood}</option>
+        <option value="${t.good}">${t.good}</option>
+        <option value="${t.poor}">${t.poor}</option>
+      `;
+      classFilter.value = selectedClass;
+
+      const sortFilter = document.getElementById("sortFilter");
+      const selectedSort = sortFilter.value;
+      sortFilter.innerHTML = `
+        <option value="latest">${t.latest}</option>
+        <option value="score_desc">${t.scoreDesc}</option>
+        <option value="score_asc">${t.scoreAsc}</option>
+        <option value="name">${t.sortName}</option>
+      `;
+      sortFilter.value = selectedSort;
+
+      setText("kpiReportsLabel", t.kpiReportsLabel);
+      setText("kpiSitesLabel", t.kpiSitesLabel);
+      setText("kpiAvgLabel", t.kpiAvgLabel);
+      setText("kpiExcellentLabel", t.kpiExcellentLabel);
+      setText("siteChartTitle", t.siteChartTitle);
+      setText("classificationChartTitle", t.classificationChartTitle);
+      setText("tableTitle", t.tableTitle);
+      setText("thSite", t.thSite);
+      setText("thBuilding", t.thBuilding);
+      setText("thRegion", t.thRegion);
+      setText("thCount", t.thCount);
+      setText("thLatest", t.thLatest);
+      setText("thAverage", t.thAverage);
+      setText("thClass", t.thClass);
+      setText("thDate", t.thDate);
+      setText("excellentLabel", t.excellent);
+      setText("vgoodLabel", t.vgood);
+      setText("goodLabel", t.good);
+      setText("poorLabel", t.poor);
+
+      applyFilters();
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
     function escapeHtml(text) {
       return String(text ?? "")
         .replace(/&/g, "&amp;")
@@ -496,6 +870,7 @@
         .replace(/'/g, "&#039;");
     }
 
+    changeLanguage("ar");
     loadReports();
   </script>
 </body>
