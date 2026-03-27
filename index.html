@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Existing Building Quality Assessment + Gap Analysis</title>
+  <title>Gap Analysis and QA/QC Report</title>
 
   <style>
     * { box-sizing: border-box; }
@@ -69,23 +69,18 @@
       padding: 0 20px;
     }
 
-    .header-top {
+    .simple-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
-    .brand h1 {
-      margin: 0 0 6px;
-      font-size: 34px;
-    }
-
-    .brand p {
+    .simple-header .brand h1 {
       margin: 0;
-      opacity: 0.95;
-      font-size: 15px;
+      font-size: 34px;
+      color: white;
     }
 
     .top-actions {
@@ -93,6 +88,11 @@
       gap: 10px;
       align-items: center;
       flex-wrap: wrap;
+    }
+
+    .top-actions select,
+    .top-actions button {
+      min-width: 180px;
     }
 
     select, input, textarea, button {
@@ -307,23 +307,6 @@
       margin-top: 8px;
     }
 
-    .badge-line {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .badge {
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text);
-      background: var(--badge-bg);
-      border: 1px solid var(--badge-border);
-    }
-
     .table-wrap {
       overflow-x: auto;
     }
@@ -392,7 +375,7 @@
         grid-template-columns: 1fr;
       }
 
-      .brand h1 {
+      .simple-header .brand h1 {
         font-size: 28px;
       }
 
@@ -408,15 +391,9 @@
 
   <div class="header">
     <div class="header-inner">
-      <div class="header-top">
+      <div class="simple-header">
         <div class="brand">
-          <h1 id="pageTitle"></h1>
-          <p id="pageSubtitle"></p>
-          <div class="badge-line">
-            <span class="badge" id="badge1"></span>
-            <span class="badge" id="badge2"></span>
-            <span class="badge" id="badge3"></span>
-          </div>
+          <h1 id="pageTitle">Gap Analysis and QA/QC Report</h1>
         </div>
 
         <div class="top-actions">
@@ -425,7 +402,6 @@
             <option value="ar">العربية</option>
             <option value="en">English</option>
           </select>
-          <button onclick="generatePDF()" id="pdfBtn"></button>
         </div>
       </div>
     </div>
@@ -598,11 +574,6 @@
   <script>
     const translations = {
       ar: {
-        pageTitle: "تقييم جودة المباني القائمة + Gap Analysis",
-        pageSubtitle: "نموذج تقييم للمباني المستخدمة مع تحليل الفجوات والإجراءات التصحيحية",
-        badge1: "مباني قائمة",
-        badge2: "Gap Analysis",
-        badge3: "تصدير PDF",
         pdfBtn: "تصدير PDF",
         themeLight: "☀️ الوضع الفاتح",
         themeDark: "🌙 الوضع الداكن",
@@ -692,13 +663,7 @@
           "الضوضاء ضمن الحدود المقبولة",
           "راحة الموظفين في البيئة الداخلية جيدة"
         ],
-        pdfTitle: "تقرير تقييم جودة المباني القائمة وتحليل الفجوات",
-        pdfBuildingInfo: "معلومات المبنى",
-        pdfAssessmentSummary: "ملخص التقييم",
-        pdfGeneralNotes: "الملاحظات العامة والتوصيات",
-        pdfSatisfaction: "رضا الموظفين / المستخدمين",
-        pdfGap: "تحليل الفجوات والإجراءات التصحيحية",
-        pdfPhotos: "الصور",
+        pdfTitle: "Gap Analysis and QA/QC Report",
         pdfGenerated: "تاريخ الإنشاء",
         pdfBuilding: "اسم المبنى",
         pdfSite: "الموقع / المجمع",
@@ -710,14 +675,12 @@
         pdfPhotoTitle: "صورة",
         pdfNoPhotos: "لا توجد صور مرفقة.",
         pdfNoActions: "لا توجد إجراءات تصحيحية مدخلة.",
-        itemCol: "البند"
+        itemCol: "البند",
+        pdfGap: "تحليل الفجوات والإجراءات التصحيحية",
+        pdfSatisfaction: "رضا الموظفين / المستخدمين",
+        pdfGeneralNotes: "الملاحظات العامة والتوصيات"
       },
       en: {
-        pageTitle: "Existing Building Quality Assessment + Gap Analysis",
-        pageSubtitle: "Assessment form for occupied buildings with gap analysis and corrective actions",
-        badge1: "Existing Buildings",
-        badge2: "Gap Analysis",
-        badge3: "PDF Export",
         pdfBtn: "Export PDF",
         themeLight: "☀️ Light Mode",
         themeDark: "🌙 Dark Mode",
@@ -807,13 +770,7 @@
           "Noise level is within acceptable limits",
           "Indoor comfort for employees is good"
         ],
-        pdfTitle: "Existing Building Quality Assessment & Gap Analysis Report",
-        pdfBuildingInfo: "Building Information",
-        pdfAssessmentSummary: "Assessment Summary",
-        pdfGeneralNotes: "General Notes & Recommendations",
-        pdfSatisfaction: "Employee / User Satisfaction",
-        pdfGap: "Gap Analysis & Corrective Actions",
-        pdfPhotos: "Photos",
+        pdfTitle: "Gap Analysis and QA/QC Report",
         pdfGenerated: "Generated",
         pdfBuilding: "Building Name",
         pdfSite: "Site / Complex",
@@ -825,7 +782,10 @@
         pdfPhotoTitle: "Photo",
         pdfNoPhotos: "No attached photos.",
         pdfNoActions: "No corrective actions entered.",
-        itemCol: "Item"
+        itemCol: "Item",
+        pdfGap: "Gap Analysis & Corrective Actions",
+        pdfSatisfaction: "Employee / User Satisfaction",
+        pdfGeneralNotes: "General Notes & Recommendations"
       }
     };
 
@@ -1047,14 +1007,8 @@
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
       document.getElementById("languageSelect").value = lang;
+      document.getElementById("pageTitle").textContent = "Gap Analysis and QA/QC Report";
 
-      setText("pageTitle", t.pageTitle);
-      setText("pageSubtitle", t.pageSubtitle);
-      setText("badge1", t.badge1);
-      setText("badge2", t.badge2);
-      setText("badge3", t.badge3);
-      setText("pdfBtn", t.pdfBtn);
-      setText("pdfBtnBottom", t.pdfBtn);
       setText("buildingLabel", t.buildingLabel);
       setText("siteLabel", t.siteLabel);
       setText("inspectorLabel", t.inspectorLabel);
@@ -1091,6 +1045,7 @@
       setText("photosTitle", t.photosTitle);
       setText("photoHint", t.photoHint);
       setText("resetBtn", t.resetBtn);
+      setText("pdfBtnBottom", t.pdfBtn);
 
       renderSatisfactionOptions();
       renderRating();
@@ -1534,7 +1489,7 @@
   ${images || `
   <section class="pdf-page">
     <div class="pdf-head">
-      <div class="pdf-title">${escapeHtml(t.pdfPhotos)}</div>
+      <div class="pdf-title">${escapeHtml("Photos")}</div>
     </div>
     <div class="text-box">${escapeHtml(t.pdfNoPhotos)}</div>
   </section>
