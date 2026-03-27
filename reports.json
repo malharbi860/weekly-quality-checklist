@@ -1,0 +1,56 @@
+[
+  {
+    "reportNo": "BQA-001",
+    "buildingName": "مبنى الإدارة",
+    "siteName": "موقع الرياض الرئيسي",
+    "region": "الرياض",
+    "inspectorName": "محمد الحربي",
+    "date": "2026-04-05",
+    "overallScore": 92
+  },
+  {
+    "reportNo": "BQA-002",
+    "buildingName": "مبنى الإدارة",
+    "siteName": "موقع الرياض الرئيسي",
+    "region": "الرياض",
+    "inspectorName": "محمد الحربي",
+    "date": "2026-04-12",
+    "overallScore": 88
+  },
+  {
+    "reportNo": "BQA-003",
+    "buildingName": "مبنى التشغيل",
+    "siteName": "موقع جدة",
+    "region": "مكة المكرمة",
+    "inspectorName": "أحمد علي",
+    "date": "2026-04-10",
+    "overallScore": 76
+  },
+  {
+    "reportNo": "BQA-004",
+    "buildingName": "مبنى الخدمات",
+    "siteName": "موقع الدمام",
+    "region": "الشرقية",
+    "inspectorName": "خالد سالم",
+    "date": "2026-04-09",
+    "overallScore": 64
+  },
+  {
+    "reportNo": "BQA-005",
+    "buildingName": "مبنى المتحف",
+    "siteName": "موقع أبها",
+    "region": "عسير",
+    "inspectorName": "سعد القحطاني",
+    "date": "2026-04-11",
+    "overallScore": 83
+  },
+  {
+    "reportNo": "BQA-006",
+    "buildingName": "مبنى المرافق",
+    "siteName": "موقع المدينة",
+    "region": "المدينة المنورة",
+    "inspectorName": "فهد المطيري",
+    "date": "2026-04-13",
+    "overallScore": 91
+  }
+]
