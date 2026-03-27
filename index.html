@@ -24,9 +24,9 @@
       --success: #16a34a;
       --header-text: #ffffff;
       --table-head: #f0f7ff;
-      --badge-bg: #e8f3ff;
-      --badge-border: #cfe4fb;
       --chip-bg: #f8fafc;
+      --switch-bg: rgba(255,255,255,0.22);
+      --switch-thumb: #ffffff;
     }
 
     body.dark-mode{
@@ -42,9 +42,9 @@
       --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
       --header-text: #ffffff;
       --table-head: rgba(14, 165, 233, 0.12);
-      --badge-bg: rgba(14, 165, 233, 0.14);
-      --badge-border: rgba(14, 165, 233, 0.24);
       --chip-bg: #1e293b;
+      --switch-bg: rgba(255,255,255,0.16);
+      --switch-thumb: #ffffff;
     }
 
     body {
@@ -57,8 +57,8 @@
     .header {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: var(--header-text);
-      padding: 24px 0;
-      margin-bottom: 22px;
+      padding: 14px 0 18px;
+      margin-bottom: 18px;
       box-shadow: var(--shadow);
     }
 
@@ -69,30 +69,43 @@
       padding: 0 20px;
     }
 
-    .simple-header {
+    .top-bar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-bar-left,
+    .top-bar-right {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .simple-header .brand h1 {
-      margin: 0;
-      font-size: 34px;
-      color: white;
-    }
-
-    .top-actions {
-      display: flex;
       gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
     }
 
-    .top-actions select,
-    .top-actions button {
-      min-width: 180px;
+    .top-bar-left {
+      justify-content: flex-start;
+    }
+
+    .top-bar-right {
+      justify-content: flex-end;
+    }
+
+    .header-title {
+      text-align: center;
+    }
+
+    .header-title h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+      font-weight: 700;
+    }
+
+    .lang-select {
+      min-width: 160px;
+      max-width: 180px;
     }
 
     select, input, textarea, button {
@@ -364,6 +377,65 @@
       background: var(--success) !important;
     }
 
+    /* Slider switch */
+    .theme-switch-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 62px;
+      height: 34px;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background: var(--switch-bg);
+      border: 1px solid rgba(255,255,255,0.22);
+      transition: .25s;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      right: 4px;
+      bottom: 3px;
+      background: var(--switch-thumb);
+      transition: .25s;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(-28px);
+    }
+
+    .theme-label {
+      min-width: 110px;
+      text-align: center;
+      color: white;
+    }
+
     @media (max-width: 1050px) {
       .grid,
       .summary,
@@ -375,14 +447,25 @@
         grid-template-columns: 1fr;
       }
 
-      .simple-header .brand h1 {
-        font-size: 28px;
-      }
-
       .photos-preview img {
         width: 100%;
         max-width: 100%;
         height: auto;
+      }
+
+      .top-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .top-bar-left,
+      .top-bar-right,
+      .header-title {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .header-title h1 {
+        font-size: 24px;
       }
     }
   </style>
@@ -391,14 +474,23 @@
 
   <div class="header">
     <div class="header-inner">
-      <div class="simple-header">
-        <div class="brand">
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <div class="theme-switch-wrap">
+            <span id="themeText" class="theme-label">🌙 Dark</span>
+            <label class="switch">
+              <input type="checkbox" id="themeToggle" onchange="toggleThemeSlider()">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="header-title">
           <h1 id="pageTitle">Gap Analysis and QA/QC Report</h1>
         </div>
 
-        <div class="top-actions">
-          <button type="button" onclick="toggleTheme()" id="themeToggleBtn">🌙 Dark Mode</button>
-          <select id="languageSelect" onchange="changeLanguage(this.value)">
+        <div class="top-bar-right">
+          <select id="languageSelect" class="lang-select" onchange="changeLanguage(this.value)">
             <option value="ar">العربية</option>
             <option value="en">English</option>
           </select>
@@ -575,8 +667,8 @@
     const translations = {
       ar: {
         pdfBtn: "تصدير PDF",
-        themeLight: "☀️ الوضع الفاتح",
-        themeDark: "🌙 الوضع الداكن",
+        themeLight: "☀️ فاتح",
+        themeDark: "🌙 داكن",
         buildingLabel: "اسم المبنى",
         siteLabel: "اسم الموقع / المجمع",
         inspectorLabel: "اسم المفتش",
@@ -682,8 +774,8 @@
       },
       en: {
         pdfBtn: "Export PDF",
-        themeLight: "☀️ Light Mode",
-        themeDark: "🌙 Dark Mode",
+        themeLight: "☀️ Light",
+        themeDark: "🌙 Dark",
         buildingLabel: "Building Name",
         siteLabel: "Site / Complex Name",
         inspectorLabel: "Inspector Name",
@@ -832,17 +924,17 @@
       return "";
     }
 
-    function updateThemeButton() {
+    function updateThemeText() {
       const t = translations[currentLang];
-      const btn = document.getElementById("themeToggleBtn");
-      btn.textContent = isDarkMode ? t.themeLight : t.themeDark;
+      document.getElementById("themeText").textContent = isDarkMode ? t.themeLight : t.themeDark;
+      document.getElementById("themeToggle").checked = isDarkMode;
     }
 
-    function toggleTheme() {
-      isDarkMode = !isDarkMode;
+    function toggleThemeSlider() {
+      isDarkMode = document.getElementById("themeToggle").checked;
       document.body.classList.toggle("dark-mode", isDarkMode);
       localStorage.setItem("buildingTheme", isDarkMode ? "dark" : "light");
-      updateThemeButton();
+      updateThemeText();
     }
 
     function createChecklist(sectionName, items) {
@@ -1051,7 +1143,7 @@
       renderRating();
       renderAllChecklists();
       renderActionRows();
-      updateThemeButton();
+      updateThemeText();
     }
 
     function calculateSectionScore(sectionName) {
@@ -1221,9 +1313,7 @@
     size: A4;
     margin: 14mm;
   }
-
   * { box-sizing: border-box; }
-
   body {
     font-family: Arial, sans-serif;
     direction: ${dir};
@@ -1233,34 +1323,28 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-
   .pdf-page {
     page-break-after: always;
     min-height: 260mm;
   }
-
   .pdf-page:last-child {
     page-break-after: auto;
   }
-
   .pdf-head {
     border-bottom: 3px solid #0f766e;
     padding-bottom: 10px;
     margin-bottom: 18px;
   }
-
   .pdf-title {
     font-size: 24px;
     font-weight: 700;
     color: #0f172a;
   }
-
   .subline {
     color: #6b7280;
     font-size: 13px;
     margin-top: 6px;
   }
-
   .cover-box {
     border: 1px solid #dbe4ee;
     border-radius: 14px;
@@ -1268,41 +1352,35 @@
     margin-top: 18px;
     background: #f8fbff;
   }
-
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     margin-top: 14px;
   }
-
   .info-card {
     border: 1px solid #dbe4ee;
     border-radius: 12px;
     padding: 12px 14px;
     background: #ffffff;
   }
-
   .info-label {
     font-size: 12px;
     color: #6b7280;
     margin-bottom: 6px;
   }
-
   .info-value {
     font-size: 16px;
     font-weight: 700;
     color: #0f172a;
     word-break: break-word;
   }
-
   .score-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
     margin-top: 18px;
   }
-
   .score-card {
     border: 1px solid #dbe4ee;
     border-radius: 14px;
@@ -1310,25 +1388,21 @@
     text-align: center;
     background: #ffffff;
   }
-
   .score-label {
     font-size: 13px;
     color: #6b7280;
     margin-bottom: 8px;
   }
-
   .score-value {
     font-size: 28px;
     font-weight: 700;
     color: #0f172a;
   }
-
   .pdf-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
   }
-
   .pdf-table th,
   .pdf-table td {
     border: 1px solid #dbe4ee;
@@ -1337,12 +1411,10 @@
     text-align: ${lang === "ar" ? "right" : "left"};
     font-size: 14px;
   }
-
   .pdf-table th {
     background: #f0f7ff;
     font-weight: 700;
   }
-
   .text-box {
     border: 1px solid #dbe4ee;
     border-radius: 12px;
@@ -1353,18 +1425,15 @@
     word-break: break-word;
     min-height: 90px;
   }
-
   .section-title {
     font-size: 18px;
     font-weight: 700;
     margin: 0 0 10px;
     color: #0f172a;
   }
-
   .spacer {
     height: 16px;
   }
-
   .photo-page-wrap {
     display: flex;
     align-items: center;
@@ -1375,7 +1444,6 @@
     padding: 10px;
     background: #ffffff;
   }
-
   .photo-page-wrap img {
     max-width: 100%;
     max-height: 210mm;
@@ -1394,58 +1462,22 @@
 
     <div class="cover-box">
       <div class="info-grid">
-        <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfBuilding)}</div>
-          <div class="info-value">${escapeHtml(buildingName)}</div>
-        </div>
-        <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfSite)}</div>
-          <div class="info-value">${escapeHtml(siteName)}</div>
-        </div>
-        <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfInspector)}</div>
-          <div class="info-value">${escapeHtml(inspectorName)}</div>
-        </div>
-        <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfDate)}</div>
-          <div class="info-value">${escapeHtml(inspectionDate)}</div>
-        </div>
-        <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfZone)}</div>
-          <div class="info-value">${escapeHtml(zoneName)}</div>
-        </div>
-        <div class="info-card">
-          <div class="info-label">${escapeHtml(t.pdfOccupancy)}</div>
-          <div class="info-value">${escapeHtml(occupancyType)}</div>
-        </div>
+        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfBuilding)}</div><div class="info-value">${escapeHtml(buildingName)}</div></div>
+        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfSite)}</div><div class="info-value">${escapeHtml(siteName)}</div></div>
+        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfInspector)}</div><div class="info-value">${escapeHtml(inspectorName)}</div></div>
+        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfDate)}</div><div class="info-value">${escapeHtml(inspectionDate)}</div></div>
+        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfZone)}</div><div class="info-value">${escapeHtml(zoneName)}</div></div>
+        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfOccupancy)}</div><div class="info-value">${escapeHtml(occupancyType)}</div></div>
       </div>
     </div>
 
     <div class="score-grid">
-      <div class="score-card">
-        <div class="score-label">${escapeHtml(t.overallScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(overallScore)}</div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">${escapeHtml(t.cleanScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(cleanScore)}</div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">${escapeHtml(t.finishScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(finishScore)}</div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">${escapeHtml(t.mepScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(mepScore)}</div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">${escapeHtml(t.safetyScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(safetyScore)}</div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">${escapeHtml(t.facilityScoreLabel)}</div>
-        <div class="score-value">${escapeHtml(facilityScore)}</div>
-      </div>
+      <div class="score-card"><div class="score-label">${escapeHtml(t.overallScoreLabel)}</div><div class="score-value">${escapeHtml(overallScore)}</div></div>
+      <div class="score-card"><div class="score-label">${escapeHtml(t.cleanScoreLabel)}</div><div class="score-value">${escapeHtml(cleanScore)}</div></div>
+      <div class="score-card"><div class="score-label">${escapeHtml(t.finishScoreLabel)}</div><div class="score-value">${escapeHtml(finishScore)}</div></div>
+      <div class="score-card"><div class="score-label">${escapeHtml(t.mepScoreLabel)}</div><div class="score-value">${escapeHtml(mepScore)}</div></div>
+      <div class="score-card"><div class="score-label">${escapeHtml(t.safetyScoreLabel)}</div><div class="score-value">${escapeHtml(safetyScore)}</div></div>
+      <div class="score-card"><div class="score-label">${escapeHtml(t.facilityScoreLabel)}</div><div class="score-value">${escapeHtml(facilityScore)}</div></div>
     </div>
   </section>
 
@@ -1463,18 +1495,11 @@
     </div>
 
     <div class="info-grid">
-      <div class="info-card">
-        <div class="info-label">${escapeHtml(t.satisfactionTypeLabel)}</div>
-        <div class="info-value">${escapeHtml(satisfactionType)}</div>
-      </div>
-      <div class="info-card">
-        <div class="info-label">${escapeHtml(t.satisfactionRateLabel)}</div>
-        <div class="info-value">${escapeHtml(satisfactionScore)}</div>
-      </div>
+      <div class="info-card"><div class="info-label">${escapeHtml(t.satisfactionTypeLabel)}</div><div class="info-value">${escapeHtml(satisfactionType)}</div></div>
+      <div class="info-card"><div class="info-label">${escapeHtml(t.satisfactionRateLabel)}</div><div class="info-value">${escapeHtml(satisfactionScore)}</div></div>
     </div>
 
     <div class="spacer"></div>
-
     <div class="section-title">${escapeHtml(t.satisfactionNotesLabel)}</div>
     <div class="text-box">${escapeHtml(satisfactionNotes)}</div>
   </section>
@@ -1489,7 +1514,7 @@
   ${images || `
   <section class="pdf-page">
     <div class="pdf-head">
-      <div class="pdf-title">${escapeHtml("Photos")}</div>
+      <div class="pdf-title">Photos</div>
     </div>
     <div class="text-box">${escapeHtml(t.pdfNoPhotos)}</div>
   </section>
@@ -1500,7 +1525,7 @@
 
       const printWindow = window.open("", "_blank");
       if (!printWindow) {
-        alert(lang === "ar" ? "يرجى السماح بفتح النوافذ المنبثقة لطباعة التقرير." : "Please allow pop-ups to print the report.");
+        alert(lang === "ar" ? "يرجى السماح بالنوافذ المنبثقة." : "Please allow pop-ups.");
         return;
       }
 
@@ -1512,7 +1537,7 @@
         setTimeout(() => {
           printWindow.focus();
           printWindow.print();
-        }, 500);
+        }, 700);
       };
     }
 
@@ -1553,7 +1578,7 @@
 
     changeLanguage("ar");
     renderActionRows();
-    updateThemeButton();
+    updateThemeText();
   </script>
 </body>
 </html>
