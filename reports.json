@@ -1,56 +1,92 @@
 [
   {
-    "reportNo": "BQA-001",
-    "buildingName": "مبنى الإدارة",
-    "siteName": "موقع الرياض الرئيسي",
-    "region": "الرياض",
+    "reportNo": "RPT-001",
+    "buildingName": "متحف الرياض الوطني",
+    "regionCity": "الرياض",
+    "region": "الوسطى",
     "inspectorName": "محمد الحربي",
-    "date": "2026-04-05",
+    "date": "2026-03-20",
     "overallScore": 92
   },
   {
-    "reportNo": "BQA-002",
-    "buildingName": "مبنى الإدارة",
-    "siteName": "موقع الرياض الرئيسي",
-    "region": "الرياض",
+    "reportNo": "RPT-002",
+    "buildingName": "مبنى هيئة التراث",
+    "regionCity": "الرياض",
+    "region": "الوسطى",
     "inspectorName": "محمد الحربي",
-    "date": "2026-04-12",
+    "date": "2026-03-22",
     "overallScore": 88
   },
   {
-    "reportNo": "BQA-003",
-    "buildingName": "مبنى التشغيل",
-    "siteName": "موقع جدة",
-    "region": "مكة المكرمة",
-    "inspectorName": "أحمد علي",
-    "date": "2026-04-10",
-    "overallScore": 76
+    "reportNo": "RPT-003",
+    "buildingName": "متحف جدة",
+    "regionCity": "جدة",
+    "region": "الغربية",
+    "inspectorName": "أحمد السبيعي",
+    "date": "2026-03-21",
+    "overallScore": 81
   },
   {
-    "reportNo": "BQA-004",
-    "buildingName": "مبنى الخدمات",
-    "siteName": "موقع الدمام",
+    "reportNo": "RPT-004",
+    "buildingName": "مبنى إداري - الدمام",
+    "regionCity": "الدمام",
     "region": "الشرقية",
-    "inspectorName": "خالد سالم",
-    "date": "2026-04-09",
-    "overallScore": 64
+    "inspectorName": "سعد القحطاني",
+    "date": "2026-03-23",
+    "overallScore": 74
   },
   {
-    "reportNo": "BQA-005",
-    "buildingName": "مبنى المتحف",
-    "siteName": "موقع أبها",
-    "region": "عسير",
-    "inspectorName": "سعد القحطاني",
-    "date": "2026-04-11",
+    "reportNo": "RPT-005",
+    "buildingName": "متحف أبها",
+    "regionCity": "أبها",
+    "region": "الجنوبية",
+    "inspectorName": "خالد الزهراني",
+    "date": "2026-03-18",
+    "overallScore": 66
+  },
+  {
+    "reportNo": "RPT-006",
+    "buildingName": "متحف القصيم",
+    "regionCity": "بريدة",
+    "region": "الوسطى",
+    "inspectorName": "محمد الحربي",
+    "date": "2026-03-25",
+    "overallScore": 95
+  },
+  {
+    "reportNo": "RPT-007",
+    "buildingName": "مبنى حكومي - تبوك",
+    "regionCity": "تبوك",
+    "region": "الشمالية",
+    "inspectorName": "فيصل العنزي",
+    "date": "2026-03-19",
     "overallScore": 83
   },
   {
-    "reportNo": "BQA-006",
-    "buildingName": "مبنى المرافق",
-    "siteName": "موقع المدينة",
-    "region": "المدينة المنورة",
-    "inspectorName": "فهد المطيري",
-    "date": "2026-04-13",
-    "overallScore": 91
+    "reportNo": "RPT-008",
+    "buildingName": "متحف نجران",
+    "regionCity": "نجران",
+    "region": "الجنوبية",
+    "inspectorName": "محمد الحربي",
+    "date": "2026-03-17",
+    "overallScore": 78
+  },
+  {
+    "reportNo": "RPT-009",
+    "buildingName": "مبنى إداري - الجبيل",
+    "regionCity": "الجبيل",
+    "region": "الشرقية",
+    "inspectorName": "سعد القحطاني",
+    "date": "2026-03-26",
+    "overallScore": 90
+  },
+  {
+    "reportNo": "RPT-010",
+    "buildingName": "متحف الأحساء",
+    "regionCity": "الأحساء",
+    "region": "الشرقية",
+    "inspectorName": "أحمد السبيعي",
+    "date": "2026-03-24",
+    "overallScore": 85
   }
 ]
