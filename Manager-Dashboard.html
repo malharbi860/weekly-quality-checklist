@@ -9,18 +9,26 @@
     * { box-sizing: border-box; }
 
     :root{
-      --bg: #eef2f7;
+      --bg: #f3f4f6;
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
-      --border: #d8dee8;
-      --sidebar: #111827;
-      --accent: #f59e0b;
+      --border: #d9e1e8;
 
-      --excellent: #16a34a;
-      --vgood: #06b6d4;
-      --good: #f59e0b;
-      --poor: #dc2626;
+      --sidebar: #0f1720;
+      --sidebar-2: #121d29;
+      --sidebar-text: #f9fafb;
+
+      --brand-gold: #c89b3c;
+      --brand-maroon: #7a1b57;
+      --brand-orange: #e96a3b;
+      --brand-navy: #0f2c3f;
+      --brand-teal: #8fb8b1;
+
+      --excellent: #2e7d32;
+      --vgood: #1e88a8;
+      --good: #c98a1d;
+      --poor: #c23b3b;
 
       --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
       --radius: 14px;
@@ -38,25 +46,27 @@
 
     .app {
       display: grid;
-      grid-template-columns: 230px 1fr;
+      grid-template-columns: 250px 1fr;
       min-height: 100vh;
       width: 100%;
       align-items: stretch;
     }
 
     .sidebar {
-      background: var(--sidebar);
-      color: white;
-      padding: 14px;
+      background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-2) 100%);
+      color: var(--sidebar-text);
+      padding: 16px;
       min-height: 100%;
-      border-inline-end: 1px solid rgba(255,255,255,0.08);
+      border-inline-end: 1px solid rgba(255,255,255,0.07);
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 18px;
       padding-bottom: 14px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -66,19 +76,20 @@
       width: 44px;
       height: 44px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), #f97316);
+      background: linear-gradient(135deg, var(--brand-gold), var(--brand-orange));
       display: grid;
       place-items: center;
       color: white;
       font-weight: 700;
       font-size: 13px;
-      box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+      box-shadow: 0 10px 20px rgba(200, 155, 60, 0.22);
     }
 
     .brand-text h1 {
       margin: 0;
       font-size: 15px;
       line-height: 1.2;
+      color: white;
     }
 
     .brand-text p {
@@ -89,7 +100,7 @@
 
     .nav-title {
       font-size: 11px;
-      color: rgba(255,255,255,0.52);
+      color: rgba(255,255,255,0.55);
       margin: 14px 0 8px;
       padding-inline: 6px;
     }
@@ -98,34 +109,58 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 12px;
+      padding: 11px 12px;
       border-radius: 12px;
       color: white;
       text-decoration: none;
       margin-bottom: 8px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
       font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.06);
     }
 
     .nav-item.active {
-      background: rgba(245, 158, 11, 0.16);
-      border-color: rgba(245, 158, 11, 0.30);
+      background: rgba(200, 155, 60, 0.14);
+      border-color: rgba(200, 155, 60, 0.26);
     }
 
     .nav-dot {
       width: 9px;
       height: 9px;
       border-radius: 50%;
-      background: var(--accent);
+      background: var(--brand-gold);
       flex: 0 0 auto;
     }
 
+    .sidebar-spacer {
+      flex: 1;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 22px 10px;
+      margin: 10px 0 18px;
+    }
+
+    .sidebar-logo img {
+      width: 150px;
+      max-width: 100%;
+      opacity: 0.95;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      padding: 8px;
+    }
+
     .sidebar-footer {
-      position: absolute;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
+      margin-top: auto;
     }
 
     .lang-select {
@@ -139,18 +174,19 @@
     }
 
     .content {
-      padding: 14px;
+      padding: 16px;
       width: 100%;
-      min-width: 1100px;
+      min-width: 1120px;
     }
 
     .topbar {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .page-title h2 {
       margin: 0 0 4px;
-      font-size: 26px;
+      font-size: 28px;
+      color: var(--brand-navy);
     }
 
     .page-title p {
@@ -231,7 +267,7 @@
 
     .kpi {
       position: relative;
-      min-height: 110px;
+      min-height: 112px;
       overflow: hidden;
     }
 
@@ -240,10 +276,10 @@
       position: absolute;
       inset-inline-end: -18px;
       top: -18px;
-      width: 78px;
-      height: 78px;
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
-      background: rgba(6, 182, 212, 0.08);
+      background: rgba(15, 44, 63, 0.06);
     }
 
     .kpi-label {
@@ -259,18 +295,20 @@
       font-weight: 700;
       position: relative;
       z-index: 1;
+      color: var(--brand-navy);
     }
 
     .mini-spark {
       margin-top: 8px;
       height: 22px;
-      opacity: 0.8;
+      opacity: 0.9;
     }
 
     .panel-title {
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 10px;
+      color: var(--brand-navy);
     }
 
     .table-panel {
@@ -295,7 +333,7 @@
     th {
       background: #f8fbff;
       font-weight: 700;
-      color: var(--text);
+      color: var(--brand-navy);
     }
 
     .badge {
@@ -353,16 +391,16 @@
     }
 
     .team-card {
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 10px 12px;
+      background: linear-gradient(180deg, #fbfcfe 0%, #f7fafc 100%);
+      border-radius: 12px;
+      padding: 11px 12px;
       border: 1px solid #e5e7eb;
     }
 
     .team-card strong {
       display: block;
       font-size: 14px;
-      color: #111827;
+      color: var(--brand-navy);
       margin-bottom: 4px;
     }
 
@@ -377,6 +415,7 @@
       display: block;
       font-size: 11px;
       color: #6b7280;
+      margin-bottom: 2px;
     }
 
     canvas {
@@ -395,7 +434,7 @@
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-logo">QA/QC</div>
+        <div class="brand-logo">MOC</div>
         <div class="brand-text">
           <h1 id="brandTitle">لوحة الإدارة</h1>
           <p id="brandSub">Gap Analysis & QA/QC</p>
@@ -411,6 +450,12 @@
         <span class="nav-dot"></span>
         <span id="navReport">نموذج التقرير</span>
       </a>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="sidebar-logo">
+        <img src="./moc-logo.png" alt="Ministry of Culture Logo">
+      </div>
 
       <div class="sidebar-footer">
         <select id="languageSelect" class="lang-select" onchange="changeLanguage(this.value)">
@@ -595,8 +640,8 @@
           {
             name: "مهند الحربي",
             title: "مدير إدارة الجودة",
-            company: "جاش - مركز الملك فهد الثقافي",
-            region: "—"
+            company: "شركة جاش",
+            region: "مركز الملك فهد الثقافي"
           },
           {
             name: "زياد مسعد",
@@ -607,20 +652,20 @@
           {
             name: "سعيد جمعان",
             title: "مدير إدارة الجودة",
-            company: "—",
-            region: "المنطقة الشمالية"
+            company: "شركة المرافق المختصة المحدودة",
+            region: "المنطقة الشمالية الشرقية"
           }
         ]
       },
       en: {
-        brandTitle: "Manager Dashboard",
+        brandTitle: "Management Dashboard",
         brandSub: "Gap Analysis & QA/QC",
         navMain: "Main Menu",
         navDashboard: "Dashboard",
         navReport: "Report Form",
         pageTitle: "Management Dashboard",
         pageSubtitle: "Quick view of reports, locations, average score, and overall classification",
-        searchPlaceholder: "Search by region/city, building, or inspector",
+        searchPlaceholder: "Search by region/city or inspector",
         year: "Year",
         month: "Month",
         day: "Day",
@@ -664,8 +709,8 @@
           {
             name: "Muhannad Alharbi",
             title: "Quality Manager",
-            company: "JASH - King Fahad Cultural Center",
-            region: "—"
+            company: "JASH",
+            region: "King Fahad Cultural Center"
           },
           {
             name: "Ziad Massaad",
@@ -676,8 +721,8 @@
           {
             name: "Saeed Jamaan",
             title: "Quality Manager",
-            company: "—",
-            region: "Northern Region"
+            company: "Specialized Facilities Co. Ltd.",
+            region: "North Eastern Region"
           }
         ]
       }
@@ -695,14 +740,10 @@
       const dt = date ? new Date(date) : null;
 
       return {
-        reportNo: r.reportNo || "",
-        buildingNameAr: r.buildingNameAr || r.buildingName || "-",
-        buildingNameEn: r.buildingNameEn || r.buildingName || "-",
         regionCityAr: r.regionCityAr || r.regionCity || r.siteName || "-",
         regionCityEn: r.regionCityEn || r.regionCity || r.siteName || "-",
         regionAr: r.regionAr || r.region || "-",
         regionEn: r.regionEn || r.region || "-",
-        inspectorName: r.inspectorName || "-",
         date,
         overallScore: Number(r.overallScore) || 0,
         year: dt && !isNaN(dt) ? dt.getFullYear() : "",
@@ -1110,8 +1151,7 @@
 
       if (search) {
         filteredReports = filteredReports.filter(r =>
-          getRegionCity(r).toLowerCase().includes(search) ||
-          (r.inspectorName || "").toLowerCase().includes(search)
+          getRegionCity(r).toLowerCase().includes(search)
         );
       }
 
