@@ -14,15 +14,16 @@
       --text: #1f2937;
       --muted: #6b7280;
       --border: #d8dee8;
-      --sidebar: #1f2937;
+      --sidebar: #111827;
       --sidebar-soft: #111827;
       --accent: #f59e0b;
-      --cyan: #22c7d8;
-      --pink: #ec4899;
-      --blue: #3b82f6;
-      --success: #16a34a;
-      --warning: #d97706;
-      --danger: #dc2626;
+
+      /* تصنيفات موحدة */
+      --excellent: #16a34a;
+      --vgood: #06b6d4;
+      --good: #f59e0b;
+      --poor: #dc2626;
+
       --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
       --radius: 14px;
     }
@@ -33,6 +34,7 @@
       background: var(--bg);
       color: var(--text);
       overflow-x: auto;
+      min-height: 100%;
     }
 
     body {
@@ -44,16 +46,16 @@
       grid-template-columns: 230px 1fr;
       min-height: 100vh;
       min-width: 1650px;
+      align-items: stretch;
     }
 
     .sidebar {
-      background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-soft) 100%);
+      background: var(--sidebar);
       color: white;
       padding: 14px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
+      min-height: 100%;
       border-inline-end: 1px solid rgba(255,255,255,0.08);
+      position: relative;
     }
 
     .brand {
@@ -202,15 +204,10 @@
       grid-column: span 4;
     }
 
-    .line-panel {
-      grid-column: span 7;
-    }
-
     .full-line-panel {
       grid-column: span 12;
     }
 
-    .card,
     .panel,
     .table-panel,
     .kpi {
@@ -218,11 +215,6 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-    }
-
-    .panel,
-    .table-panel,
-    .kpi {
       padding: 12px;
     }
 
@@ -251,7 +243,7 @@
       width: 78px;
       height: 78px;
       border-radius: 50%;
-      background: rgba(34, 199, 216, 0.08);
+      background: rgba(6, 182, 212, 0.08);
     }
 
     .kpi-label {
@@ -317,10 +309,10 @@
       text-align: center;
     }
 
-    .excellent { background: var(--success); }
-    .vgood { background: var(--cyan); }
-    .good { background: var(--warning); }
-    .poor { background: var(--danger); }
+    .excellent { background: var(--excellent); }
+    .vgood { background: var(--vgood); }
+    .good { background: var(--good); }
+    .poor { background: var(--poor); }
 
     .muted {
       color: var(--muted);
@@ -349,10 +341,10 @@
       font-weight: 400;
     }
 
-    .status-box.excellent { background: var(--success); }
-    .status-box.vgood { background: var(--cyan); }
-    .status-box.good { background: var(--warning); }
-    .status-box.poor { background: var(--danger); }
+    .status-box.excellent { background: var(--excellent); }
+    .status-box.vgood { background: var(--vgood); }
+    .status-box.good { background: var(--good); }
+    .status-box.poor { background: var(--poor); }
 
     canvas {
       width: 100% !important;
@@ -497,11 +489,6 @@
           </div>
         </div>
 
-        <div class="panel line-panel">
-          <div class="panel-title" id="yearTrendTitle">التقييم حسب السنة</div>
-          <canvas id="yearTrendChart"></canvas>
-        </div>
-
         <div class="panel full-line-panel">
           <div class="panel-title" id="monthYearTrendTitle">التقييم حسب الشهر والسنة</div>
           <canvas id="monthYearTrendChart"></canvas>
@@ -545,7 +532,6 @@
         classificationChartTitle: "توزيع التصنيفات",
         quarterTitle: "التقييم حسب الربع",
         dayTitle: "التقييم حسب اليوم",
-        yearTrendTitle: "التقييم حسب السنة",
         monthYearTrendTitle: "التقييم حسب الشهر والسنة",
         noData: "لا توجد بيانات مطابقة."
       },
@@ -582,7 +568,6 @@
         classificationChartTitle: "Classification Distribution",
         quarterTitle: "Scores by Quarter",
         dayTitle: "Scores by Day",
-        yearTrendTitle: "Scores by Year",
         monthYearTrendTitle: "Scores by Month/Year",
         noData: "No matching data."
       }
@@ -592,7 +577,7 @@
     let rawReports = [];
     let filteredReports = [];
 
-    let classificationChart, monthlyBarChart, quarterChart, dayChart, yearTrendChart, monthYearTrendChart;
+    let classificationChart, monthlyBarChart, quarterChart, dayChart, monthYearTrendChart;
     let spark1, spark2, spark3, spark4;
 
     function normalizeReport(r) {
@@ -824,12 +809,13 @@
       destroyChart(monthlyBarChart);
       destroyChart(quarterChart);
       destroyChart(dayChart);
-      destroyChart(yearTrendChart);
       destroyChart(monthYearTrendChart);
       destroyChart(spark1);
       destroyChart(spark2);
       destroyChart(spark3);
       destroyChart(spark4);
+
+      const classColors = [getComputedStyle(document.documentElement).getPropertyValue('--excellent').trim(), getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(), getComputedStyle(document.documentElement).getPropertyValue('--good').trim(), getComputedStyle(document.documentElement).getPropertyValue('--poor').trim()];
 
       const monthlyMap = {};
       for (let i = 1; i <= 12; i++) monthlyMap[i] = [];
@@ -846,6 +832,7 @@
           datasets: [{
             label: t.monthlyTitle,
             data: monthData,
+            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(),
             borderWidth: 1
           }]
         },
@@ -874,7 +861,8 @@
         data: {
           labels: Object.keys(classCounts),
           datasets: [{
-            data: Object.values(classCounts)
+            data: Object.values(classCounts),
+            backgroundColor: classColors
           }]
         },
         options: { responsive: true }
@@ -895,6 +883,7 @@
           datasets: [{
             label: t.quarterTitle,
             data: [1,2,3,4].map(q => avgArray(quarterMap[q])),
+            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(),
             borderWidth: 1
           }]
         },
@@ -917,34 +906,8 @@
           datasets: [{
             label: t.dayTitle,
             data: [0,1,2,3,4,5,6].map(d => avgArray(dayMap[d])),
+            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(),
             borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, max: 100 } }
-        }
-      });
-
-      const yearMap = {};
-      reports.forEach(r => {
-        if (!r.year) return;
-        if (!yearMap[r.year]) yearMap[r.year] = [];
-        yearMap[r.year].push(r.overallScore);
-      });
-      const years = Object.keys(yearMap).sort();
-      const yearValues = years.map(y => avgArray(yearMap[y]));
-
-      yearTrendChart = new Chart(document.getElementById("yearTrendChart"), {
-        type: "line",
-        data: {
-          labels: years,
-          datasets: [{
-            label: t.yearTrendTitle,
-            data: yearValues,
-            tension: 0.35,
-            fill: false
           }]
         },
         options: {
@@ -972,7 +935,8 @@
             label: t.monthYearTrendTitle,
             data: monthYearValues,
             tension: 0.35,
-            fill: false
+            fill: false,
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim()
           }]
         },
         options: {
@@ -1064,7 +1028,6 @@
       setText("classificationChartTitle", t.classificationChartTitle);
       setText("quarterTitle", t.quarterTitle);
       setText("dayTitle", t.dayTitle);
-      setText("yearTrendTitle", t.yearTrendTitle);
       setText("monthYearTrendTitle", t.monthYearTrendTitle);
       setText("excellentLabel", t.excellent);
       setText("vgoodLabel", t.vgood);
