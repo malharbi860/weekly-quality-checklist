@@ -9,110 +9,116 @@
     * { box-sizing: border-box; }
 
     :root{
-      --bg: #f4f7fb;
+      --bg: #eef2f7;
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
-      --border: #e5e7eb;
-      --sidebar: #111827;
-      --sidebar-soft: #1f2937;
+      --border: #d8dee8;
+      --sidebar: #1f2937;
+      --sidebar-soft: #111827;
       --accent: #f59e0b;
-      --accent-2: #06b6d4;
+      --cyan: #22c7d8;
+      --pink: #ec4899;
+      --blue: #3b82f6;
       --success: #16a34a;
       --warning: #d97706;
       --danger: #dc2626;
       --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      --radius: 18px;
+      --radius: 14px;
     }
 
-    body {
+    html, body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
+      overflow-x: auto;
+    }
+
+    body {
+      min-width: 1650px;
     }
 
     .app {
       display: grid;
-      grid-template-columns: 250px 1fr;
+      grid-template-columns: 230px 1fr;
       min-height: 100vh;
+      min-width: 1650px;
     }
 
     .sidebar {
       background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-soft) 100%);
       color: white;
-      padding: 18px 14px;
+      padding: 14px;
       position: sticky;
       top: 0;
       height: 100vh;
+      border-inline-end: 1px solid rgba(255,255,255,0.08);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 22px;
+      gap: 10px;
+      margin-bottom: 18px;
       padding-bottom: 14px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), #f97316);
       display: grid;
       place-items: center;
       color: white;
       font-weight: 700;
-      font-size: 14px;
-      box-shadow: 0 10px 22px rgba(245, 158, 11, 0.25);
+      font-size: 13px;
+      box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
     }
 
     .brand-text h1 {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.2;
     }
 
     .brand-text p {
-      margin: 4px 0 0;
-      font-size: 12px;
+      margin: 3px 0 0;
+      font-size: 11px;
       color: rgba(255,255,255,0.72);
     }
 
-    .nav-group {
-      margin-bottom: 18px;
-    }
-
     .nav-title {
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 8px;
-      padding-inline: 8px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.52);
+      margin: 14px 0 8px;
+      padding-inline: 6px;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 11px 12px;
-      border-radius: 14px;
+      padding: 10px 12px;
+      border-radius: 12px;
       color: white;
       text-decoration: none;
       margin-bottom: 8px;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.04);
+      font-size: 14px;
     }
 
     .nav-item.active {
       background: rgba(245, 158, 11, 0.16);
-      border-color: rgba(245, 158, 11, 0.3);
+      border-color: rgba(245, 158, 11, 0.30);
     }
 
     .nav-dot {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--accent);
       flex: 0 0 auto;
@@ -120,14 +126,14 @@
 
     .sidebar-footer {
       position: absolute;
-      bottom: 18px;
+      bottom: 14px;
       left: 14px;
       right: 14px;
     }
 
     .lang-select {
       width: 100%;
-      padding: 11px 12px;
+      padding: 10px 12px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.08);
@@ -136,45 +142,72 @@
     }
 
     .content {
-      padding: 18px;
+      padding: 14px;
+      min-width: 1420px;
     }
 
     .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .page-title h2 {
       margin: 0 0 4px;
-      font-size: 28px;
+      font-size: 26px;
     }
 
     .page-title p {
       margin: 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
     }
 
     .filters {
+      grid-column: span 12;
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
+      gap: 10px;
     }
 
     .kpi-row {
+      grid-column: span 5;
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      align-content: start;
+    }
+
+    .main-table-panel {
+      grid-column: span 7;
+    }
+
+    .left-bar-panel {
+      grid-column: span 2;
+    }
+
+    .donut-panel {
+      grid-column: span 3;
+    }
+
+    .quarter-panel {
+      grid-column: span 3;
+    }
+
+    .day-panel {
+      grid-column: span 4;
+    }
+
+    .line-panel {
+      grid-column: span 7;
+    }
+
+    .full-line-panel {
+      grid-column: span 12;
     }
 
     .card,
@@ -190,21 +223,23 @@
     .panel,
     .table-panel,
     .kpi {
-      padding: 16px;
+      padding: 12px;
     }
 
     input, select {
       width: 100%;
-      padding: 11px 12px;
-      border-radius: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       background: white;
       color: var(--text);
       font: inherit;
+      font-size: 14px;
     }
 
     .kpi {
       position: relative;
+      min-height: 110px;
       overflow: hidden;
     }
 
@@ -213,14 +248,14 @@
       position: absolute;
       inset-inline-end: -18px;
       top: -18px;
-      width: 82px;
-      height: 82px;
+      width: 78px;
+      height: 78px;
       border-radius: 50%;
-      background: rgba(6, 182, 212, 0.08);
+      background: rgba(34, 199, 216, 0.08);
     }
 
     .kpi-label {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
       margin-bottom: 8px;
       position: relative;
@@ -228,34 +263,41 @@
     }
 
     .kpi-value {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 700;
       position: relative;
       z-index: 1;
     }
 
+    .mini-spark {
+      margin-top: 8px;
+      height: 22px;
+      opacity: 0.8;
+    }
+
     .panel-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .table-panel {
-      overflow-x: auto;
+      overflow: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 960px;
+      min-width: 760px;
     }
 
     th, td {
-      padding: 12px;
+      padding: 10px;
       border-bottom: 1px solid #edf2f7;
       text-align: right;
       vertical-align: middle;
-      font-size: 14px;
+      font-size: 13px;
+      white-space: nowrap;
     }
 
     th {
@@ -266,169 +308,55 @@
 
     .badge {
       display: inline-block;
-      padding: 6px 10px;
+      padding: 5px 10px;
       border-radius: 999px;
       color: white;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      min-width: 84px;
+      min-width: 74px;
       text-align: center;
     }
 
     .excellent { background: var(--success); }
-    .vgood { background: var(--accent-2); }
+    .vgood { background: var(--cyan); }
     .good { background: var(--warning); }
     .poor { background: var(--danger); }
-
-    .status-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .status-box {
-      border-radius: 14px;
-      padding: 14px;
-      color: white;
-      font-weight: 700;
-    }
-
-    .status-box small {
-      display: block;
-      opacity: 0.9;
-      font-size: 12px;
-      margin-bottom: 8px;
-      font-weight: 400;
-    }
-
-    .status-box.excellent { background: var(--success); }
-    .status-box.vgood { background: var(--accent-2); }
-    .status-box.good { background: var(--warning); }
-    .status-box.poor { background: var(--danger); }
 
     .muted {
       color: var(--muted);
     }
 
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .status-box {
+      border-radius: 12px;
+      padding: 12px;
+      color: white;
+      font-weight: 700;
+      min-height: 72px;
+    }
+
+    .status-box small {
+      display: block;
+      opacity: 0.9;
+      font-size: 11px;
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .status-box.excellent { background: var(--success); }
+    .status-box.vgood { background: var(--cyan); }
+    .status-box.good { background: var(--warning); }
+    .status-box.poor { background: var(--danger); }
+
     canvas {
       width: 100% !important;
       height: auto !important;
-      max-height: 360px;
-    }
-
-    /* Mobile Portrait */
-    @media screen and (max-width: 767px) and (orientation: portrait) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-        height: auto;
-      }
-
-      .sidebar-footer {
-        position: static;
-        margin-top: 12px;
-      }
-
-      .page-title h2 {
-        font-size: 24px;
-      }
-
-      .status-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    /* Mobile Landscape / Tablet Landscape */
-    @media screen and (orientation: landscape) and (max-width: 1180px) {
-      .app {
-        grid-template-columns: 220px 1fr;
-      }
-
-      .dashboard-grid {
-        grid-template-columns: repeat(12, 1fr);
-        gap: 14px;
-      }
-
-      .filters {
-        grid-column: span 12;
-        grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      }
-
-      .kpi-row {
-        grid-column: span 12;
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .panel-left {
-        grid-column: span 4;
-      }
-
-      .panel-middle {
-        grid-column: span 4;
-      }
-
-      .panel-right {
-        grid-column: span 4;
-      }
-
-      .panel-wide {
-        grid-column: span 12;
-      }
-
-      .table-panel {
-        grid-column: span 12;
-      }
-
-      .status-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* Desktop */
-    @media screen and (min-width: 1181px) {
-      .dashboard-grid {
-        grid-template-columns: repeat(12, 1fr);
-        gap: 16px;
-      }
-
-      .filters {
-        grid-column: span 12;
-        grid-template-columns: 1.6fr 1fr 1fr 1fr;
-      }
-
-      .kpi-row {
-        grid-column: span 12;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-      }
-
-      .panel-left {
-        grid-column: span 3;
-      }
-
-      .panel-middle {
-        grid-column: span 3;
-      }
-
-      .panel-right {
-        grid-column: span 6;
-      }
-
-      .panel-wide {
-        grid-column: span 12;
-      }
-
-      .table-panel {
-        grid-column: span 12;
-      }
-
-      .status-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
     }
   </style>
 </head>
@@ -443,17 +371,15 @@
         </div>
       </div>
 
-      <div class="nav-group">
-        <div class="nav-title" id="navMain">القائمة الرئيسية</div>
-        <a class="nav-item active" href="#">
-          <span class="nav-dot"></span>
-          <span id="navDashboard">لوحة التحكم</span>
-        </a>
-        <a class="nav-item" href="./index.html">
-          <span class="nav-dot"></span>
-          <span id="navReport">نموذج التقرير</span>
-        </a>
-      </div>
+      <div class="nav-title" id="navMain">القائمة الرئيسية</div>
+      <a class="nav-item active" href="#">
+        <span class="nav-dot"></span>
+        <span id="navDashboard">لوحة التحكم</span>
+      </a>
+      <a class="nav-item" href="./index.html">
+        <span class="nav-dot"></span>
+        <span id="navReport">نموذج التقرير</span>
+      </a>
 
       <div class="sidebar-footer">
         <select id="languageSelect" class="lang-select" onchange="changeLanguage(this.value)">
@@ -473,10 +399,10 @@
 
       <div class="dashboard-grid">
         <div class="filters">
+          <select id="yearFilter"><option value="">السنة</option></select>
+          <select id="monthFilter"><option value="">الشهر</option></select>
+          <select id="dayFilter"><option value="">اليوم</option></select>
           <input type="text" id="searchInput" />
-          <select id="regionFilter">
-            <option value="">كل المناطق</option>
-          </select>
           <select id="classificationFilter">
             <option value="">كل التصنيفات</option>
             <option value="ممتاز">ممتاز</option>
@@ -484,11 +410,8 @@
             <option value="جيد">جيد</option>
             <option value="سيئ">سيئ</option>
           </select>
-          <select id="sortFilter">
-            <option value="latest">الأحدث</option>
-            <option value="score_desc">الأعلى تقييمًا</option>
-            <option value="score_asc">الأقل تقييمًا</option>
-            <option value="name">اسم الموقع</option>
+          <select id="regionFilter">
+            <option value="">كل المناطق</option>
           </select>
         </div>
 
@@ -496,34 +419,63 @@
           <div class="kpi">
             <div class="kpi-label" id="kpiReportsLabel">عدد التقارير</div>
             <div class="kpi-value" id="reportsCount">0</div>
+            <canvas class="mini-spark" id="spark1"></canvas>
           </div>
-          <div class="kpi">
-            <div class="kpi-label" id="kpiSitesLabel">عدد المواقع</div>
-            <div class="kpi-value" id="sitesCount">0</div>
-          </div>
+
           <div class="kpi">
             <div class="kpi-label" id="kpiAvgLabel">متوسط التقييم</div>
             <div class="kpi-value" id="avgScore">0%</div>
+            <canvas class="mini-spark" id="spark2"></canvas>
           </div>
+
           <div class="kpi">
             <div class="kpi-label" id="kpiExcellentLabel">المواقع الممتازة</div>
             <div class="kpi-value" id="excellentCount">0</div>
+            <canvas class="mini-spark" id="spark3"></canvas>
+          </div>
+
+          <div class="kpi">
+            <div class="kpi-label" id="kpiSitesLabel">عدد المواقع</div>
+            <div class="kpi-value" id="sitesCount">0</div>
+            <canvas class="mini-spark" id="spark4"></canvas>
           </div>
         </div>
 
-        <div class="panel panel-left">
-          <div class="panel-title" id="siteChartTitle">متوسط تقييم المواقع</div>
-          <canvas id="siteChart"></canvas>
+        <div class="table-panel main-table-panel">
+          <div class="panel-title" id="tableTitle">ملخص المواقع</div>
+          <table>
+            <thead>
+              <tr>
+                <th id="thRegionCity">المنطقة / المدينة</th>
+                <th id="thCount">عدد التقارير</th>
+                <th id="thTotal">إجمالي النقاط</th>
+                <th id="thMax">أعلى تقييم</th>
+                <th id="thMin">أقل تقييم</th>
+                <th id="thAverage">المتوسط</th>
+              </tr>
+            </thead>
+            <tbody id="sitesTableBody"></tbody>
+          </table>
         </div>
 
-        <div class="panel panel-middle">
+        <div class="panel left-bar-panel">
+          <div class="panel-title" id="monthlyTitle">التقييم حسب الشهر</div>
+          <canvas id="monthlyBarChart"></canvas>
+        </div>
+
+        <div class="panel donut-panel">
           <div class="panel-title" id="classificationChartTitle">توزيع التصنيفات</div>
           <canvas id="classificationChart"></canvas>
         </div>
 
-        <div class="panel panel-right">
-          <div class="panel-title" id="monthlyTrendTitle">اتجاه التقييم الشهري</div>
-          <canvas id="trendChart"></canvas>
+        <div class="panel quarter-panel">
+          <div class="panel-title" id="quarterTitle">التقييم حسب الربع</div>
+          <canvas id="quarterChart"></canvas>
+        </div>
+
+        <div class="panel day-panel">
+          <div class="panel-title" id="dayTitle">التقييم حسب اليوم</div>
+          <canvas id="dayChart"></canvas>
 
           <div class="status-grid">
             <div class="status-box excellent">
@@ -545,23 +497,14 @@
           </div>
         </div>
 
-        <div class="table-panel">
-          <div class="panel-title" id="tableTitle">ملخص المواقع</div>
-          <table>
-            <thead>
-              <tr>
-                <th id="thRegionCity">المنطقة / المدينة</th>
-                <th id="thBuilding">المبنى</th>
-                <th id="thRegion">المنطقة</th>
-                <th id="thCount">عدد التقارير</th>
-                <th id="thLatest">آخر تقييم</th>
-                <th id="thAverage">المتوسط</th>
-                <th id="thClass">التصنيف</th>
-                <th id="thDate">آخر تاريخ</th>
-              </tr>
-            </thead>
-            <tbody id="sitesTableBody"></tbody>
-          </table>
+        <div class="panel line-panel">
+          <div class="panel-title" id="yearTrendTitle">التقييم حسب السنة</div>
+          <canvas id="yearTrendChart"></canvas>
+        </div>
+
+        <div class="panel full-line-panel">
+          <div class="panel-title" id="monthYearTrendTitle">التقييم حسب الشهر والسنة</div>
+          <canvas id="monthYearTrendChart"></canvas>
         </div>
       </div>
     </main>
@@ -578,32 +521,32 @@
         pageTitle: "لوحة متابعة الإدارة",
         pageSubtitle: "عرض مختصر لعدد التقارير والمواقع ومتوسط التقييم والتصنيف العام",
         searchPlaceholder: "بحث باسم المنطقة/المدينة أو المبنى أو المفتش",
+        year: "السنة",
+        month: "الشهر",
+        day: "اليوم",
         allRegions: "كل المناطق",
         allClasses: "كل التصنيفات",
         excellent: "ممتاز",
         vgood: "جيد جدًا",
         good: "جيد",
         poor: "سيئ",
-        latest: "الأحدث",
-        scoreDesc: "الأعلى تقييمًا",
-        scoreAsc: "الأقل تقييمًا",
-        sortName: "اسم المنطقة/المدينة",
         kpiReportsLabel: "عدد التقارير",
         kpiSitesLabel: "عدد المواقع",
         kpiAvgLabel: "متوسط التقييم",
         kpiExcellentLabel: "المواقع الممتازة",
-        siteChartTitle: "متوسط تقييم المواقع",
-        classificationChartTitle: "توزيع التصنيفات",
-        monthlyTrendTitle: "اتجاه التقييم الشهري",
         tableTitle: "ملخص المواقع",
         thRegionCity: "المنطقة / المدينة",
-        thBuilding: "المبنى",
-        thRegion: "المنطقة",
         thCount: "عدد التقارير",
-        thLatest: "آخر تقييم",
+        thTotal: "إجمالي النقاط",
+        thMax: "أعلى تقييم",
+        thMin: "أقل تقييم",
         thAverage: "المتوسط",
-        thClass: "التصنيف",
-        thDate: "آخر تاريخ",
+        monthlyTitle: "التقييم حسب الشهر",
+        classificationChartTitle: "توزيع التصنيفات",
+        quarterTitle: "التقييم حسب الربع",
+        dayTitle: "التقييم حسب اليوم",
+        yearTrendTitle: "التقييم حسب السنة",
+        monthYearTrendTitle: "التقييم حسب الشهر والسنة",
         noData: "لا توجد بيانات مطابقة."
       },
       en: {
@@ -615,52 +558,60 @@
         pageTitle: "Management Dashboard",
         pageSubtitle: "Quick view of reports, locations, average score, and overall classification",
         searchPlaceholder: "Search by region/city, building, or inspector",
+        year: "Year",
+        month: "Month",
+        day: "Day",
         allRegions: "All Regions",
         allClasses: "All Classifications",
         excellent: "Excellent",
         vgood: "Very Good",
         good: "Good",
         poor: "Poor",
-        latest: "Latest",
-        scoreDesc: "Highest Score",
-        scoreAsc: "Lowest Score",
-        sortName: "Region/City Name",
         kpiReportsLabel: "Total Reports",
         kpiSitesLabel: "Total Locations",
         kpiAvgLabel: "Average Score",
         kpiExcellentLabel: "Excellent Sites",
-        siteChartTitle: "Average Location Scores",
-        classificationChartTitle: "Classification Distribution",
-        monthlyTrendTitle: "Monthly Score Trend",
         tableTitle: "Locations Summary",
         thRegionCity: "Region / City",
-        thBuilding: "Building",
-        thRegion: "Region",
-        thCount: "Reports",
-        thLatest: "Latest Score",
-        thAverage: "Average",
-        thClass: "Classification",
-        thDate: "Latest Date",
+        thCount: "Records",
+        thTotal: "Total Score",
+        thMax: "Max Score",
+        thMin: "Min Score",
+        thAverage: "Avg Score",
+        monthlyTitle: "Scores by Month",
+        classificationChartTitle: "Classification Distribution",
+        quarterTitle: "Scores by Quarter",
+        dayTitle: "Scores by Day",
+        yearTrendTitle: "Scores by Year",
+        monthYearTrendTitle: "Scores by Month/Year",
         noData: "No matching data."
       }
     };
 
     let currentLang = "ar";
     let rawReports = [];
-    let aggregatedSites = [];
-    let siteChart;
-    let classificationChart;
-    let trendChart;
+    let filteredReports = [];
+
+    let classificationChart, monthlyBarChart, quarterChart, dayChart, yearTrendChart, monthYearTrendChart;
+    let spark1, spark2, spark3, spark4;
 
     function normalizeReport(r) {
+      const regionCity = r.regionCity || r.siteName || "-";
+      const date = r.date || "";
+      const dt = date ? new Date(date) : null;
+
       return {
         reportNo: r.reportNo || "",
         buildingName: r.buildingName || "-",
-        regionCity: r.regionCity || r.siteName || "-",
+        regionCity,
         region: r.region || "-",
         inspectorName: r.inspectorName || "-",
-        date: r.date || "",
-        overallScore: Number(r.overallScore) || 0
+        date,
+        overallScore: Number(r.overallScore) || 0,
+        year: dt && !isNaN(dt) ? dt.getFullYear() : "",
+        month: dt && !isNaN(dt) ? dt.getMonth() + 1 : "",
+        day: dt && !isNaN(dt) ? dt.getDate() : "",
+        weekday: dt && !isNaN(dt) ? dt.getDay() : null
       };
     }
 
@@ -685,154 +636,238 @@
         const res = await fetch("./reports.json");
         const data = await res.json();
         rawReports = data.map(normalizeReport);
-        populateRegionFilter(rawReports);
+        populateFilters(rawReports);
         applyFilters();
         bindFilters();
       } catch (error) {
         console.error("Failed to load reports.json", error);
         document.getElementById("sitesTableBody").innerHTML =
-          `<tr><td colspan="8" class="muted">${translations[currentLang].noData}</td></tr>`;
+          `<tr><td colspan="6" class="muted">${translations[currentLang].noData}</td></tr>`;
       }
     }
 
-    function populateRegionFilter(reports) {
-      const filter = document.getElementById("regionFilter");
-      const currentValue = filter.value;
-      filter.innerHTML = `<option value="">${translations[currentLang].allRegions}</option>`;
-      const regions = [...new Set(reports.map(r => r.region).filter(Boolean))];
-      regions.sort().forEach(region => {
-        const option = document.createElement("option");
-        option.value = region;
-        option.textContent = region;
-        filter.appendChild(option);
-      });
-      filter.value = currentValue;
+    function uniqueSorted(arr) {
+      return [...new Set(arr.filter(Boolean))].sort((a, b) => a > b ? 1 : -1);
     }
 
-    function aggregateReports(reports) {
+    function populateFilters(reports) {
+      const yearFilter = document.getElementById("yearFilter");
+      const monthFilter = document.getElementById("monthFilter");
+      const dayFilter = document.getElementById("dayFilter");
+      const regionFilter = document.getElementById("regionFilter");
+
+      const selectedYear = yearFilter.value;
+      const selectedMonth = monthFilter.value;
+      const selectedDay = dayFilter.value;
+      const selectedRegion = regionFilter.value;
+
+      const t = translations[currentLang];
+
+      yearFilter.innerHTML = `<option value="">${t.year}</option>`;
+      monthFilter.innerHTML = `<option value="">${t.month}</option>`;
+      dayFilter.innerHTML = `<option value="">${t.day}</option>`;
+      regionFilter.innerHTML = `<option value="">${t.allRegions}</option>`;
+
+      uniqueSorted(reports.map(r => r.year)).forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        yearFilter.appendChild(o);
+      });
+
+      uniqueSorted(reports.map(r => r.month)).forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        monthFilter.appendChild(o);
+      });
+
+      uniqueSorted(reports.map(r => r.day)).forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        dayFilter.appendChild(o);
+      });
+
+      uniqueSorted(reports.map(r => r.region)).forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        regionFilter.appendChild(o);
+      });
+
+      yearFilter.value = selectedYear;
+      monthFilter.value = selectedMonth;
+      dayFilter.value = selectedDay;
+      regionFilter.value = selectedRegion;
+    }
+
+    function aggregateByLocation(reports) {
       const map = new Map();
 
-      reports.forEach(report => {
-        const key = `${report.regionCity}__${report.buildingName}`;
+      reports.forEach(r => {
+        const key = r.regionCity;
         if (!map.has(key)) {
           map.set(key, {
-            regionCity: report.regionCity,
-            buildingName: report.buildingName,
-            region: report.region,
-            scores: [],
+            regionCity: r.regionCity,
             count: 0,
-            latestDate: report.date || "",
-            latestScore: report.overallScore
+            total: 0,
+            max: r.overallScore,
+            min: r.overallScore,
+            latestDate: r.date || "",
+            avg: 0,
+            classification: ""
           });
         }
 
         const item = map.get(key);
         item.count += 1;
-        item.scores.push(report.overallScore);
-
-        if ((report.date || "") >= item.latestDate) {
-          item.latestDate = report.date || "";
-          item.latestScore = report.overallScore;
-          item.region = report.region;
-        }
+        item.total += r.overallScore;
+        item.max = Math.max(item.max, r.overallScore);
+        item.min = Math.min(item.min, r.overallScore);
+        if ((r.date || "") >= item.latestDate) item.latestDate = r.date || "";
       });
 
       return [...map.values()].map(item => {
-        const avg = item.scores.length
-          ? Math.round(item.scores.reduce((a, b) => a + b, 0) / item.scores.length)
-          : 0;
-
-        return {
-          ...item,
-          averageScore: avg,
-          classification: getClassification(avg)
-        };
-      });
+        item.avg = item.count ? Math.round(item.total / item.count) : 0;
+        item.classification = getClassification(item.avg);
+        return item;
+      }).sort((a, b) => b.avg - a.avg);
     }
 
-    function updateKPIs(sites, reports) {
-      document.getElementById("reportsCount").textContent = reports.length;
-      document.getElementById("sitesCount").textContent = sites.length;
-
-      const avgScore = reports.length
-        ? Math.round(reports.reduce((sum, r) => sum + r.overallScore, 0) / reports.length)
-        : 0;
-      document.getElementById("avgScore").textContent = `${avgScore}%`;
-
-      const t = translations[currentLang];
-      const excellentCount = sites.filter(s => s.classification === t.excellent).length;
-      document.getElementById("excellentCount").textContent = excellentCount;
-    }
-
-    function renderTable(sites) {
+    function renderTable(locations) {
       const tbody = document.getElementById("sitesTableBody");
       tbody.innerHTML = "";
 
-      if (!sites.length) {
-        tbody.innerHTML = `<tr><td colspan="8" class="muted">${translations[currentLang].noData}</td></tr>`;
+      if (!locations.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="muted">${translations[currentLang].noData}</td></tr>`;
         return;
       }
 
-      sites.forEach(site => {
+      locations.forEach(loc => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${escapeHtml(site.regionCity)}</td>
-          <td>${escapeHtml(site.buildingName)}</td>
-          <td>${escapeHtml(site.region)}</td>
-          <td>${site.count}</td>
-          <td>${site.latestScore}%</td>
-          <td>${site.averageScore}%</td>
-          <td><span class="badge ${getClassificationClass(site.classification)}">${site.classification}</span></td>
-          <td>${escapeHtml(site.latestDate || "-")}</td>
+          <td>${escapeHtml(loc.regionCity)}</td>
+          <td>${loc.count}</td>
+          <td>${loc.total}%</td>
+          <td>${loc.max}%</td>
+          <td>${loc.min}%</td>
+          <td><span class="badge ${getClassificationClass(loc.classification)}">${loc.avg}% - ${loc.classification}</span></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function renderSiteChart(sites) {
-      const labels = sites.map(s => s.regionCity.length > 16 ? s.regionCity.slice(0, 16) + "..." : s.regionCity);
-      const avgScores = sites.map(s => s.averageScore);
+    function updateKPIs(reports, locations) {
+      const t = translations[currentLang];
+      const avg = reports.length ? Math.round(reports.reduce((s, r) => s + r.overallScore, 0) / reports.length) : 0;
+      const excellentCount = locations.filter(l => l.classification === t.excellent).length;
 
-      if (siteChart) siteChart.destroy();
+      document.getElementById("reportsCount").textContent = reports.length;
+      document.getElementById("sitesCount").textContent = locations.length;
+      document.getElementById("avgScore").textContent = avg + "%";
+      document.getElementById("excellentCount").textContent = excellentCount;
+    }
 
-      siteChart = new Chart(document.getElementById("siteChart"), {
-        type: "bar",
+    function avgArray(arr) {
+      return arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : 0;
+    }
+
+    function monthLabel(num) {
+      if (currentLang === "ar") {
+        const names = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+        return names[num - 1] || num;
+      }
+      const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      return names[num - 1] || num;
+    }
+
+    function weekdayLabel(num) {
+      const ar = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+      const en = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      return currentLang === "ar" ? ar[num] : en[num];
+    }
+
+    function destroyChart(instance) {
+      if (instance) instance.destroy();
+    }
+
+    function createSparkline(canvasId, values) {
+      const ctx = document.getElementById(canvasId);
+      return new Chart(ctx, {
+        type: "line",
         data: {
-          labels,
+          labels: values.map((_, i) => i + 1),
           datasets: [{
-            label: currentLang === "ar" ? "متوسط التقييم" : "Average Score",
-            data: avgScores,
-            borderWidth: 1
+            data: values,
+            tension: 0.35,
+            fill: false,
+            pointRadius: 0,
+            borderWidth: 2
           }]
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false } },
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
           scales: {
-            y: {
-              beginAtZero: true,
-              max: 100
-            }
+            x: { display: false },
+            y: { display: false }
           }
         }
       });
     }
 
-    function renderClassificationChart(sites) {
+    function renderCharts(reports, locations) {
       const t = translations[currentLang];
+
+      destroyChart(classificationChart);
+      destroyChart(monthlyBarChart);
+      destroyChart(quarterChart);
+      destroyChart(dayChart);
+      destroyChart(yearTrendChart);
+      destroyChart(monthYearTrendChart);
+      destroyChart(spark1);
+      destroyChart(spark2);
+      destroyChart(spark3);
+      destroyChart(spark4);
+
+      const monthlyMap = {};
+      for (let i = 1; i <= 12; i++) monthlyMap[i] = [];
+      reports.forEach(r => {
+        if (r.month) monthlyMap[r.month].push(r.overallScore);
+      });
+      const monthLabels = Object.keys(monthlyMap).map(Number).map(monthLabel);
+      const monthData = Object.keys(monthlyMap).map(k => avgArray(monthlyMap[k]));
+
+      monthlyBarChart = new Chart(document.getElementById("monthlyBarChart"), {
+        type: "bar",
+        data: {
+          labels: monthLabels,
+          datasets: [{
+            label: t.monthlyTitle,
+            data: monthData,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { x: { beginAtZero: true, max: 100 } }
+        }
+      });
+
       const classCounts = {
-        [t.excellent]: sites.filter(s => s.classification === t.excellent).length,
-        [t.vgood]: sites.filter(s => s.classification === t.vgood).length,
-        [t.good]: sites.filter(s => s.classification === t.good).length,
-        [t.poor]: sites.filter(s => s.classification === t.poor).length
+        [t.excellent]: locations.filter(l => l.classification === t.excellent).length,
+        [t.vgood]: locations.filter(l => l.classification === t.vgood).length,
+        [t.good]: locations.filter(l => l.classification === t.good).length,
+        [t.poor]: locations.filter(l => l.classification === t.poor).length
       };
 
       document.getElementById("excellentBoxCount").textContent = classCounts[t.excellent];
       document.getElementById("vgoodBoxCount").textContent = classCounts[t.vgood];
       document.getElementById("goodBoxCount").textContent = classCounts[t.good];
       document.getElementById("poorBoxCount").textContent = classCounts[t.poor];
-
-      if (classificationChart) classificationChart.destroy();
 
       classificationChart = new Chart(document.getElementById("classificationChart"), {
         type: "doughnut",
@@ -842,36 +877,72 @@
             data: Object.values(classCounts)
           }]
         },
-        options: {
-          responsive: true
+        options: { responsive: true }
+      });
+
+      const quarterMap = { 1: [], 2: [], 3: [], 4: [] };
+      reports.forEach(r => {
+        if (r.month) {
+          const q = Math.ceil(r.month / 3);
+          quarterMap[q].push(r.overallScore);
         }
       });
-    }
 
-    function renderTrendChart(reports) {
-      const grouped = {};
+      quarterChart = new Chart(document.getElementById("quarterChart"), {
+        type: "bar",
+        data: {
+          labels: ["Q1", "Q2", "Q3", "Q4"],
+          datasets: [{
+            label: t.quarterTitle,
+            data: [1,2,3,4].map(q => avgArray(quarterMap[q])),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, max: 100 } }
+        }
+      });
 
+      const dayMap = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
       reports.forEach(r => {
-        const key = (r.date || "").slice(0, 7) || "-";
-        if (!grouped[key]) grouped[key] = [];
-        grouped[key].push(r.overallScore);
+        if (r.weekday !== null) dayMap[r.weekday].push(r.overallScore);
       });
 
-      const labels = Object.keys(grouped).sort();
-      const values = labels.map(label => {
-        const arr = grouped[label];
-        return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
+      dayChart = new Chart(document.getElementById("dayChart"), {
+        type: "bar",
+        data: {
+          labels: [0,1,2,3,4,5,6].map(weekdayLabel),
+          datasets: [{
+            label: t.dayTitle,
+            data: [0,1,2,3,4,5,6].map(d => avgArray(dayMap[d])),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, max: 100 } }
+        }
       });
 
-      if (trendChart) trendChart.destroy();
+      const yearMap = {};
+      reports.forEach(r => {
+        if (!r.year) return;
+        if (!yearMap[r.year]) yearMap[r.year] = [];
+        yearMap[r.year].push(r.overallScore);
+      });
+      const years = Object.keys(yearMap).sort();
+      const yearValues = years.map(y => avgArray(yearMap[y]));
 
-      trendChart = new Chart(document.getElementById("trendChart"), {
+      yearTrendChart = new Chart(document.getElementById("yearTrendChart"), {
         type: "line",
         data: {
-          labels,
+          labels: years,
           datasets: [{
-            label: currentLang === "ar" ? "متوسط التقييم الشهري" : "Monthly Average Score",
-            data: values,
+            label: t.yearTrendTitle,
+            data: yearValues,
             tension: 0.35,
             fill: false
           }]
@@ -879,23 +950,54 @@
         options: {
           responsive: true,
           plugins: { legend: { display: false } },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100
-            }
-          }
+          scales: { y: { beginAtZero: true, max: 100 } }
         }
       });
+
+      const monthYearMap = {};
+      reports.forEach(r => {
+        if (!r.date) return;
+        const key = r.date.slice(0, 7);
+        if (!monthYearMap[key]) monthYearMap[key] = [];
+        monthYearMap[key].push(r.overallScore);
+      });
+      const monthYearLabels = Object.keys(monthYearMap).sort();
+      const monthYearValues = monthYearLabels.map(k => avgArray(monthYearMap[k]));
+
+      monthYearTrendChart = new Chart(document.getElementById("monthYearTrendChart"), {
+        type: "line",
+        data: {
+          labels: monthYearLabels,
+          datasets: [{
+            label: t.monthYearTrendTitle,
+            data: monthYearValues,
+            tension: 0.35,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, max: 100 } }
+        }
+      });
+
+      const baseSpark = reports.slice(-12).map(r => r.overallScore);
+      spark1 = createSparkline("spark1", baseSpark.length ? baseSpark : [0]);
+      spark2 = createSparkline("spark2", monthData.filter(v => v > 0).length ? monthData : [0]);
+      spark3 = createSparkline("spark3", Object.values(classCounts).length ? Object.values(classCounts) : [0]);
+      spark4 = createSparkline("spark4", locations.map(l => l.avg).slice(0, 12).length ? locations.map(l => l.avg).slice(0, 12) : [0]);
     }
 
     function applyFilters() {
       const search = document.getElementById("searchInput").value.trim().toLowerCase();
+      const year = document.getElementById("yearFilter").value;
+      const month = document.getElementById("monthFilter").value;
+      const day = document.getElementById("dayFilter").value;
       const region = document.getElementById("regionFilter").value;
       const classification = document.getElementById("classificationFilter").value;
-      const sort = document.getElementById("sortFilter").value;
 
-      let filteredReports = [...rawReports];
+      filteredReports = [...rawReports];
 
       if (search) {
         filteredReports = filteredReports.filter(r =>
@@ -905,38 +1007,31 @@
         );
       }
 
-      if (region) {
-        filteredReports = filteredReports.filter(r => r.region === region);
-      }
+      if (year) filteredReports = filteredReports.filter(r => String(r.year) === String(year));
+      if (month) filteredReports = filteredReports.filter(r => String(r.month) === String(month));
+      if (day) filteredReports = filteredReports.filter(r => String(r.day) === String(day));
+      if (region) filteredReports = filteredReports.filter(r => r.region === region);
 
-      aggregatedSites = aggregateReports(filteredReports);
+      let locations = aggregateByLocation(filteredReports);
 
       if (classification) {
-        aggregatedSites = aggregatedSites.filter(s => s.classification === classification);
+        locations = locations.filter(l => l.classification === classification);
+        const allowedNames = new Set(locations.map(l => l.regionCity));
+        filteredReports = filteredReports.filter(r => allowedNames.has(r.regionCity));
       }
 
-      if (sort === "latest") {
-        aggregatedSites.sort((a, b) => (b.latestDate || "").localeCompare(a.latestDate || ""));
-      } else if (sort === "score_desc") {
-        aggregatedSites.sort((a, b) => b.averageScore - a.averageScore);
-      } else if (sort === "score_asc") {
-        aggregatedSites.sort((a, b) => a.averageScore - b.averageScore);
-      } else if (sort === "name") {
-        aggregatedSites.sort((a, b) => a.regionCity.localeCompare(b.regionCity, currentLang === "ar" ? "ar" : "en"));
-      }
-
-      updateKPIs(aggregatedSites, filteredReports);
-      renderTable(aggregatedSites);
-      renderSiteChart(aggregatedSites);
-      renderClassificationChart(aggregatedSites);
-      renderTrendChart(filteredReports);
+      updateKPIs(filteredReports, locations);
+      renderTable(locations);
+      renderCharts(filteredReports, locations);
     }
 
     function bindFilters() {
       document.getElementById("searchInput").addEventListener("input", applyFilters);
+      document.getElementById("yearFilter").addEventListener("change", applyFilters);
+      document.getElementById("monthFilter").addEventListener("change", applyFilters);
+      document.getElementById("dayFilter").addEventListener("change", applyFilters);
       document.getElementById("regionFilter").addEventListener("change", applyFilters);
       document.getElementById("classificationFilter").addEventListener("change", applyFilters);
-      document.getElementById("sortFilter").addEventListener("change", applyFilters);
     }
 
     function changeLanguage(lang) {
@@ -954,16 +1049,33 @@
       setText("navReport", t.navReport);
       setText("pageTitle", t.pageTitle);
       setText("pageSubtitle", t.pageSubtitle);
+      setText("kpiReportsLabel", t.kpiReportsLabel);
+      setText("kpiSitesLabel", t.kpiSitesLabel);
+      setText("kpiAvgLabel", t.kpiAvgLabel);
+      setText("kpiExcellentLabel", t.kpiExcellentLabel);
+      setText("tableTitle", t.tableTitle);
+      setText("thRegionCity", t.thRegionCity);
+      setText("thCount", t.thCount);
+      setText("thTotal", t.thTotal);
+      setText("thMax", t.thMax);
+      setText("thMin", t.thMin);
+      setText("thAverage", t.thAverage);
+      setText("monthlyTitle", t.monthlyTitle);
+      setText("classificationChartTitle", t.classificationChartTitle);
+      setText("quarterTitle", t.quarterTitle);
+      setText("dayTitle", t.dayTitle);
+      setText("yearTrendTitle", t.yearTrendTitle);
+      setText("monthYearTrendTitle", t.monthYearTrendTitle);
+      setText("excellentLabel", t.excellent);
+      setText("vgoodLabel", t.vgood);
+      setText("goodLabel", t.good);
+      setText("poorLabel", t.poor);
 
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
 
-      const regionFilter = document.getElementById("regionFilter");
-      const selectedRegion = regionFilter.value;
-      populateRegionFilter(rawReports);
-      regionFilter.value = selectedRegion;
+      populateFilters(rawReports);
 
       const classFilter = document.getElementById("classificationFilter");
-      const selectedClass = classFilter.value;
       classFilter.innerHTML = `
         <option value="">${t.allClasses}</option>
         <option value="${t.excellent}">${t.excellent}</option>
@@ -971,38 +1083,6 @@
         <option value="${t.good}">${t.good}</option>
         <option value="${t.poor}">${t.poor}</option>
       `;
-      classFilter.value = selectedClass;
-
-      const sortFilter = document.getElementById("sortFilter");
-      const selectedSort = sortFilter.value;
-      sortFilter.innerHTML = `
-        <option value="latest">${t.latest}</option>
-        <option value="score_desc">${t.scoreDesc}</option>
-        <option value="score_asc">${t.scoreAsc}</option>
-        <option value="name">${t.sortName}</option>
-      `;
-      sortFilter.value = selectedSort;
-
-      setText("kpiReportsLabel", t.kpiReportsLabel);
-      setText("kpiSitesLabel", t.kpiSitesLabel);
-      setText("kpiAvgLabel", t.kpiAvgLabel);
-      setText("kpiExcellentLabel", t.kpiExcellentLabel);
-      setText("siteChartTitle", t.siteChartTitle);
-      setText("classificationChartTitle", t.classificationChartTitle);
-      setText("monthlyTrendTitle", t.monthlyTrendTitle);
-      setText("tableTitle", t.tableTitle);
-      setText("thRegionCity", t.thRegionCity);
-      setText("thBuilding", t.thBuilding);
-      setText("thRegion", t.thRegion);
-      setText("thCount", t.thCount);
-      setText("thLatest", t.thLatest);
-      setText("thAverage", t.thAverage);
-      setText("thClass", t.thClass);
-      setText("thDate", t.thDate);
-      setText("excellentLabel", t.excellent);
-      setText("vgoodLabel", t.vgood);
-      setText("goodLabel", t.good);
-      setText("poorLabel", t.poor);
 
       applyFilters();
     }
