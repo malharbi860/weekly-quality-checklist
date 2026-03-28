@@ -15,10 +15,8 @@
       --muted: #6b7280;
       --border: #d8dee8;
       --sidebar: #111827;
-      --sidebar-soft: #111827;
       --accent: #f59e0b;
 
-      /* تصنيفات موحدة */
       --excellent: #16a34a;
       --vgood: #06b6d4;
       --good: #f59e0b;
@@ -581,15 +579,17 @@
     let spark1, spark2, spark3, spark4;
 
     function normalizeReport(r) {
-      const regionCity = r.regionCity || r.siteName || "-";
       const date = r.date || "";
       const dt = date ? new Date(date) : null;
 
       return {
         reportNo: r.reportNo || "",
-        buildingName: r.buildingName || "-",
-        regionCity,
-        region: r.region || "-",
+        buildingNameAr: r.buildingNameAr || r.buildingName || "-",
+        buildingNameEn: r.buildingNameEn || r.buildingName || "-",
+        regionCityAr: r.regionCityAr || r.regionCity || r.siteName || "-",
+        regionCityEn: r.regionCityEn || r.regionCity || r.siteName || "-",
+        regionAr: r.regionAr || r.region || "-",
+        regionEn: r.regionEn || r.region || "-",
         inspectorName: r.inspectorName || "-",
         date,
         overallScore: Number(r.overallScore) || 0,
@@ -598,6 +598,18 @@
         day: dt && !isNaN(dt) ? dt.getDate() : "",
         weekday: dt && !isNaN(dt) ? dt.getDay() : null
       };
+    }
+
+    function getRegionCity(report) {
+      return currentLang === "ar" ? report.regionCityAr : report.regionCityEn;
+    }
+
+    function getRegion(report) {
+      return currentLang === "ar" ? report.regionAr : report.regionEn;
+    }
+
+    function getBuildingName(report) {
+      return currentLang === "ar" ? report.buildingNameAr : report.buildingNameEn;
     }
 
     function getClassification(score) {
@@ -674,7 +686,7 @@
         dayFilter.appendChild(o);
       });
 
-      uniqueSorted(reports.map(r => r.region)).forEach(v => {
+      uniqueSorted(reports.map(r => getRegion(r))).forEach(v => {
         const o = document.createElement("option");
         o.value = v;
         o.textContent = v;
@@ -691,15 +703,14 @@
       const map = new Map();
 
       reports.forEach(r => {
-        const key = r.regionCity;
+        const key = getRegionCity(r);
         if (!map.has(key)) {
           map.set(key, {
-            regionCity: r.regionCity,
+            regionCity: getRegionCity(r),
             count: 0,
             total: 0,
             max: r.overallScore,
             min: r.overallScore,
-            latestDate: r.date || "",
             avg: 0,
             classification: ""
           });
@@ -710,7 +721,6 @@
         item.total += r.overallScore;
         item.max = Math.max(item.max, r.overallScore);
         item.min = Math.min(item.min, r.overallScore);
-        if ((r.date || "") >= item.latestDate) item.latestDate = r.date || "";
       });
 
       return [...map.values()].map(item => {
@@ -788,7 +798,8 @@
             tension: 0.35,
             fill: false,
             pointRadius: 0,
-            borderWidth: 2
+            borderWidth: 2,
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim()
           }]
         },
         options: {
@@ -815,7 +826,12 @@
       destroyChart(spark3);
       destroyChart(spark4);
 
-      const classColors = [getComputedStyle(document.documentElement).getPropertyValue('--excellent').trim(), getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(), getComputedStyle(document.documentElement).getPropertyValue('--good').trim(), getComputedStyle(document.documentElement).getPropertyValue('--poor').trim()];
+      const classColors = [
+        getComputedStyle(document.documentElement).getPropertyValue('--excellent').trim(),
+        getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(),
+        getComputedStyle(document.documentElement).getPropertyValue('--good').trim(),
+        getComputedStyle(document.documentElement).getPropertyValue('--poor').trim()
+      ];
 
       const monthlyMap = {};
       for (let i = 1; i <= 12; i++) monthlyMap[i] = [];
@@ -917,26 +933,34 @@
         }
       });
 
-      const monthYearMap = {};
+      let selectedYear = document.getElementById("yearFilter").value;
+      if (!selectedYear) {
+        const years = reports.map(r => r.year).filter(Boolean).sort((a, b) => b - a);
+        selectedYear = years.length ? String(years[0]) : "";
+      }
+
+      const yearlyMonthMap = {};
+      for (let i = 1; i <= 12; i++) yearlyMonthMap[i] = [];
       reports.forEach(r => {
-        if (!r.date) return;
-        const key = r.date.slice(0, 7);
-        if (!monthYearMap[key]) monthYearMap[key] = [];
-        monthYearMap[key].push(r.overallScore);
+        if (String(r.year) === String(selectedYear) && r.month) {
+          yearlyMonthMap[r.month].push(r.overallScore);
+        }
       });
-      const monthYearLabels = Object.keys(monthYearMap).sort();
-      const monthYearValues = monthYearLabels.map(k => avgArray(monthYearMap[k]));
+
+      const monthYearLabels = Array.from({ length: 12 }, (_, i) => monthLabel(i + 1));
+      const monthYearValues = Array.from({ length: 12 }, (_, i) => avgArray(yearlyMonthMap[i + 1]));
 
       monthYearTrendChart = new Chart(document.getElementById("monthYearTrendChart"), {
         type: "line",
         data: {
           labels: monthYearLabels,
           datasets: [{
-            label: t.monthYearTrendTitle,
+            label: selectedYear ? `${t.monthYearTrendTitle} - ${selectedYear}` : t.monthYearTrendTitle,
             data: monthYearValues,
             tension: 0.35,
             fill: false,
-            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim()
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim(),
+            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--vgood').trim()
           }]
         },
         options: {
@@ -965,8 +989,8 @@
 
       if (search) {
         filteredReports = filteredReports.filter(r =>
-          (r.regionCity || "").toLowerCase().includes(search) ||
-          (r.buildingName || "").toLowerCase().includes(search) ||
+          getRegionCity(r).toLowerCase().includes(search) ||
+          getBuildingName(r).toLowerCase().includes(search) ||
           (r.inspectorName || "").toLowerCase().includes(search)
         );
       }
@@ -974,14 +998,14 @@
       if (year) filteredReports = filteredReports.filter(r => String(r.year) === String(year));
       if (month) filteredReports = filteredReports.filter(r => String(r.month) === String(month));
       if (day) filteredReports = filteredReports.filter(r => String(r.day) === String(day));
-      if (region) filteredReports = filteredReports.filter(r => r.region === region);
+      if (region) filteredReports = filteredReports.filter(r => getRegion(r) === region);
 
       let locations = aggregateByLocation(filteredReports);
 
       if (classification) {
         locations = locations.filter(l => l.classification === classification);
         const allowedNames = new Set(locations.map(l => l.regionCity));
-        filteredReports = filteredReports.filter(r => allowedNames.has(r.regionCity));
+        filteredReports = filteredReports.filter(r => allowedNames.has(getRegionCity(r)));
       }
 
       updateKPIs(filteredReports, locations);
@@ -1036,7 +1060,18 @@
 
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
 
+      const savedYear = document.getElementById("yearFilter").value;
+      const savedMonth = document.getElementById("monthFilter").value;
+      const savedDay = document.getElementById("dayFilter").value;
+      const savedRegion = document.getElementById("regionFilter").value;
+      const savedClass = document.getElementById("classificationFilter").value;
+
       populateFilters(rawReports);
+
+      document.getElementById("yearFilter").value = savedYear;
+      document.getElementById("monthFilter").value = savedMonth;
+      document.getElementById("dayFilter").value = savedDay;
+      document.getElementById("regionFilter").value = savedRegion;
 
       const classFilter = document.getElementById("classificationFilter");
       classFilter.innerHTML = `
@@ -1046,6 +1081,7 @@
         <option value="${t.good}">${t.good}</option>
         <option value="${t.poor}">${t.poor}</option>
       `;
+      classFilter.value = savedClass;
 
       applyFilters();
     }
