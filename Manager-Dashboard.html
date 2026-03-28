@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>Manager Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -32,18 +32,15 @@
       background: var(--bg);
       color: var(--text);
       overflow-x: auto;
+      touch-action: auto;
       min-height: 100%;
-    }
-
-    body {
-      min-width: 1650px;
     }
 
     .app {
       display: grid;
       grid-template-columns: 230px 1fr;
       min-height: 100vh;
-      min-width: 1650px;
+      width: 100%;
       align-items: stretch;
     }
 
@@ -143,7 +140,8 @@
 
     .content {
       padding: 14px;
-      min-width: 1420px;
+      width: 100%;
+      min-width: 1100px;
     }
 
     .topbar {
@@ -202,8 +200,12 @@
       grid-column: span 4;
     }
 
+    .team-panel {
+      grid-column: span 4;
+    }
+
     .full-line-panel {
-      grid-column: span 12;
+      grid-column: span 8;
     }
 
     .panel,
@@ -344,9 +346,48 @@
     .status-box.good { background: var(--good); }
     .status-box.poor { background: var(--poor); }
 
+    .team-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .team-card {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .team-card strong {
+      display: block;
+      font-size: 14px;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .team-card span {
+      display: block;
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 3px;
+    }
+
+    .team-card small {
+      display: block;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
     canvas {
       width: 100% !important;
       height: auto !important;
+    }
+
+    @media (max-width: 1200px) {
+      .content {
+        min-width: 1200px;
+      }
     }
   </style>
 </head>
@@ -487,6 +528,11 @@
           </div>
         </div>
 
+        <div class="panel team-panel">
+          <div class="panel-title" id="teamTitle">فريق الجودة</div>
+          <div class="team-list" id="teamList"></div>
+        </div>
+
         <div class="panel full-line-panel">
           <div class="panel-title" id="monthYearTrendTitle">التقييم حسب الشهر والسنة</div>
           <canvas id="monthYearTrendChart"></canvas>
@@ -531,7 +577,40 @@
         quarterTitle: "التقييم حسب الربع",
         dayTitle: "التقييم حسب اليوم",
         monthYearTrendTitle: "التقييم حسب الشهر والسنة",
-        noData: "لا توجد بيانات مطابقة."
+        teamTitle: "فريق الجودة",
+        noData: "لا توجد بيانات مطابقة.",
+        members: [
+          {
+            name: "محمد الحربي",
+            title: "مهندس إدارة مرافق",
+            company: "وزارة الثقافة",
+            region: "—"
+          },
+          {
+            name: "أحمد المهنا",
+            title: "مدير إدارة الجودة",
+            company: "رمال السواحل",
+            region: "المنطقة الوسطى"
+          },
+          {
+            name: "مهند الحربي",
+            title: "مدير إدارة الجودة",
+            company: "جاش - مركز الملك فهد الثقافي",
+            region: "—"
+          },
+          {
+            name: "زياد مسعد",
+            title: "مدير إدارة الجودة",
+            company: "رمال السواحل",
+            region: "المنطقة الغربية"
+          },
+          {
+            name: "سعيد جمعان",
+            title: "مدير إدارة الجودة",
+            company: "—",
+            region: "المنطقة الشمالية"
+          }
+        ]
       },
       en: {
         brandTitle: "Manager Dashboard",
@@ -567,7 +646,40 @@
         quarterTitle: "Scores by Quarter",
         dayTitle: "Scores by Day",
         monthYearTrendTitle: "Scores by Month/Year",
-        noData: "No matching data."
+        teamTitle: "Quality Team",
+        noData: "No matching data.",
+        members: [
+          {
+            name: "Mohammed Alharbi",
+            title: "Facilities Management Engineer",
+            company: "Ministry of Culture",
+            region: "—"
+          },
+          {
+            name: "Ahmed Al-Muhanna",
+            title: "Quality Manager",
+            company: "Rimal Al-Sawahil",
+            region: "Central Region"
+          },
+          {
+            name: "Muhannad Alharbi",
+            title: "Quality Manager",
+            company: "JASH - King Fahad Cultural Center",
+            region: "—"
+          },
+          {
+            name: "Ziad Massaad",
+            title: "Quality Manager",
+            company: "Rimal Al-Sawahil",
+            region: "Western Region"
+          },
+          {
+            name: "Saeed Jamaan",
+            title: "Quality Manager",
+            company: "—",
+            region: "Northern Region"
+          }
+        ]
       }
     };
 
@@ -608,10 +720,6 @@
       return currentLang === "ar" ? report.regionAr : report.regionEn;
     }
 
-    function getBuildingName(report) {
-      return currentLang === "ar" ? report.buildingNameAr : report.buildingNameEn;
-    }
-
     function getClassification(score) {
       const t = translations[currentLang];
       if (score >= 90) return t.excellent;
@@ -626,6 +734,19 @@
       if (label === t.vgood) return "vgood";
       if (label === t.good) return "good";
       return "poor";
+    }
+
+    function renderTeamList() {
+      const members = translations[currentLang].members;
+      const container = document.getElementById("teamList");
+      container.innerHTML = members.map(member => `
+        <div class="team-card">
+          <strong>${escapeHtml(member.name)}</strong>
+          <span>${escapeHtml(member.title)}</span>
+          <small>${escapeHtml(member.company)}</small>
+          <small>${escapeHtml(member.region)}</small>
+        </div>
+      `).join("");
     }
 
     async function loadReports() {
@@ -990,7 +1111,6 @@
       if (search) {
         filteredReports = filteredReports.filter(r =>
           getRegionCity(r).toLowerCase().includes(search) ||
-          getBuildingName(r).toLowerCase().includes(search) ||
           (r.inspectorName || "").toLowerCase().includes(search)
         );
       }
@@ -1053,6 +1173,7 @@
       setText("quarterTitle", t.quarterTitle);
       setText("dayTitle", t.dayTitle);
       setText("monthYearTrendTitle", t.monthYearTrendTitle);
+      setText("teamTitle", t.teamTitle);
       setText("excellentLabel", t.excellent);
       setText("vgoodLabel", t.vgood);
       setText("goodLabel", t.good);
@@ -1083,6 +1204,7 @@
       `;
       classFilter.value = savedClass;
 
+      renderTeamList();
       applyFilters();
     }
 
