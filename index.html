@@ -22,6 +22,7 @@
       --danger: #dc2626;
       --warning: #d97706;
       --success: #16a34a;
+      --info: #0ea5e9;
       --header-text: #ffffff;
       --table-head: #f0f7ff;
       --chip-bg: #f8fafc;
@@ -64,7 +65,7 @@
 
     .header-inner,
     .container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -171,7 +172,7 @@
 
     .summary {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-columns: repeat(8, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 20px;
     }
@@ -214,10 +215,16 @@
     }
 
     .summary-box .value {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--text);
+      line-height: 1.2;
     }
+
+    .rating-excellent { color: var(--success) !important; }
+    .rating-vgood { color: var(--info) !important; }
+    .rating-good { color: var(--warning) !important; }
+    .rating-poor { color: var(--danger) !important; }
 
     .checklist-item {
       display: grid;
@@ -377,7 +384,6 @@
       background: var(--success) !important;
     }
 
-    /* Slider switch */
     .theme-switch-wrap {
       display: flex;
       align-items: center;
@@ -436,7 +442,7 @@
       color: white;
     }
 
-    @media (max-width: 1050px) {
+    @media (max-width: 1150px) {
       .grid,
       .summary,
       .satisfaction-grid {
@@ -510,8 +516,8 @@
 
       <div class="card">
         <div class="field">
-          <label id="siteLabel" for="siteName"></label>
-          <input id="siteName" type="text" />
+          <label id="regionCityLabel" for="regionCity"></label>
+          <input id="regionCity" type="text" />
         </div>
       </div>
 
@@ -548,6 +554,10 @@
       <div class="summary-box">
         <div class="label" id="overallScoreLabel"></div>
         <div class="value" id="overallScore">0%</div>
+      </div>
+      <div class="summary-box">
+        <div class="label" id="overallRatingLabel"></div>
+        <div class="value" id="overallRating">-</div>
       </div>
       <div class="summary-box">
         <div class="label" id="cleanScoreLabel"></div>
@@ -670,12 +680,13 @@
         themeLight: "☀️ فاتح",
         themeDark: "🌙 داكن",
         buildingLabel: "اسم المبنى",
-        siteLabel: "اسم الموقع / المجمع",
+        regionCityLabel: "المنطقة / المدينة",
         inspectorLabel: "اسم المفتش",
         dateLabel: "التاريخ",
         zoneLabel: "المنطقة / الدور / القسم",
         occupancyLabel: "نوع الاستخدام / الجهة المستفيدة",
         overallScoreLabel: "النسبة العامة",
+        overallRatingLabel: "التصنيف العام",
         cleanScoreLabel: "النظافة",
         finishScoreLabel: "التشطيبات",
         mepScoreLabel: "الأنظمة",
@@ -714,6 +725,10 @@
         status_ok: "جيد / مطابق",
         status_nok: "يحتاج معالجة",
         status_na: "غير منطبق",
+        ratingExcellent: "ممتاز",
+        ratingVGood: "جيد جدًا",
+        ratingGood: "جيد",
+        ratingPoor: "سيئ",
         satisfactionOptions: ["رضا الموظفين", "رضا المستخدمين", "رضا الزوار"],
         cleanItems: [
           "نظافة المداخل والممرات",
@@ -758,7 +773,7 @@
         pdfTitle: "Gap Analysis and QA/QC Report",
         pdfGenerated: "تاريخ الإنشاء",
         pdfBuilding: "اسم المبنى",
-        pdfSite: "الموقع / المجمع",
+        pdfRegionCity: "المنطقة / المدينة",
         pdfInspector: "اسم المفتش",
         pdfDate: "التاريخ",
         pdfZone: "المنطقة / الدور / القسم",
@@ -777,12 +792,13 @@
         themeLight: "☀️ Light",
         themeDark: "🌙 Dark",
         buildingLabel: "Building Name",
-        siteLabel: "Site / Complex Name",
+        regionCityLabel: "Region / City",
         inspectorLabel: "Inspector Name",
         dateLabel: "Date",
         zoneLabel: "Zone / Floor / Department",
         occupancyLabel: "Occupancy Type / Beneficiary",
         overallScoreLabel: "Overall Score",
+        overallRatingLabel: "Overall Rating",
         cleanScoreLabel: "Cleanliness",
         finishScoreLabel: "Finishes",
         mepScoreLabel: "Systems",
@@ -821,6 +837,10 @@
         status_ok: "Good / Acceptable",
         status_nok: "Needs Action",
         status_na: "Not Applicable",
+        ratingExcellent: "Excellent",
+        ratingVGood: "Very Good",
+        ratingGood: "Good",
+        ratingPoor: "Poor",
         satisfactionOptions: ["Employee Satisfaction", "User Satisfaction", "Visitor Satisfaction"],
         cleanItems: [
           "Entrances and corridors are clean",
@@ -865,7 +885,7 @@
         pdfTitle: "Gap Analysis and QA/QC Report",
         pdfGenerated: "Generated",
         pdfBuilding: "Building Name",
-        pdfSite: "Site / Complex",
+        pdfRegionCity: "Region / City",
         pdfInspector: "Inspector Name",
         pdfDate: "Date",
         pdfZone: "Zone / Floor / Department",
@@ -922,6 +942,23 @@
       if (value === "nok") return "status-nok";
       if (value === "na") return "status-na";
       return "";
+    }
+
+    function getOverallRating(score, lang = currentLang) {
+      const value = Number(score) || 0;
+      const t = translations[lang];
+      if (value >= 90) return t.ratingExcellent;
+      if (value >= 80) return t.ratingVGood;
+      if (value >= 70) return t.ratingGood;
+      return t.ratingPoor;
+    }
+
+    function getOverallRatingClass(score) {
+      const value = Number(score) || 0;
+      if (value >= 90) return "rating-excellent";
+      if (value >= 80) return "rating-vgood";
+      if (value >= 70) return "rating-good";
+      return "rating-poor";
     }
 
     function updateThemeText() {
@@ -1102,12 +1139,13 @@
       document.getElementById("pageTitle").textContent = "Gap Analysis and QA/QC Report";
 
       setText("buildingLabel", t.buildingLabel);
-      setText("siteLabel", t.siteLabel);
+      setText("regionCityLabel", t.regionCityLabel);
       setText("inspectorLabel", t.inspectorLabel);
       setText("dateLabel", t.dateLabel);
       setText("zoneLabel", t.zoneLabel);
       setText("occupancyLabel", t.occupancyLabel);
       setText("overallScoreLabel", t.overallScoreLabel);
+      setText("overallRatingLabel", t.overallRatingLabel);
       setText("cleanScoreLabel", t.cleanScoreLabel);
       setText("finishScoreLabel", t.finishScoreLabel);
       setText("mepScoreLabel", t.mepScoreLabel);
@@ -1144,6 +1182,10 @@
       renderAllChecklists();
       renderActionRows();
       updateThemeText();
+
+      const overallNumeric = parseInt(document.getElementById("overallScore").textContent) || 0;
+      document.getElementById("overallRating").textContent = getOverallRating(overallNumeric, lang);
+      document.getElementById("overallRating").className = "value " + getOverallRatingClass(overallNumeric);
     }
 
     function calculateSectionScore(sectionName) {
@@ -1170,6 +1212,10 @@
 
       const overall = Math.round((clean + finish + mep + safety + facility) / 5);
       document.getElementById("overallScore").textContent = overall + "%";
+
+      const overallRatingEl = document.getElementById("overallRating");
+      overallRatingEl.textContent = getOverallRating(overall);
+      overallRatingEl.className = "value " + getOverallRatingClass(overall);
     }
 
     function previewImages(event) {
@@ -1274,7 +1320,7 @@
       const generatedAt = today.toLocaleString();
 
       const buildingName = document.getElementById("buildingName").value || "-";
-      const siteName = document.getElementById("siteName").value || "-";
+      const regionCity = document.getElementById("regionCity").value || "-";
       const inspectorName = document.getElementById("inspectorName").value || "-";
       const inspectionDate = document.getElementById("inspectionDate").value || "-";
       const zoneName = document.getElementById("zoneName").value || "-";
@@ -1290,6 +1336,9 @@
       const safetyScore = document.getElementById("safetyScore").textContent;
       const facilityScore = document.getElementById("facilityScore").textContent;
       const satisfactionScore = document.getElementById("satisfactionScore").textContent;
+
+      const overallNumeric = parseInt(document.getElementById("overallScore").textContent) || 0;
+      const overallRating = getOverallRating(overallNumeric, lang);
 
       const images = Array.from(document.querySelectorAll("#photosPreview img")).map((img, i) => `
         <section class="pdf-page">
@@ -1313,7 +1362,9 @@
     size: A4;
     margin: 14mm;
   }
+
   * { box-sizing: border-box; }
+
   body {
     font-family: Arial, sans-serif;
     direction: ${dir};
@@ -1323,28 +1374,34 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
   .pdf-page {
     page-break-after: always;
     min-height: 260mm;
   }
+
   .pdf-page:last-child {
     page-break-after: auto;
   }
+
   .pdf-head {
     border-bottom: 3px solid #0f766e;
     padding-bottom: 10px;
     margin-bottom: 18px;
   }
+
   .pdf-title {
     font-size: 24px;
     font-weight: 700;
     color: #0f172a;
   }
+
   .subline {
     color: #6b7280;
     font-size: 13px;
     margin-top: 6px;
   }
+
   .cover-box {
     border: 1px solid #dbe4ee;
     border-radius: 14px;
@@ -1352,35 +1409,41 @@
     margin-top: 18px;
     background: #f8fbff;
   }
+
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     margin-top: 14px;
   }
+
   .info-card {
     border: 1px solid #dbe4ee;
     border-radius: 12px;
     padding: 12px 14px;
     background: #ffffff;
   }
+
   .info-label {
     font-size: 12px;
     color: #6b7280;
     margin-bottom: 6px;
   }
+
   .info-value {
     font-size: 16px;
     font-weight: 700;
     color: #0f172a;
     word-break: break-word;
   }
+
   .score-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 14px;
     margin-top: 18px;
   }
+
   .score-card {
     border: 1px solid #dbe4ee;
     border-radius: 14px;
@@ -1388,21 +1451,25 @@
     text-align: center;
     background: #ffffff;
   }
+
   .score-label {
     font-size: 13px;
     color: #6b7280;
     margin-bottom: 8px;
   }
+
   .score-value {
     font-size: 28px;
     font-weight: 700;
     color: #0f172a;
   }
+
   .pdf-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
   }
+
   .pdf-table th,
   .pdf-table td {
     border: 1px solid #dbe4ee;
@@ -1411,10 +1478,12 @@
     text-align: ${lang === "ar" ? "right" : "left"};
     font-size: 14px;
   }
+
   .pdf-table th {
     background: #f0f7ff;
     font-weight: 700;
   }
+
   .text-box {
     border: 1px solid #dbe4ee;
     border-radius: 12px;
@@ -1425,15 +1494,18 @@
     word-break: break-word;
     min-height: 90px;
   }
+
   .section-title {
     font-size: 18px;
     font-weight: 700;
     margin: 0 0 10px;
     color: #0f172a;
   }
+
   .spacer {
     height: 16px;
   }
+
   .photo-page-wrap {
     display: flex;
     align-items: center;
@@ -1444,6 +1516,7 @@
     padding: 10px;
     background: #ffffff;
   }
+
   .photo-page-wrap img {
     max-width: 100%;
     max-height: 210mm;
@@ -1462,22 +1535,66 @@
 
     <div class="cover-box">
       <div class="info-grid">
-        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfBuilding)}</div><div class="info-value">${escapeHtml(buildingName)}</div></div>
-        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfSite)}</div><div class="info-value">${escapeHtml(siteName)}</div></div>
-        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfInspector)}</div><div class="info-value">${escapeHtml(inspectorName)}</div></div>
-        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfDate)}</div><div class="info-value">${escapeHtml(inspectionDate)}</div></div>
-        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfZone)}</div><div class="info-value">${escapeHtml(zoneName)}</div></div>
-        <div class="info-card"><div class="info-label">${escapeHtml(t.pdfOccupancy)}</div><div class="info-value">${escapeHtml(occupancyType)}</div></div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfBuilding)}</div>
+          <div class="info-value">${escapeHtml(buildingName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfRegionCity)}</div>
+          <div class="info-value">${escapeHtml(regionCity)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfInspector)}</div>
+          <div class="info-value">${escapeHtml(inspectorName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfDate)}</div>
+          <div class="info-value">${escapeHtml(inspectionDate)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfZone)}</div>
+          <div class="info-value">${escapeHtml(zoneName)}</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label">${escapeHtml(t.pdfOccupancy)}</div>
+          <div class="info-value">${escapeHtml(occupancyType)}</div>
+        </div>
       </div>
     </div>
 
     <div class="score-grid">
-      <div class="score-card"><div class="score-label">${escapeHtml(t.overallScoreLabel)}</div><div class="score-value">${escapeHtml(overallScore)}</div></div>
-      <div class="score-card"><div class="score-label">${escapeHtml(t.cleanScoreLabel)}</div><div class="score-value">${escapeHtml(cleanScore)}</div></div>
-      <div class="score-card"><div class="score-label">${escapeHtml(t.finishScoreLabel)}</div><div class="score-value">${escapeHtml(finishScore)}</div></div>
-      <div class="score-card"><div class="score-label">${escapeHtml(t.mepScoreLabel)}</div><div class="score-value">${escapeHtml(mepScore)}</div></div>
-      <div class="score-card"><div class="score-label">${escapeHtml(t.safetyScoreLabel)}</div><div class="score-value">${escapeHtml(safetyScore)}</div></div>
-      <div class="score-card"><div class="score-label">${escapeHtml(t.facilityScoreLabel)}</div><div class="score-value">${escapeHtml(facilityScore)}</div></div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.overallScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(overallScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.overallRatingLabel)}</div>
+        <div class="score-value">${escapeHtml(overallRating)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.cleanScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(cleanScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.finishScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(finishScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.mepScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(mepScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.safetyScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(safetyScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.facilityScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(facilityScore)}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">${escapeHtml(t.satisfactionScoreLabel)}</div>
+        <div class="score-value">${escapeHtml(satisfactionScore)}</div>
+      </div>
     </div>
   </section>
 
@@ -1495,11 +1612,18 @@
     </div>
 
     <div class="info-grid">
-      <div class="info-card"><div class="info-label">${escapeHtml(t.satisfactionTypeLabel)}</div><div class="info-value">${escapeHtml(satisfactionType)}</div></div>
-      <div class="info-card"><div class="info-label">${escapeHtml(t.satisfactionRateLabel)}</div><div class="info-value">${escapeHtml(satisfactionScore)}</div></div>
+      <div class="info-card">
+        <div class="info-label">${escapeHtml(t.satisfactionTypeLabel)}</div>
+        <div class="info-value">${escapeHtml(satisfactionType)}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">${escapeHtml(t.satisfactionRateLabel)}</div>
+        <div class="info-value">${escapeHtml(satisfactionScore)}</div>
+      </div>
     </div>
 
     <div class="spacer"></div>
+
     <div class="section-title">${escapeHtml(t.satisfactionNotesLabel)}</div>
     <div class="text-box">${escapeHtml(satisfactionNotes)}</div>
   </section>
@@ -1543,7 +1667,7 @@
 
     function resetForm() {
       document.getElementById("buildingName").value = "";
-      document.getElementById("siteName").value = "";
+      document.getElementById("regionCity").value = "";
       document.getElementById("inspectorName").value = "";
       document.getElementById("inspectionDate").value = "";
       document.getElementById("zoneName").value = "";
